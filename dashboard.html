@@ -127,16 +127,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .btn-export-pdf:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 .btn-export-pdf:disabled{opacity:.45;cursor:not-allowed}
 
-/* PDF export (clone off-screen) */
-.pdf-export-root{width:780px;box-sizing:border-box}
-.pdf-export-root .tpanel{display:block!important}
+/* PDF export */
+.pdf-export-host{position:fixed;left:0;top:0;width:100%;min-height:100%;z-index:9999;pointer-events:none;background:var(--bg0);overflow:visible}
+.pdf-export-root{width:732px;max-width:100%;margin:0;box-sizing:border-box}
+.pdf-export-root .tpanel{display:block!important;width:100%!important;margin:0!important;padding:0!important;overflow:visible!important;position:static!important;transform:none!important}
 .pdf-export-root .g2,.pdf-export-root .g3{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
 .pdf-export-root .g2>.card,.pdf-export-root .g3>.card{min-width:0}
 .pdf-export-root .gf{width:100%}
 .pdf-export-root .kgrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))!important}
+.pdf-export-root .kgrid-geral{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.pdf-export-root .kpi-block,.pdf-export-root .card{overflow:visible!important}
+.pdf-export-root .origem-donut-stack{grid-template-columns:1fr!important;gap:14px!important;padding:0!important}
+.pdf-export-root .origem-donut-block{padding:12px 14px!important}
+.pdf-export-root .origem-donut-panel{flex-wrap:wrap!important;justify-content:center!important;gap:10px 16px!important;padding:4px 0!important}
+.pdf-export-root .origem-donut-chart-wrap{width:130px!important;height:130px!important;margin:0!important;flex-shrink:0!important}
+.pdf-export-root .origem-donut-legend{width:100%!important;max-width:100%!important;padding:0 4px!important}
+.pdf-export-root .origem-leg-row{grid-template-columns:1fr auto auto!important;gap:8px!important;font-size:11px!important}
+.pdf-export-root .origem-leg-pct,.pdf-export-root .origem-leg-cnt{min-width:0!important;padding-left:4px!important}
 .pdf-export-root canvas,.pdf-export-root .pdf-chart-img{max-height:none!important;height:auto!important;width:100%!important;display:block!important}
-.pdf-export-root .card,.pdf-export-root .kpi,.pdf-export-root .ins,.pdf-export-root .rrow{break-inside:avoid;page-break-inside:avoid}
-.pdf-export-root .slabel{break-after:avoid;page-break-after:avoid}
+.pdf-export-root .pdf-export-head{break-inside:avoid;page-break-inside:avoid}
 .pdf-export-root .btn-export-pdf,.pdf-export-root .rk-pill{cursor:default}
 .pdf-export-head{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)}
 .pdf-export-meta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:8px}
@@ -1436,7 +1445,7 @@ createApp({
 
       const wrapper = document.createElement('div');
       wrapper.className = 'pdf-export-root';
-      wrapper.style.cssText = `background:${bg};color:${text};padding:22px 24px;width:780px;box-sizing:border-box;font-family:Inter,system-ui,sans-serif`;
+      wrapper.style.cssText = `background:${bg};color:${text};padding:20px 22px;box-sizing:border-box;font-family:Inter,system-ui,sans-serif`;
 
       const periodo = this.periodoLabel || `${this.dataInicio} → ${this.dataFim}`;
       const comparativo = this.periodoAnteriorLabel
@@ -1466,15 +1475,69 @@ createApp({
       body.classList.add('on');
       body.style.display = 'block';
       body.style.visibility = 'visible';
+      body.style.width = '100%';
+      body.style.margin = '0';
+      body.style.padding = '0';
+      body.style.overflow = 'visible';
       body.querySelectorAll('.btn-export-pdf').forEach((b) => b.remove());
       body.querySelectorAll('.page-header').forEach((h) => {
         const sub = h.querySelector('.page-sub');
         if (sub) sub.remove();
       });
+      body.querySelectorAll('.origem-donut-stack').forEach((el) => {
+        el.style.gridTemplateColumns = '1fr';
+        el.style.gap = '14px';
+      });
+      body.querySelectorAll('.origem-donut-panel').forEach((el) => {
+        el.style.flexWrap = 'wrap';
+        el.style.justifyContent = 'center';
+        el.style.gap = '10px 16px';
+      });
+      body.querySelectorAll('.origem-donut-chart-wrap').forEach((el) => {
+        el.style.width = '130px';
+        el.style.height = '130px';
+        el.style.margin = '0';
+      });
+      body.querySelectorAll('.origem-donut-legend').forEach((el) => {
+        el.style.width = '100%';
+        el.style.maxWidth = '100%';
+      });
 
       this.replaceCanvasesForPdf(tabEl, body);
       wrapper.appendChild(body);
       return wrapper;
+    },
+
+    mountPdfWrapper(wrapper) {
+      const host = document.createElement('div');
+      host.className = 'pdf-export-host';
+      host.id = 'pdf-export-host-temp';
+      const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg0').trim() || '#ffffff';
+      host.style.background = bg;
+      wrapper.style.position = 'relative';
+      wrapper.style.left = '0';
+      wrapper.style.top = '0';
+      wrapper.style.margin = '0';
+      wrapper.style.width = '732px';
+      wrapper.style.maxWidth = '732px';
+      wrapper.style.transform = 'none';
+      wrapper.style.pointerEvents = 'none';
+      host.appendChild(wrapper);
+      document.body.appendChild(host);
+      return host;
+    },
+
+    async waitPdfImages(wrapper) {
+      const imgs = [...wrapper.querySelectorAll('img.pdf-chart-img')];
+      await Promise.all(imgs.map((img) => {
+        if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+          setTimeout(resolve, 2500);
+        });
+      }));
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     },
 
     async exportPdf(tab) {
@@ -1489,6 +1552,7 @@ createApp({
 
       this.exportingPdf = true;
       let wrapper = null;
+      let pdfHost = null;
       const prevScroll = window.scrollY;
       try {
         if (tab === 'contexto' && !this.CTX) {
@@ -1500,42 +1564,63 @@ createApp({
           await new Promise((r) => setTimeout(r, 120));
         }
 
+        window.scrollTo(0, 0);
         tabEl.scrollIntoView({ block: 'start' });
         await this.waitForCharts(tab === 'contexto' ? 900 : 750);
 
         const title = tabEl.querySelector('.page-title')?.textContent?.trim() || tab;
         const filename = `tagme-report-${tab}-${this.dataInicio}_${this.dataFim}.pdf`;
         wrapper = this.buildPdfWrapper(tabEl, title);
-        wrapper.style.position = 'fixed';
-        wrapper.style.left = '-12000px';
-        wrapper.style.top = '0';
-        wrapper.style.zIndex = '-1';
-        wrapper.style.pointerEvents = 'none';
-        document.body.appendChild(wrapper);
+        pdfHost = this.mountPdfWrapper(wrapper);
+        await this.waitPdfImages(wrapper);
+
+        const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg0').trim() || '#ffffff';
 
         await html2pdf().set({
-          margin: [6, 6, 8, 6],
+          margin: [8, 8, 10, 8],
           filename,
-          image: { type: 'jpeg', quality: 0.98 },
+          image: { type: 'jpeg', quality: 0.92 },
           html2canvas: {
             scale: 2,
             useCORS: true,
             logging: false,
-            scrollY: 0,
             scrollX: 0,
-            width: wrapper.scrollWidth,
-            height: wrapper.scrollHeight,
-            windowWidth: wrapper.scrollWidth,
-            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--bg0').trim() || '#0d1117',
+            scrollY: 0,
+            backgroundColor: bg,
+            onclone: (clonedDoc) => {
+              const root = clonedDoc.querySelector('.pdf-export-root');
+              if (!root) return;
+              root.style.position = 'static';
+              root.style.left = '0';
+              root.style.top = '0';
+              root.style.margin = '0';
+              root.style.transform = 'none';
+              root.style.width = '732px';
+              const host = clonedDoc.querySelector('.pdf-export-host');
+              if (host) {
+                host.style.position = 'static';
+                host.style.width = '732px';
+                host.style.margin = '0';
+                host.style.padding = '0';
+                host.style.overflow = 'visible';
+              }
+              const panel = root.querySelector('.tpanel');
+              if (panel) {
+                panel.style.width = '100%';
+                panel.style.margin = '0';
+                panel.style.padding = '0';
+                panel.style.transform = 'none';
+              }
+            },
           },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-          pagebreak: { mode: ['css', 'legacy'], before: '.slabel', avoid: ['.card', '.kpi', '.ins', '.rrow', '.pdf-export-head'] },
         }).from(wrapper).save();
       } catch (e) {
         console.error('exportPdf', e);
         alert('Não foi possível gerar o PDF. Tente novamente.');
       } finally {
-        if (wrapper?.parentNode) wrapper.parentNode.removeChild(wrapper);
+        if (pdfHost?.parentNode) pdfHost.parentNode.removeChild(pdfHost);
+        else if (wrapper?.parentNode) wrapper.parentNode.removeChild(wrapper);
         window.scrollTo(0, prevScroll);
         this.exportingPdf = false;
       }
