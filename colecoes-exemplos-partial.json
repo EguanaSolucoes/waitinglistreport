@@ -1,0 +1,452 @@
+{
+  "Reservations": {
+    "example": {
+      "_id": "682349adcdbcd78e7ac9082c",
+      "__v": 0,
+      "confirmationPeriodStart": "2025-05-13T13:39:42.125Z",
+      "created_at": "2025-05-13T13:31:25.240Z",
+      "customer": "62a3e471d5388700127927f9",
+      "google": {
+        "wallet": []
+      },
+      "logs": [
+        {
+          "customer": "62a3e471d5388700127927f9",
+          "actionType": "Add",
+          "_id": "682349adcdbcd78e7ac908b2",
+          "created_at": "2025-05-13T13:31:25.241Z"
+        },
+        {
+          "user": "5717f65fc619973cbcd6f6f5",
+          "actionType": "Send RSVP E-mail",
+          "_id": "68234b9e0e78a24318588385",
+          "created_at": "2025-05-13T13:39:42.117Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Update",
+          "_id": "68234b9e0e78a24318588387",
+          "created_at": "2025-05-13T13:39:42.126Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Remove",
+          "_id": "68273376b48a1cf24df8e839",
+          "created_at": "2025-05-16T12:45:42.363Z"
+        }
+      ],
+      "note": "teste",
+      "origin": {
+        "app": "681cf9e4f1992b3eac381e73",
+        "label": "Reservation Widget",
+        "_id": "682349adcdbcd78e7ac908b3"
+      },
+      "partySize": 7,
+      "paymentOrigin": "",
+      "preOrderedItems": [],
+      "preOrderedItemsSnapshot": [],
+      "redemptions": [],
+      "reservationDay": "2025-05-15T03:00:00.000Z",
+      "reservationTime": "14:30",
+      "rsvp": false,
+      "section": "682347a20d20997c32a2c7cb",
+      "shoppingCart": [],
+      "status": "Canceled",
+      "tags": [],
+      "type": "Regular",
+      "updated_at": "2025-05-16T12:45:42.362Z",
+      "venue": "681cca16acba6866d6420b63",
+      "voucher": "",
+      "rsvpEmailSentAt": "2025-05-13T13:39:42.125Z",
+      "cancelReason": "Customer Requested",
+      "canceledAt": "2025-05-16T12:45:42.329Z"
+    }
+  },
+  "Waitlists": {
+    "example": {
+      "_id": "682350b2f9e0627b29c48538",
+      "__v": 0,
+      "arrivedAt": "2025-05-13T14:01:20.005Z",
+      "basicCustomer": {
+        "_id": "67991541777dad55a309ffc9",
+        "name": "Marcia",
+        "lastName": "Anjos",
+        "email": "marciaellen1999@gmai.com",
+        "phone": "5521965114201"
+      },
+      "created_at": "2025-05-13T14:01:22.182Z",
+      "customer": "67991541777dad55a309ffc9",
+      "customerTags": [],
+      "estimatedTime": "2025-05-13T14:02:22.181Z",
+      "logs": [
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Add",
+          "origin": "Wailist dashboard",
+          "_id": "682350b2f9e0627b29c4853c",
+          "created_at": "2025-05-13T14:01:22.184Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Update",
+          "origin": "Wailist dashboard",
+          "_id": "682350f0f9e0627b29c48afa",
+          "created_at": "2025-05-13T14:02:24.657Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Update",
+          "origin": "Wailist dashboard",
+          "_id": "6823515606d5d7316ab7e300",
+          "created_at": "2025-05-13T14:04:06.140Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "call",
+          "_id": "6823519206d5d7316ab7eb9e",
+          "created_at": "2025-05-13T14:05:06.003Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Remove",
+          "_id": "682351b31618e3eaecc3156d",
+          "created_at": "2025-05-13T14:05:39.643Z"
+        },
+        {
+          "user": "66e1e4fb9e1c9a2c486507a3",
+          "actionType": "Remove",
+          "_id": "682352677c851609c7770a1a",
+          "created_at": "2025-05-13T14:08:39.748Z"
+        }
+      ],
+      "mode": "afterLast",
+      "origin": {
+        "label": "Restaurant",
+        "_id": "6823515606d5d7316ab7e2ff"
+      },
+      "partySize": 5,
+      "redemptions": [],
+      "status": "red",
+      "updated_at": "2025-05-13T14:08:39.747Z",
+      "venue": "681cca16acba6866d6420b63",
+      "waitingTime": 1,
+      "priority": false,
+      "attention": true,
+      "notifiedAt": "2025-05-13T14:05:06.002Z",
+      "cancelReason": "Customer Requested",
+      "canceledAt": "2025-05-13T14:08:39.746Z"
+    }
+  },
+  "Venues": {
+    "example": {
+      "_id": "681cca16acba6866d6420b63",
+      "__v": 0,
+      "allowedUsers": [
+        "681e289aacba6866d65cb12e",
+        "682b30e6473fc05f6d74fb8b",
+        "68fa3005f3e36de1aff5fc1b"
+      ],
+      "benefits": [
+        {
+          "benefit": "5724efce753355c00d7483c5",
+          "value": "15%",
+          "menus": [],
+          "_id": "681ccf91f1992b3eac336bdd"
+        }
+      ],
+      "channels": [
+        "5f651e77ceb2ad1a7500fef4"
+      ],
+      "created_at": "2025-05-08T15:13:26.168Z",
+      "disabled": false,
+      "emailUnsubscribe": [],
+      "enableGoogleIndexing": false,
+      "features": [
+        {
+          "feature": "56c774512ceaf5891343090d",
+          "_id": "681cf91ef1992b3eac38158c"
+        },
+        {
+          "feature": "56c774522ceaf5891343090f",
+          "_id": "681cf91ef1992b3eac38158d"
+        },
+        {
+          "feature": "56c774512ceaf5891343090c",
+          "_id": "681cf91ef1992b3eac38158e"
+        },
+        {
+          "feature": "56c774522ceaf58913430913",
+          "_id": "681cf936f1992b3eac381670"
+        },
+        {
+          "feature": "56c774572ceaf58913430933",
+          "_id": "68c07dc7183fe8699f2c9f5b"
+        },
+        {
+          "feature": "56c774562ceaf5891343092e",
+          "_id": "68c08086183fe8699f2ce37e"
+        },
+        {
+          "feature": "56c7745d2ceaf5891343095b",
+          "_id": "681cf936f1992b3eac381672"
+        },
+        {
+          "feature": "56c7745f2ceaf58913430968",
+          "_id": "681cf936f1992b3eac381673"
+        },
+        {
+          "feature": "56c7745f2ceaf58913430967",
+          "_id": "681cf936f1992b3eac381674"
+        },
+        {
+          "feature": "56c7745a2ceaf58913430948",
+          "_id": "681cf936f1992b3eac381675"
+        }
+      ],
+      "focalPoints": [
+        "681e289aacba6866d65cb12e"
+      ],
+      "has": {
+        "bradesco": true,
+        "digitalMenu": false,
+        "itau": false,
+        "reservation": true,
+        "waitlist": true,
+        "newWaitlist": false,
+        "walkIn": true,
+        "widgetMenu": false,
+        "payment": false,
+        "brasilSaborSp": false,
+        "festivalDeLaTapa": false,
+        "tastingMenu": false,
+        "settimanaItaliana": false
+      },
+      "integrations": [],
+      "liveMenuPro": false,
+      "location": [
+        -43.19004146611385,
+        -22.979098904600885
+      ],
+      "log": [
+        {
+          "origin": "Tagme Admin",
+          "type": "addHasBradesco",
+          "_id": "68b847ee91b688c71d1e3580",
+          "created_at": "2025-09-03T13:51:42.792Z"
+        }
+      ],
+      "loyaltySettings": {
+        "prizes": []
+      },
+      "menu": [
+        "681ccfeedd41736ccaff9d64",
+        "681ccfeedd41736ccaff9d61",
+        "681ccff2dd41736ccaff9d80",
+        "681ccff5dd41736ccaff9da3",
+        "681ccffcdd41736ccaff9dd2",
+        "681cd000dd41736ccaff9de9",
+        "681cd003dd41736ccaff9dfe",
+        "681cd009dd41736ccaff9e29",
+        "681cd00cdd41736ccaff9e4a",
+        "681cd011dd41736ccaff9e95",
+        "681cd013dd41736ccaff9ea6",
+        "681cd017dd41736ccaff9ecf",
+        "681cd019dd41736ccaff9ee0",
+        "681cd01cdd41736ccaff9ef1",
+        "681cd01edd41736ccaff9f06",
+        "681cd025dd41736ccaff9f6f",
+        "681ccff1dd41736ccaff9d7d",
+        "681cd028dd41736ccaff9f8b",
+        "681cd028dd41736ccaff9f88",
+        "681cd02cdd41736ccaff9fb1",
+        "681cd030dd41736ccaff9fe0",
+        "681cd035dd41736ccaffa00f",
+        "681cd038dd41736ccaffa028",
+        "681cd02bdd41736ccaff9fae",
+        "681cd03bdd41736ccaffa03e",
+        "681cd041dd41736ccaffa079",
+        "681cd043dd41736ccaffa090",
+        "681cd047dd41736ccaffa0cb",
+        "681cd049dd41736ccaffa0dc",
+        "681cd03add41736ccaffa03b",
+        "681cd04edd41736ccaffa10c",
+        "681cd050dd41736ccaffa11d",
+        "681cd052dd41736ccaffa128",
+        "681cd055dd41736ccaffa145",
+        "681cd04edd41736ccaffa109",
+        "6842e822d887b5b5dffb077c",
+        "6842e822d887b5b5dffb0779",
+        "6842e826d887b5b5dffb0798",
+        "6842e829d887b5b5dffb07b7",
+        "6842e830d887b5b5dffb07e6",
+        "6842e834d887b5b5dffb07fd",
+        "6842e836d887b5b5dffb0812",
+        "6842e83dd887b5b5dffb083b",
+        "6842e840d887b5b5dffb085c",
+        "6842e845d887b5b5dffb08a7",
+        "6842e847d887b5b5dffb08bc",
+        "6842e84bd887b5b5dffb08e5",
+        "6842e84ed887b5b5dffb08f6",
+        "6842e850d887b5b5dffb0907",
+        "6842e852d887b5b5dffb091e",
+        "6842e859d887b5b5dffb0989",
+        "6842e825d887b5b5dffb0795",
+        "6842e85cd887b5b5dffb09a5",
+        "6842e85cd887b5b5dffb09a2",
+        "6842e860d887b5b5dffb09c9",
+        "6842e865d887b5b5dffb09f8",
+        "6842e86ad887b5b5dffb0a27",
+        "6842e86dd887b5b5dffb0a40",
+        "6842e860d887b5b5dffb09c6",
+        "6842e86fd887b5b5dffb0a56",
+        "6842e875d887b5b5dffb0a91",
+        "6842e877d887b5b5dffb0aa6",
+        "6842e87cd887b5b5dffb0ae1",
+        "6842e87ed887b5b5dffb0af2",
+        "6842e86fd887b5b5dffb0a53",
+        "6842e883d887b5b5dffb0b22",
+        "6842e885d887b5b5dffb0b33",
+        "6842e886d887b5b5dffb0b3e",
+        "6842e889d887b5b5dffb0b5b",
+        "6842e883d887b5b5dffb0b1f",
+        "6850819192143128cb530a37",
+        "6850819192143128cb530a34",
+        "6850819492143128cb530a53",
+        "6850819892143128cb530a72",
+        "6850819f92143128cb530aa4",
+        "685081a392143128cb530abe",
+        "685081a692143128cb530ad3",
+        "685081ad92143128cb530aff",
+        "685081b092143128cb530b20",
+        "685081b692143128cb530b6e",
+        "685081b892143128cb530b83",
+        "685081bc92143128cb530bac",
+        "685081be92143128cb530bbd",
+        "685081c192143128cb530bd1",
+        "685081c392143128cb530be8",
+        "685081ca92143128cb530c54",
+        "6850819492143128cb530a50",
+        "685081cd92143128cb530c70",
+        "685081cd92143128cb530c6d",
+        "685081d292143128cb530c99",
+        "685081d792143128cb530cc8",
+        "685081dc92143128cb530cf9",
+        "685081df92143128cb530d13",
+        "685081d292143128cb530c96",
+        "685081e192143128cb530d29",
+        "685081e892143128cb530d67",
+        "685081ea92143128cb530d7c",
+        "685081ef92143128cb530dba",
+        "685081f192143128cb530dcb",
+        "685081e192143128cb530d26",
+        "685081f692143128cb530dfb",
+        "685081f892143128cb530e0d",
+        "685081f992143128cb530e1a",
+        "685081fc92143128cb530e37",
+        "685081f692143128cb530df8"
+      ],
+      "msisdnUnsubscribe": [],
+      "name": {
+        "pt": "Mané Copacabana",
+        "en": "Mané Copacabana",
+        "fr": "Mané Copacabana",
+        "es": "Mané Copacabana"
+      },
+      "operationHours": [
+        {
+          "day": null,
+          "start": null,
+          "end": null
+        }
+      ],
+      "permissions": {
+        "waitlist": []
+      },
+      "phone": [
+        {
+          "name": null,
+          "value": null
+        }
+      ],
+      "search": [
+        "mane",
+        "copacabana"
+      ],
+      "slug": "mane_copacabana",
+      "staff": [],
+      "tags": [],
+      "updated_at": "2026-02-20T14:34:29.882Z",
+      "address": "681ccf91f1992b3eac336bd7",
+      "cnpj": "39.985.417/0001-96",
+      "descript": {
+        "pt": "",
+        "en": "",
+        "fr": "",
+        "es": ""
+      },
+      "email": "Copacabana@manerio.com",
+      "googleId": null,
+      "hiredServices": {
+        "bradesco": true,
+        "digitalMenu": false,
+        "itau": false,
+        "reservation": true,
+        "waitlist": true,
+        "widgetMenu": false,
+        "brasilSaborSp": false,
+        "festivalDeLaTapa": false,
+        "settimanaItaliana": false,
+        "loginJourney": false
+      },
+      "images": {},
+      "michelinId": null,
+      "priceRange": 1,
+      "serviceTax": 0,
+      "shortName": {
+        "pt": "Mané",
+        "en": "",
+        "fr": "",
+        "es": ""
+      },
+      "site": null,
+      "socialAnalytics": {
+        "googleAnalytics": null,
+        "googleGTM": null,
+        "facebookPixel": null
+      },
+      "uniqueMenu": null,
+      "focalPoint": "681e289aacba6866d65cb12e",
+      "parent": "681d1dc0f1992b3eac3cadb0",
+      "whatsAppAdapter": true,
+      "analyticsIntegrations": [
+        {
+          "_id": "6a1889804e5ffdd27288cd59",
+          "type": "analytics",
+          "channel": "reservationWidget",
+          "provider": "facebookPixel",
+          "label": "Reserva - Facebook Pixel",
+          "value": "1362895958641017",
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "Logs": {
+    "example": {
+      "_id": "577ea77bac87c96811b8098e",
+      "origin": "Bradesco",
+      "type": "pageView",
+      "user": "56cf52a14209e97b140da958",
+      "device": "iOS",
+      "location": [
+        -43.337745666503906,
+        -23.00318717956543
+      ],
+      "details": {
+        "page": "faq"
+      },
+      "created_at": "2016-07-07T19:03:23.612Z",
+      "__v": 0
+    }
+  }
+}

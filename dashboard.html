@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Bi Tagme</title>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.7.9/dist/axios.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+<style>
+[v-cloak]{display:none}
+:root{
+  color-scheme:dark;
+  --bg0:#0D0F14;--bg1:#161A22;--bg2:#1E2330;--bg3:#252C3B;
+  --border:#2A3040;--text:#F0F2F8;--muted:#7B8498;--muted2:#4A5168;
+  --accent:#FF6B2B;--accent2:#4F8EF7;
+  --green:#22D3A5;--red:#FF4D6D;--yellow:#F5A623;--purple:#A78BFA;
+  --r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:99px}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(13,15,20,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:10px 28px;min-height:60px;gap:16px;flex-wrap:wrap}
+.topbar-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.brand-name{font-weight:800;font-size:15px;letter-spacing:-.3px}
+.brand-sub{font-size:11px;color:var(--muted)}
+.topbar-filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fchip{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--muted)}
+.fchip label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px}
+.fchip select{background:var(--bg2);border:none;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;outline:none;-webkit-appearance:none;appearance:none;padding-right:12px;color-scheme:dark}
+.fchip select option,.fchip select optgroup{background:var(--bg2);color:var(--text)}
+.fchip select option:checked,.fchip select option:hover{background:var(--bg3);color:var(--text)}
+.fchip input[type=date]{background:transparent;border:none;color:var(--text);font-size:12px;font-family:inherit;cursor:pointer;outline:none;color-scheme:dark;width:132px}
+.fchip .tz-hint{font-size:9px;color:var(--muted2);margin-left:2px}
+.fchip input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.75);cursor:pointer;opacity:.9}
+.btn-apply{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-apply:hover{opacity:.9}
+.btn-logout{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:4px}
+.btn-logout:hover{color:var(--text);border-color:var(--red)}
+.fchip-presets{display:flex;gap:4px}
+.fchip-preset{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
+.fchip-preset:hover{color:var(--text);border-color:var(--accent)}
+.fchip-venue .btn-venue-pick{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.fchip-venue .btn-venue-pick:hover{border-color:var(--accent)}
+.venue-bar{width:100%;border-bottom:1px solid var(--border);padding:10px 28px 12px;background:var(--bg1)}
+.venue-bar-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+.venue-bar-label{font-size:11px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+.venue-bar-actions{display:flex;gap:6px;flex-shrink:0}
+.venue-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:6px;width:100%}
+.venue-chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 8px 5px 10px;font-size:11px;color:var(--text);min-width:0}
+.venue-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.venue-chip button{background:none;border:none;color:var(--muted2);cursor:pointer;font-size:12px;line-height:1;padding:0 2px}
+.venue-chip button:hover{color:var(--red)}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-box{background:var(--bg1);border:1px solid var(--border);border-radius:12px;width:min(520px,100%);max-height:min(80vh,640px);display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.modal-head h3{font-size:15px;font-weight:700}
+.modal-close{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+.modal-close:hover{color:var(--text)}
+.modal-search{padding:12px 18px;border-bottom:1px solid var(--border)}
+.modal-search input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;outline:none}
+.modal-search input:focus{border-color:var(--accent)}
+.modal-hint{font-size:11px;color:var(--muted2);margin-top:6px}
+.modal-body{flex:1;overflow:auto;padding:8px 10px}
+.modal-row{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:8px;cursor:pointer;border:1px solid transparent}
+.modal-row:hover{background:var(--bg2)}
+.modal-row.on{background:rgba(255,107,43,.08);border-color:rgba(255,107,43,.25)}
+.modal-row input{margin-top:2px;accent-color:var(--accent)}
+.modal-row .mn{font-size:13px;font-weight:600;color:var(--text)}
+.modal-row-all{margin-bottom:6px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.modal-row-all .mn{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted2)}
+.modal-row .ms{font-size:11px;color:var(--muted);margin-top:2px}
+.modal-empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}
+.modal-foot{padding:12px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.modal-foot .mf-info{font-size:12px;color:var(--muted)}
+.modal-foot .mf-actions{display:flex;gap:8px}
+.btn-ghost{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer}
+.btn-ghost:hover{color:var(--text)}
+.btn-modal-ok{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-modal-ok:disabled{opacity:.45;cursor:not-allowed}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(34,211,165,.1);border:1px solid rgba(34,211,165,.25);border-radius:99px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green);white-space:nowrap;flex-shrink:0}
+.ldot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* SHELL */
+.shell{display:flex;height:calc(100vh - 60px)}
+
+/* SIDENAV */
+.sidenav{width:210px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.nsec{padding:8px 20px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);font-weight:600}
+.nitem{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);transition:.15s;border-left:3px solid transparent}
+.nitem:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.nitem.on{color:var(--text);background:rgba(255,107,43,.07);border-left-color:var(--accent)}
+.nico{font-size:16px;width:20px;text-align:center}
+.nbadge{margin-left:auto;background:rgba(255,107,43,.2);color:var(--accent);font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:24px 28px;min-width:0}
+.page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+.page-title{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1}
+.page-sub{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* KPI */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px}
+.kpi{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;position:relative;overflow:hidden;transition:.2s}
+.kpi:hover{border-color:var(--bg3);transform:translateY(-1px)}
+.kpi-top{position:absolute;top:0;left:0;right:0;height:2px;border-radius:var(--r) var(--r) 0 0}
+.kpi-eye{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.eye-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.kpi-num{font-size:30px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:6px}
+.kdelta{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
+.kdelta.up{background:rgba(34,211,165,.12);color:var(--green)}
+.kdelta.dn{background:rgba(255,77,109,.12);color:var(--red)}
+.kdelta.nu{background:rgba(123,132,152,.1);color:var(--muted)}
+.ksub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* SECTION LABEL */
+.slabel{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sl-text{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);white-space:nowrap}
+.sl-line{flex:1;height:1px;background:var(--border)}
+.sl-tag{font-size:10px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:2px 8px;border-radius:99px;white-space:nowrap}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:20px}
+.gf{margin-bottom:20px}
+
+/* CARD */
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;position:relative;overflow:hidden}
+.ch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;gap:8px}
+.ct{font-size:13px;font-weight:700;letter-spacing:-.2px}
+.cs{font-size:11px;color:var(--muted);margin-top:2px}
+.ctag{font-size:10px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap;flex-shrink:0}
+.tg{background:rgba(34,211,165,.12);color:var(--green)}
+.tr{background:rgba(255,77,109,.12);color:var(--red)}
+.ty{background:rgba(245,166,35,.12);color:var(--yellow)}
+.tb{background:rgba(79,142,247,.12);color:var(--accent2)}
+.tm{background:var(--bg2);color:var(--muted)}
+
+/* WEEK LEGEND */
+.wleg{display:flex;align-items:center;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.wli{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.wls{width:18px;height:2px;border-radius:1px}
+.wld{width:18px;height:0;border-top:2px dashed}
+canvas{max-height:230px!important}
+
+/* TABS */
+.tpanel{display:none}
+.tpanel.on{display:block}
+
+/* RANKING */
+.rlist{display:flex;flex-direction:column;gap:8px}
+.rrow{display:flex;align-items:center;gap:10px;background:var(--bg2);border-radius:8px;padding:10px 14px;border:1px solid transparent;transition:.15s}
+.rrow:hover{border-color:var(--border)}
+.rpos{font-size:13px;font-weight:800;color:var(--muted2);width:18px;text-align:center;flex-shrink:0}
+.rpos.gd{color:#F5A623}.rpos.sv{color:#A0AEC0}.rpos.br{color:#CD7F32}
+.rname{flex:1;font-size:13px;font-weight:600}
+.rval{font-size:14px;font-weight:800}
+.rbw{width:70px;height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;flex-shrink:0}
+.rbf{height:100%;border-radius:99px;background:var(--accent)}
+.rdelta{font-size:10px;font-weight:700;padding:1px 6px;border-radius:99px}
+
+/* INSIGHTS */
+.igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:20px}
+.ins{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:8px;transition:.15s}
+.ins:hover{border-color:var(--bg3)}
+.ins-top{display:flex;align-items:center;gap:8px}
+.ins-ico{font-size:18px}
+.ins-lbl{font-size:12px;font-weight:700}
+.ins-body{font-size:12px;color:var(--muted);line-height:1.55}
+.ins-act{font-size:11px;color:var(--accent);font-weight:600}
+
+/* FOOTER */
+.footer{font-size:11px;color:var(--muted2);text-align:center;padding:20px 0 32px;border-top:1px solid var(--border);margin-top:8px}
+
+/* LOADING / ERROR */
+.overlay{position:fixed;inset:0;background:rgba(13,15,20,.75);display:flex;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px)}
+.overlay-box{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:28px 36px;text-align:center}
+.spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.err-banner{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:var(--red);padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.err-banner button{background:var(--red);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer}
+.live-pill.err{background:rgba(255,77,109,.1);border-color:rgba(255,77,109,.25);color:var(--red)}
+.live-pill.err .ldot{background:var(--red)}
+.empty-banner{background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3);color:var(--yellow);padding:12px 16px;border-radius:8px;margin-bottom:16px;font-size:12px;line-height:1.5}
+
+/* ORIGIN CARDS */
+.ocgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.ocard{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;text-align:center}
+.ocard-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
+.ocard-num{font-size:22px;font-weight:800;letter-spacing:-1px}
+.ocard-pct{font-size:11px;color:var(--muted);margin-top:4px}
+.ocard-sub{font-size:10px;color:var(--muted2);margin-top:2px}
+
+/* DETAIL TABLE */
+.dtable{width:100%;border-collapse:collapse;font-size:12px}
+.dtable th,.dtable td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.dtable th{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted2);font-weight:600}
+.dtable td:last-child,.dtable th:last-child{text-align:right}
+.ctx-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:99px;margin:1px 3px 1px 0;border:1px solid var(--border)}
+.ctx-tag.pos{background:rgba(34,211,165,.12);color:#22D3A5;border-color:rgba(34,211,165,.25)}
+.ctx-tag.neg{background:rgba(255,77,109,.12);color:#FF4D6D;border-color:rgba(255,77,109,.25)}
+.ctx-tag.mix{background:rgba(245,166,35,.12);color:#F5A623;border-color:rgba(245,166,35,.25)}
+.ctx-tag.neu{background:var(--bg3);color:var(--muted)}
+.ctx-hl{margin-bottom:20px}
+.ctx-weather-banner{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 16px;margin-bottom:14px;font-size:12px;color:var(--muted);line-height:1.55}
+.ctx-weather-banner strong{color:var(--text);font-weight:600}
+.ctx-weather-banner .ctx-weather-place{color:var(--accent);font-weight:700}
+.dbar{height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-top:4px}
+.dbar-f{height:100%;border-radius:99px;background:var(--accent)}
+
+@media(max-width:900px){.sidenav{display:none}.content{padding:16px}.g2,.g3{grid-template-columns:1fr}.kpi-num{font-size:22px}}
+</style>
+</head>
+<body>
+<div id="app" v-cloak>
+
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-dot"></div>
+    <div><div class="brand-name">Bi Tagme</div><div class="brand-sub">Reservas & Fila de Espera</div></div>
+  </div>
+  <div class="topbar-filters">
+    <div class="fchip">
+      <label>De</label>
+      <input type="date" v-model="dataInicio" :max="dataFim || hoje" @change="onDatePickerChange" />
+    </div>
+    <div class="fchip">
+      <label>Até</label>
+      <input type="date" v-model="dataFim" :min="dataInicio" :max="hoje" @change="onDatePickerChange" />
+    </div>
+    <button class="btn-apply" @click="loadData" :disabled="loading">Aplicar</button>
+    <div class="fchip-presets">
+      <button type="button" class="fchip-preset" @click="setPreset(7)">7 dias</button>
+      <button type="button" class="fchip-preset" @click="setPreset(30)">30 dias</button>
+      <button type="button" class="fchip-preset" @click="setPresetMes()">Este mês</button>
+    </div>
+    <div class="fchip">
+      <label>Ano</label>
+      <select v-model.number="filtroAno" @change="setAnoMes">
+        <option v-for="y in anosDisponiveis" :key="y" :value="y">{{ y }}</option>
+      </select>
+    </div>
+    <div class="fchip">
+      <label>Mês</label>
+      <select v-model.number="filtroMes" @change="setAnoMes">
+        <option v-for="m in 12" :key="m" :value="m">{{ mesNome(m) }}</option>
+      </select>
+    </div>
+    <div class="fchip fchip-venue">
+      <label>Venues</label>
+      <button type="button" class="btn-venue-pick" @click="openVenueModal">
+        {{ selectedVenues.length ? venuePickLabel : 'Selecionar venues…' }}
+      </button>
+    </div>
+    <div class="fchip">
+      <label>Status</label>
+      <select v-model="statusFiltro">
+        <option value="">Todos</option>
+        <option value="seated">Sentado</option>
+        <option value="noshow">No-show</option>
+      </select>
+    </div>
+    <button type="button" class="btn-logout" @click="logout" title="Sair">{{ authUser }} · Sair</button>
+  </div>
+  <div class="live-pill" :class="{err: error}"><div class="ldot"></div>{{ loading ? 'Carregando…' : error ? 'Erro API' : 'Ao Vivo' }} · <span>{{ ts }}</span> <span class="tz-hint">BRT</span></div>
+</header>
+
+<div v-if="venueModalOpen" class="modal-backdrop" @click.self="closeVenueModal">
+  <div class="modal-box" role="dialog" aria-labelledby="venue-modal-title">
+    <div class="modal-head">
+      <h3 id="venue-modal-title">Selecionar venues</h3>
+      <button type="button" class="modal-close" @click="closeVenueModal" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-search">
+      <input
+        ref="venueSearchInput"
+        v-model="venueSearchQ"
+        type="search"
+        placeholder="Digite nome ou parte (mín. 2 letras)…"
+        @input="onVenueSearchInput"
+      />
+      <div class="modal-hint">Busca no MongoDB · selecione uma ou várias unidades</div>
+    </div>
+    <div class="modal-body">
+      <div v-if="venueSearchLoading" class="modal-empty">Buscando…</div>
+      <div v-else-if="venueSearchQ.trim().length < 2" class="modal-empty">Digite ao menos 2 caracteres para buscar.</div>
+      <div v-else-if="!venueSearchResults.length" class="modal-empty">Nenhuma venue encontrada para “{{ venueSearchQ.trim() }}”.</div>
+      <template v-else>
+        <label class="modal-row modal-row-all" :class="{ on: allVenueResultsSelected }">
+          <input
+            type="checkbox"
+            :checked="allVenueResultsSelected"
+            :indeterminate.prop="someVenueResultsSelected"
+            @change="toggleSelectAllVenueResults"
+          />
+          <div>
+            <div class="mn">Selecionar todas da lista</div>
+            <div class="ms">{{ venueResultsPickCount }} de {{ venueSearchResults.length }} marcada(s)</div>
+          </div>
+        </label>
+        <label
+          v-for="v in venueSearchResults"
+          :key="v.id"
+          class="modal-row"
+          :class="{ on: venueModalPick[v.id] }"
+        >
+          <input type="checkbox" :checked="!!venueModalPick[v.id]" @change="toggleVenuePick(v)" />
+          <div>
+            <div class="mn">{{ v.nome }}</div>
+            <div v-if="v.grupoLabel" class="ms">{{ v.grupoLabel }}</div>
+          </div>
+        </label>
+      </template>
+    </div>
+    <div class="modal-foot">
+      <div class="mf-info">{{ venueModalPickCount }} selecionada(s) na busca</div>
+      <div class="mf-actions">
+        <button type="button" class="btn-ghost" @click="venueModalPick = {}">Limpar busca</button>
+        <button type="button" class="btn-modal-ok" :disabled="!venueModalPickCount" @click="applyVenueModal">Aplicar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div v-if="selectedVenues.length" class="venue-bar">
+  <div class="venue-bar-head">
+    <span class="venue-bar-label">{{ selectedVenues.length }} venue{{ selectedVenues.length > 1 ? 's' : '' }} selecionada{{ selectedVenues.length > 1 ? 's' : '' }}</span>
+    <div class="venue-bar-actions">
+      <button type="button" class="fchip-preset" @click="openVenueModal">+ Adicionar</button>
+      <button v-if="selectedVenues.length > 1" type="button" class="fchip-preset" @click="clearVenues">Limpar todas</button>
+    </div>
+  </div>
+  <div class="venue-chips">
+    <span v-for="v in selectedVenues" :key="v.id" class="venue-chip">
+      <span :title="v.nome">{{ v.nome }}</span>
+      <button type="button" @click="removeVenue(v.id)" title="Remover">×</button>
+    </span>
+  </div>
+</div>
+
+<div v-if="loading && !W" class="overlay"><div class="overlay-box"><div class="spinner"></div><div style="color:var(--muted);font-size:13px">Consultando MongoDB…</div></div></div>
+
+<div class="shell">
+<nav class="sidenav">
+  <div class="nsec">Principal</div>
+  <div class="nitem" :class="{on:activeTab==='geral'}" @click="go('geral')"><span class="nico">◈</span>Visão Geral</div>
+  <div class="nitem" :class="{on:activeTab==='fila'}" @click="go('fila')"><span class="nico">⏳</span>Fila de Espera<span class="nbadge" v-if="hasFilaAlert">!</span></div>
+  <div class="nitem" :class="{on:activeTab==='reservas'}" @click="go('reservas')"><span class="nico">📅</span>Reservas</div>
+  <div class="nitem" :class="{on:activeTab==='mensal'}" @click="go('mensal')"><span class="nico">📆</span>Visão Mensal</div>
+  <div class="nsec">Análise</div>
+  <div class="nitem" :class="{on:activeTab==='ranking'}" @click="go('ranking')"><span class="nico">🏆</span>Ranking</div>
+  <div class="nitem" :class="{on:activeTab==='canais'}" @click="go('canais')"><span class="nico">🔗</span>Canais Detalhados</div>
+  <div class="nitem" :class="{on:activeTab==='insights'}" @click="go('insights')"><span class="nico">💡</span>Insights</div>
+  <div class="nitem" :class="{on:activeTab==='contexto'}" @click="go('contexto')"><span class="nico">🌦</span>Fatores Externos</div>
+</nav>
+
+<main class="content">
+
+<div v-if="error" class="err-banner">
+  <span>{{ error }} — Inicie o servidor com <code>npm start</code> e acesse <code>{{ apiUrl }}/</code></span>
+  <button @click="loadData">Tentar novamente</button>
+</div>
+
+<div v-if="!loading && !error && !selectedVenues.length" class="empty-banner">
+  Selecione uma ou mais <strong>venues</strong> para carregar o dashboard.
+  <button type="button" class="fchip-preset" style="margin-left:8px" @click="openVenueModal">Selecionar venues</button>
+</div>
+
+<div v-if="!loading && !error && selectedVenues.length && semDados" class="empty-banner">
+  Nenhum dado no período <strong>{{ periodoLabel }}</strong> para as venues selecionadas.
+  Tente ampliar o intervalo (ex.: <button type="button" class="fchip-preset" @click="setPreset(30)">30 dias</button>)
+  ou selecione outra venue.
+</div>
+
+<!-- VISÃO GERAL -->
+<div id="tab-geral" class="tpanel" :class="{on: activeTab==='geral'}">
+  <div class="page-header">
+    <div><div class="page-title">Visão Geral</div><div class="page-sub">{{ periodoSubtitulo }}</div></div>
+  </div>
+  <div class="kgrid" id="kpi-geral"></div>
+  <div class="slabel"><div class="sl-text">Reservas por origem</div><div class="sl-line"></div><div class="sl-tag">Widget · Telefone · Google</div></div>
+  <div class="ocgrid" id="origem-res-cards"></div>
+  <div class="slabel"><div class="sl-text">Fila de espera por origem</div><div class="sl-line"></div><div class="sl-tag">Waitlist · Widget · Google</div></div>
+  <div class="ocgrid" id="origem-fila-cards"></div>
+  <div class="slabel"><div class="sl-text">Tendência no período</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Reservas por Dia</div><div class="cs">{{ periodoDiaCs }}</div></div><span class="ctag" id="t-res-g">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Período atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.5"></div>Período anterior</div></div>
+      <canvas id="ch-res-g"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Fila de Espera por Dia</div><div class="cs">{{ periodoDiaCs }}</div></div><span class="ctag" id="t-fila-g">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#F5A623"></div>Período atual</div><div class="wli"><div class="wld" style="border-color:#F5A623;opacity:.5"></div>Período anterior</div></div>
+      <canvas id="ch-fila-g"></canvas>
+    </div>
+  </div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Canal · atual vs anterior</div></div></div>
+    <canvas id="ch-origem-g"></canvas>
+  </div>
+</div>
+
+<!-- FILA -->
+<div id="tab-fila" class="tpanel" :class="{on: activeTab==='fila'}">
+  <div class="page-header"><div><div class="page-title">Fila de Espera</div><div class="page-sub">{{ periodoSubtitulo }}</div></div></div>
+  <div class="kgrid" id="kpi-fila"></div>
+  <div class="slabel"><div class="sl-text">Status semanal</div><div class="sl-line"></div><div class="sl-tag">Sentado vs No-Show</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Sentados × No-Show (Fila)</div><div class="cs">Por dia · atual vs anterior</div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#22D3A5"></div>Sentado atual</div><div class="wli"><div class="wld" style="border-color:#22D3A5;opacity:.45"></div>Sentado ant.</div><div class="wli"><div class="wls" style="background:#FF4D6D"></div>No-Show atual</div></div>
+      <canvas id="ch-fi-status"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Tempo Médio de Espera</div><div class="cs">Minutos · atual vs anterior</div></div><span class="ctag" id="t-tempo">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#F5A623"></div>Atual</div><div class="wli"><div class="wld" style="border-color:#F5A623;opacity:.5"></div>Anterior</div><div class="wli"><div class="wls" style="background:#FF4D6D"></div>Meta 20min</div></div>
+      <canvas id="ch-fi-tempo"></canvas>
+    </div>
+  </div>
+  <div class="slabel"><div class="sl-text">Distribuição por hora</div><div class="sl-line"></div><div class="sl-tag">Heatmap operacional · atual vs anterior</div></div>
+  <div class="card gf">
+      <div class="ch"><div><div class="ct">Pico de Fila por Hora</div><div class="cs">Horário de Brasília (America/Sao_Paulo)</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Atual</div><div class="wli"><div class="wld" style="border-color:#A78BFA;opacity:.7"></div>Anterior</div></div>
+    <canvas id="ch-fi-hora" style="max-height:180px!important"></canvas>
+  </div>
+  <div class="card gf" style="margin-top:14px">
+    <div class="ch"><div><div class="ct">Mesas vs Pessoas na Fila</div><div class="cs">Ocorrências da fila · atual vs anterior</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Mesas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Mesas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
+    <canvas id="ch-fi-ocorr"></canvas>
+  </div>
+  <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Sentado vs No-show por mês</div></div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Solicitações por Status na Fila (Mesa)</div><div class="cs">Modelo CIATC · por mês</div></div></div>
+    <canvas id="ch-fi-mes-status"></canvas>
+  </div>
+</div>
+
+<!-- RESERVAS -->
+<div id="tab-reservas" class="tpanel" :class="{on: activeTab==='reservas'}">
+  <div class="page-header"><div><div class="page-title">Reservas</div><div class="page-sub">{{ periodoSubtitulo }}</div></div></div>
+  <div class="kgrid" id="kpi-res"></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Status da Reserva</div><div class="cs">Sentado + No-show + Em aberto = Total · por dia</div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#22D3A5"></div>Sentado</div><div class="wli"><div class="wls" style="background:#FF4D6D"></div>No-Show</div><div class="wli"><div class="wls" style="background:#F5A623"></div>Em aberto</div></div>
+      <canvas id="ch-re-status"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Taxa de No-Show (%)</div><div class="cs">Sobre concluídas (sentado + no-show) · meta &lt; 15%</div></div><span class="ctag" id="t-noshow">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#FF4D6D"></div>Atual</div><div class="wli"><div class="wld" style="border-color:#FF4D6D;opacity:.45"></div>Anterior</div><div class="wli"><div class="wls" style="background:#F5A623"></div>Meta 15%</div></div>
+      <canvas id="ch-re-noshow"></canvas>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Pessoas vs Mesas por Dia</div><div class="cs">Tamanho médio dos grupos · atual vs anterior</div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Mesas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Mesas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
+      <canvas id="ch-re-pessoas"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Canal por Venue</div><div class="cs">Distribuição % de origem · modelo D'Heaven</div></div></div>
+      <canvas id="ch-re-canal"></canvas>
+    </div>
+  </div>
+  <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Status por mês</div></div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Solicitações por Status da Reserva (Mesa)</div><div class="cs">Sentado · No-show · Em aberto (New, Confirmed, Pending)</div></div></div>
+    <canvas id="ch-re-mes-status"></canvas>
+  </div>
+  <div class="card gf" style="margin-top:14px">
+    <div class="ch"><div><div class="ct">Ocorrências da Reserva</div><div class="cs">Mesas vs Pessoas · por dia</div></div></div>
+    <canvas id="ch-re-ocorr"></canvas>
+  </div>
+</div>
+
+<!-- VISÃO MENSAL -->
+<div id="tab-mensal" class="tpanel" :class="{on: activeTab==='mensal'}">
+  <div class="page-header"><div><div class="page-title">Visão Mensal</div><div class="page-sub">{{ periodoSubtitulo }} · Resumo executivo</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Reservas por Mês</div><div class="cs">Total de mesas · atual vs anterior</div></div></div>
+      <canvas id="ch-mes-res"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Fila de Espera por Mês</div><div class="cs">Total de mesas · atual vs anterior</div></div></div>
+      <canvas id="ch-mes-fila"></canvas>
+    </div>
+  </div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Reservas por Mês por Origem</div><div class="cs">Widget · Telefone · Google · Canais</div></div></div>
+    <canvas id="ch-mes-res-origem"></canvas>
+  </div>
+</div>
+
+<!-- CANAIS DETALHADOS -->
+<div id="tab-canais" class="tpanel" :class="{on: activeTab==='canais'}">
+  <div class="page-header"><div><div class="page-title">Canais Detalhados</div><div class="page-sub">Origem exata de cada programa ou parceiro</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Top canais no período</div></div></div>
+      <div id="tbl-origem-res"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Origem da Fila de Espera</div><div class="cs">Top canais no período</div></div></div>
+      <div id="tbl-origem-fila"></div>
+    </div>
+  </div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Fila por Origem</div><div class="cs">Waitlist · Widget · Google</div></div></div>
+    <canvas id="ch-origem-fila"></canvas>
+  </div>
+</div>
+
+<!-- RANKING -->
+<div id="tab-ranking" class="tpanel" :class="{on: activeTab==='ranking'}">
+  <div class="page-header"><div><div class="page-title">Ranking de Venues</div><div class="page-sub">{{ periodoSubtitulo }}</div></div></div>
+  <div class="g2">
+    <div class="card"><div class="ch"><div><div class="ct">📅 Reservas</div></div></div><div class="rlist" id="rk-res"></div></div>
+    <div class="card"><div class="ch"><div><div class="ct">⏳ Fila de Espera</div></div></div><div class="rlist" id="rk-fila"></div></div>
+  </div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Comparativo Geral · Semana Atual vs Anterior</div><div class="cs">Reservas e Fila por unidade</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#F5A623"></div>Fila atual</div></div>
+    <canvas id="ch-rk-comp"></canvas>
+  </div>
+</div>
+
+<!-- INSIGHTS -->
+<div id="tab-insights" class="tpanel" :class="{on: activeTab==='insights'}">
+  <div class="page-header"><div><div class="page-title">Insights & Melhorias</div><div class="page-sub">Alertas gerados com base no comparativo do período</div></div></div>
+  <div class="slabel"><div class="sl-text">Alertas do período</div><div class="sl-line"></div><div class="sl-tag" id="ins-date">—</div></div>
+  <div class="igrid" id="ins-alerts"></div>
+</div>
+
+<!-- FATORES EXTERNOS -->
+<div id="tab-contexto" class="tpanel" :class="{on: activeTab==='contexto'}">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Fatores Externos</div>
+      <div class="page-sub">Clima, feriados e eventos vs reservas · {{ periodoSubtitulo }}</div>
+    </div>
+  </div>
+  <div v-if="contextError" class="err-banner" style="margin-bottom:14px">{{ contextError }}</div>
+  <div class="ctx-weather-banner" id="ctx-weather-region" style="display:none"></div>
+  <div class="kgrid" id="kpi-ctx"></div>
+  <div class="slabel"><div class="sl-text">Média de reservas por tipo de dia</div><div class="sl-line"></div><div class="sl-tag">Comparado à média geral do período</div></div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Dias normais vs dias especiais</div><div class="cs" id="ctx-geo">—</div></div></div>
+    <canvas id="ch-ctx-groups"></canvas>
+  </div>
+  <div class="slabel"><div class="sl-text">Série diária com destaques</div><div class="sl-line"></div><div class="sl-tag">Pontos roxos = dia com fator externo</div></div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Reservas por dia · contexto</div><div class="cs">Linha tracejada = média do período</div></div></div>
+    <canvas id="ch-ctx-daily"></canvas>
+  </div>
+  <div class="slabel"><div class="sl-text">Dias com maior impacto</div><div class="sl-line"></div><div class="sl-tag">Feriados · eventos · chuva</div></div>
+  <div class="card ctx-hl">
+    <div id="ctx-highlights"></div>
+    <div class="ctx-src" id="ctx-sources"></div>
+  </div>
+</div>
+
+<div class="footer">Bi Tagme · {{ metaFonte }} · Atualizado {{ footerTs }}</div>
+</main>
+</div>
+</div>
+
+<script>
+const { createApp } = Vue;
+const API_BASE = (() => {
+  if (window.location.protocol === 'file:') return 'http://localhost:3847/api';
+  return '/api';
+})();
+
+const APP_ORIGIN = (() => {
+  if (window.location.protocol === 'file:') return 'http://localhost:3847';
+  return window.location.origin;
+})();
+
+axios.defaults.withCredentials = true;
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && window.location.protocol !== 'file:') {
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  },
+);
+
+const TZ = 'America/Sao_Paulo';
+
+function isoHoje() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date());
+}
+
+function isoDiasAtras(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(d);
+}
+
+function isoInicioMes() {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: TZ, year: 'numeric', month: '2-digit',
+  }).formatToParts(new Date());
+  const get = (t) => parts.find((p) => p.type === t)?.value;
+  return `${get('year')}-${get('month')}-01`;
+}
+
+function isoToBr(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  const [y, m, d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function formatDateTimeBr(date) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: TZ,
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  }).format(date);
+}
+
+function formatTimeBr(date) {
+  return new Intl.DateTimeFormat('pt-BR', {
+    timeZone: TZ,
+    hour: '2-digit', minute: '2-digit', hour12: false,
+  }).format(date);
+}
+
+function horaLabelBr(h) {
+  return `${String(h).padStart(2, '0')}h`;
+}
+
+function mesNome(m) {
+  return ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'][m - 1];
+}
+
+function ultimoDiaMes(ano, mes) {
+  return new Date(ano, mes, 0).getDate();
+}
+
+const VENUE_STORAGE_KEY = 'impettus_bi_venues_v1';
+
+createApp({
+  data() {
+    return {
+      dataInicio: isoDiasAtras(29),
+      dataFim: isoHoje(),
+      hoje: isoHoje(),
+      apiUrl: APP_ORIGIN,
+      selectedVenues: [],
+      venueModalOpen: false,
+      venueSearchQ: '',
+      venueSearchResults: [],
+      venueSearchLoading: false,
+      venueModalPick: {},
+      venueSearchTimer: null,
+      statusFiltro: '',
+      filtroAno: new Date().getFullYear(),
+      filtroMes: new Date().getMonth() + 1,
+      venueNome: '',
+      W: null,
+      CTX: null,
+      contextError: null,
+      ORIGEM: { labels: ['Widget','Telefone','Google','Parceiros'], a: [0,0,0,0], p: [0,0,0,0], counts: {} },
+      ORIGEM_FILA: { labels: ['Waitlist','Widget','Google'], a: [0,0,0], p: [0,0,0], counts: {} },
+      ORIGEM_DETALHE: { reservas: [], fila: [] },
+      CANAL: { labels: [], w: [], t: [], g: [], c: [] },
+      activeTab: 'geral',
+      loading: true,
+      error: null,
+      ts: '',
+      footerTs: '',
+      periodoLabel: '',
+      periodoAnteriorLabel: '',
+      metaFonte: 'MongoDB tagme',
+      authUser: 'admin',
+      CHS: {},
+    };
+  },
+  computed: {
+    periodoSubtitulo() {
+      const venue = this.venueNome ? ` · ${this.venueNome}` : '';
+      return this.periodoLabel
+        ? `${this.periodoLabel}${venue} · vs período anterior equivalente`
+        : 'Selecione o período e clique em Aplicar';
+    },
+    periodoTag() {
+      return this.periodoLabel ? `Período: ${this.periodoLabel}` : 'Período atual — período anterior';
+    },
+    periodoCs() {
+      const n = this.W?.dayCount || 0;
+      return n ? `${n} dia${n > 1 ? 's' : ''} · dd/mm/aaaa` : 'Por dia (dd/mm/aaaa)';
+    },
+    periodoDiaCs() {
+      const n = this.W?.periodo?.dayCount || this.W?.dayCount || 0;
+      if (!n) return 'Selecione o período';
+      const atual = this.periodoLabel || 'período atual';
+      const ant = this.periodoAnteriorLabel;
+      return ant
+        ? `${n} dia${n > 1 ? 's' : ''} · atual: ${atual} · anterior: ${ant}`
+        : `${n} dia${n > 1 ? 's' : ''} · atual: ${atual}`;
+    },
+    hasFilaAlert() {
+      if (!this.W) return false;
+      const tF = this.A(this.W.fila), pF = this.A(this.W.fil_p);
+      return this.dp(tF, pF) > 15;
+    },
+    semDados() {
+      if (!this.W) return false;
+      const t = this.A(this.W.reservas) + this.A(this.W.fila) + this.A(this.W.sr);
+      return t === 0;
+    },
+    anosDisponiveis() {
+      const y = new Date().getFullYear();
+      return [y - 2, y - 1, y];
+    },
+    mesLabels() { return this.W?.mesLabels || []; },
+    venuePickLabel() {
+      const n = this.selectedVenues.length;
+      if (!n) return '';
+      if (n === 1) return this.selectedVenues[0].nome;
+      return `${n} venues selecionadas`;
+    },
+    venueModalPickCount() {
+      return Object.keys(this.venueModalPick).length;
+    },
+    allVenueResultsSelected() {
+      if (!this.venueSearchResults.length) return false;
+      return this.venueSearchResults.every((v) => this.venueModalPick[v.id]);
+    },
+    someVenueResultsSelected() {
+      if (!this.venueSearchResults.length) return false;
+      const n = this.venueSearchResults.filter((v) => this.venueModalPick[v.id]).length;
+      return n > 0 && n < this.venueSearchResults.length;
+    },
+    venueResultsPickCount() {
+      return this.venueSearchResults.filter((v) => this.venueModalPick[v.id]).length;
+    },
+  },
+  async mounted() {
+    if (window.location.protocol !== 'file:') {
+      try {
+        const { data } = await axios.get(`${API_BASE}/me`);
+        this.authUser = data.user || 'admin';
+      } catch {
+        window.location.href = '/login';
+        return;
+      }
+    }
+    this.syncAnoMesFromIso();
+    this.tick();
+    setInterval(this.tick, 30000);
+    setInterval(() => { if (!this.loading && this.selectedVenues.length) this.loadData(); }, 300000);
+    this.restoreVenuesFromStorage();
+    if (this.selectedVenues.length) await this.loadData();
+    else this.loading = false;
+  },
+  watch: {
+    statusFiltro() {
+      if (this.W) this.$nextTick(() => this.render());
+    },
+  },
+  methods: {
+    mesNome,
+    chartLabels() { return this.W?.labels || []; },
+    dayCount() { return this.W?.dayCount || 1; },
+    HORAS: () => [...Array(24).keys()].map(horaLabelBr),
+    S(n) { return n >= 1000 ? (n / 1e3).toFixed(1) + 'K' : (n ?? 0).toLocaleString('pt-BR'); },
+    A(arr) { return (arr || []).reduce((a, b) => a + b, 0); },
+    dp(a, b) { return b ? ((a - b) / b * 100) : 0; },
+
+    onDatePickerChange() {
+      if (this.dataFim > this.hoje) this.dataFim = this.hoje;
+      if (this.dataInicio > this.dataFim) this.dataInicio = this.dataFim;
+      this.syncAnoMesFromIso();
+    },
+
+    validateDates() {
+      if (!this.dataInicio || !this.dataFim) {
+        this.error = 'Selecione as datas De e Até no calendário.';
+        return false;
+      }
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(this.dataInicio) || !/^\d{4}-\d{2}-\d{2}$/.test(this.dataFim)) {
+        this.error = 'Data inválida.';
+        return false;
+      }
+      this.syncAnoMesFromIso();
+      return true;
+    },
+
+    setPreset(dias) {
+      this.dataFim = isoHoje();
+      this.dataInicio = isoDiasAtras(dias - 1);
+      this.syncAnoMesFromIso();
+      this.loadData();
+    },
+
+    setPresetMes() {
+      this.dataInicio = isoInicioMes();
+      this.dataFim = isoHoje();
+      this.syncAnoMesFromIso();
+      this.loadData();
+    },
+
+    syncAnoMesFromIso() {
+      const [y, m] = this.dataInicio.split('-');
+      this.filtroAno = Number(y);
+      this.filtroMes = Number(m);
+    },
+
+    setAnoMes() {
+      const m = String(this.filtroMes).padStart(2, '0');
+      const ult = ultimoDiaMes(this.filtroAno, this.filtroMes);
+      this.dataInicio = `${this.filtroAno}-${m}-01`;
+      this.dataFim = `${this.filtroAno}-${m}-${String(ult).padStart(2, '0')}`;
+      if (this.dataFim > this.hoje) this.dataFim = this.hoje;
+      this.loadData();
+    },
+
+    saveVenuesToStorage() {
+      try {
+        localStorage.setItem(VENUE_STORAGE_KEY, JSON.stringify(this.selectedVenues));
+      } catch (_) { /* ignore */ }
+    },
+
+    restoreVenuesFromStorage() {
+      try {
+        const raw = localStorage.getItem(VENUE_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.every((v) => v?.id && v?.nome)) {
+          this.selectedVenues = parsed;
+        }
+      } catch (_) { /* ignore */ }
+    },
+
+    openVenueModal() {
+      this.venueModalPick = Object.fromEntries(
+        this.selectedVenues.map((v) => [v.id, { id: v.id, nome: v.nome, grupoLabel: v.grupoLabel || null }]),
+      );
+      this.venueSearchQ = '';
+      this.venueSearchResults = [];
+      this.venueModalOpen = true;
+      this.$nextTick(() => this.$refs.venueSearchInput?.focus());
+    },
+
+    closeVenueModal() {
+      this.venueModalOpen = false;
+      if (this.venueSearchTimer) clearTimeout(this.venueSearchTimer);
+    },
+
+    onVenueSearchInput() {
+      if (this.venueSearchTimer) clearTimeout(this.venueSearchTimer);
+      const q = this.venueSearchQ.trim();
+      if (q.length < 2) {
+        this.venueSearchResults = [];
+        this.venueSearchLoading = false;
+        return;
+      }
+      this.venueSearchLoading = true;
+      this.venueSearchTimer = setTimeout(() => this.fetchVenueSearch(q), 320);
+    },
+
+    async fetchVenueSearch(q) {
+      try {
+        const { data } = await axios.get(`${API_BASE}/venues/search`, {
+          params: { q, limit: 40 },
+          timeout: 20000,
+        });
+        this.venueSearchResults = data.venues || [];
+      } catch (e) {
+        console.error('Busca de venues', e);
+        this.venueSearchResults = [];
+      } finally {
+        this.venueSearchLoading = false;
+      }
+    },
+
+    toggleVenuePick(v) {
+      if (this.venueModalPick[v.id]) {
+        const next = { ...this.venueModalPick };
+        delete next[v.id];
+        this.venueModalPick = next;
+      } else {
+        this.venueModalPick = {
+          ...this.venueModalPick,
+          [v.id]: { id: v.id, nome: v.nome, grupoLabel: v.grupoLabel || null },
+        };
+      }
+    },
+
+    selectAllVenueResults() {
+      const next = { ...this.venueModalPick };
+      for (const v of this.venueSearchResults) {
+        next[v.id] = { id: v.id, nome: v.nome, grupoLabel: v.grupoLabel || null };
+      }
+      this.venueModalPick = next;
+    },
+
+    deselectAllVenueResults() {
+      const next = { ...this.venueModalPick };
+      for (const v of this.venueSearchResults) {
+        delete next[v.id];
+      }
+      this.venueModalPick = next;
+    },
+
+    toggleSelectAllVenueResults() {
+      if (this.allVenueResultsSelected) this.deselectAllVenueResults();
+      else this.selectAllVenueResults();
+    },
+
+    applyVenueModal() {
+      this.selectedVenues = Object.values(this.venueModalPick)
+        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+      this.saveVenuesToStorage();
+      this.closeVenueModal();
+      this.loadData();
+    },
+
+    removeVenue(id) {
+      this.selectedVenues = this.selectedVenues.filter((v) => v.id !== id);
+      this.saveVenuesToStorage();
+      if (this.selectedVenues.length) this.loadData();
+      else {
+        this.W = null;
+        this.error = null;
+      }
+    },
+
+    clearVenues() {
+      this.selectedVenues = [];
+      this.saveVenuesToStorage();
+      this.W = null;
+      this.error = null;
+    },
+
+    applyStatusFilter(arr, seatedArr, noshowArr) {
+      if (this.statusFiltro === 'seated') return seatedArr || arr;
+      if (this.statusFiltro === 'noshow') return noshowArr || arr;
+      return arr;
+    },
+
+    originCards(elId, labels, counts, countsPrev, colors) {
+      const node = document.getElementById(elId);
+      if (!node) return;
+      const total = labels.reduce((s, k) => s + (counts[k] || 0), 0);
+      node.innerHTML = labels.map((lbl, i) => {
+        const val = counts[lbl] || 0;
+        const prv = countsPrev?.[lbl] || 0;
+        const pct = total ? Math.round((val / total) * 100) : 0;
+        const d = this.dp(val, prv);
+        const up = d >= 0;
+        return `<div class="ocard"><div class="ocard-lbl">${lbl}</div><div class="ocard-num" style="color:${colors[i]}">${this.S(val)}</div><div class="ocard-pct">${pct}% do total</div><div class="ocard-sub" style="color:${up ? 'var(--green)' : 'var(--red)'}">${prv ? (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs ant.' : '—'}</div></div>`;
+      }).join('');
+    },
+
+    detailTable(elId, rows) {
+      const node = document.getElementById(elId);
+      if (!node || !rows?.length) {
+        if (node) node.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Sem dados no período.</div>';
+        return;
+      }
+      const max = Math.max(...rows.map((r) => r.count), 1);
+      node.innerHTML = `<table class="dtable"><thead><tr><th>Canal / Parceiro</th><th>Volume</th><th>%</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r.label}<div class="dbar"><div class="dbar-f" style="width:${Math.round(r.count / max * 100)}%"></div></div></td><td>${this.S(r.count)}</td><td>${r.pct}%</td></tr>`).join('')}</tbody></table>`;
+    },
+
+    async loadContext() {
+      if (!this.selectedVenues.length || !this.dataInicio || !this.dataFim) {
+        this.CTX = null;
+        this.contextError = null;
+        return;
+      }
+      try {
+        const params = {
+          inicio: this.dataInicio,
+          fim: this.dataFim,
+          venues: this.selectedVenues.map((v) => v.id).join(','),
+        };
+        const { data } = await axios.get(`${API_BASE}/context`, { params, timeout: 120000 });
+        this.CTX = data;
+        this.contextError = data.sources?.weatherError || null;
+        if (this.activeTab === 'contexto') this.$nextTick(() => this.render());
+      } catch (e) {
+        this.CTX = null;
+        this.contextError = e.response?.data?.error || e.message || 'Falha ao carregar fatores externos';
+      }
+    },
+
+    ctxTagClass(impact) {
+      if (impact === 'positive') return 'ctx-tag pos';
+      if (impact === 'negative') return 'ctx-tag neg';
+      if (impact === 'mixed') return 'ctx-tag mix';
+      return 'ctx-tag neu';
+    },
+
+    ctxGroupLabel(key) {
+      return {
+        normal: 'Dias normais',
+        feriado: 'Feriados',
+        comemorativo: 'Datas comemorativas',
+        evento: 'Eventos (esporte/cultura)',
+        chuva: `Chuva forte (≥${this.CTX?.sources?.rainThresholdMm || 10} mm)`,
+        fim_semana: 'Fim de semana',
+        especial: 'Qualquer dia especial',
+      }[key] || key;
+    },
+
+    async logout() {
+      try {
+        await axios.post(`${API_BASE}/logout`);
+      } catch (_) { /* ignore */ }
+      window.location.href = '/login';
+    },
+
+    async loadData() {
+      if (!this.validateDates()) return;
+      if (!this.selectedVenues.length) {
+        this.W = null;
+        this.error = null;
+        this.loading = false;
+        return;
+      }
+      if (this.dataInicio > this.dataFim) {
+        this.error = 'Data inicial não pode ser maior que a final.';
+        return;
+      }
+      if (this.dataFim > this.hoje) {
+        this.error = 'Data final não pode ser no futuro.';
+        return;
+      }
+      this.loading = true;
+      this.error = null;
+      try {
+        const params = {
+          inicio: this.dataInicio,
+          fim: this.dataFim,
+          venues: this.selectedVenues.map((v) => v.id).join(','),
+        };
+        const { data } = await axios.get(`${API_BASE}/dashboard`, { params, timeout: 120000 });
+        this.W = data;
+        this.periodoLabel = data.periodo?.label || '';
+        this.periodoAnteriorLabel = data.periodoAnterior?.label || '';
+        this.venueNome = data.meta?.venueNome || this.venuePickLabel;
+        if (data.meta?.inicio) {
+          this.dataInicio = data.meta.inicio;
+          this.dataFim = data.meta.fim;
+          this.syncAnoMesFromIso();
+        }
+        if (data.meta?.venues?.length) {
+          const map = Object.fromEntries(this.selectedVenues.map((v) => [v.id, v]));
+          for (const v of data.meta.venues) {
+            if (!map[v.id]) map[v.id] = v;
+            else map[v.id].nome = v.nome;
+          }
+          this.selectedVenues = Object.values(map).sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+          this.saveVenuesToStorage();
+        }
+        this.ORIGEM = data.origem || this.ORIGEM;
+        this.ORIGEM_FILA = data.origemFila || this.ORIGEM_FILA;
+        this.ORIGEM_DETALHE = data.origemDetalhe || { reservas: [], fila: [] };
+        this.CANAL = data.canal || this.CANAL;
+        this.metaFonte = data.meta?.fonte ? `Dados reais · ${data.meta.fonte}` : 'MongoDB tagme';
+        if (data.meta?.atualizadoEm) {
+          this.footerTs = formatDateTimeBr(new Date(data.meta.atualizadoEm)) + ' (BRT)';
+        }
+        this.$nextTick(() => this.render());
+        this.loadContext();
+      } catch (e) {
+        const msg = e.code === 'ECONNABORTED'
+          ? 'Tempo esgotado ao consultar MongoDB. Tente um período menor.'
+          : (e.response?.data?.error || e.message || 'Falha ao carregar dados');
+        this.error = msg;
+        this.W = null;
+        console.error(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    go(tab) {
+      this.activeTab = tab;
+      if (tab === 'contexto' && !this.CTX && this.selectedVenues.length) this.loadContext();
+      this.$nextTick(() => this.render());
+    },
+
+    tick() {
+      const now = new Date();
+      this.ts = formatTimeBr(now);
+      this.hoje = isoHoje();
+      if (!this.footerTs) {
+        this.footerTs = formatDateTimeBr(now) + ' (BRT)';
+      }
+    },
+
+    darkTooltip: () => ({
+      backgroundColor: 'rgba(13,15,20,.96)', borderColor: 'rgba(255,255,255,.08)', borderWidth: 1,
+      titleColor: '#F0F2F8', bodyColor: '#7B8498', padding: 10,
+      titleFont: { size: 12, weight: '700' }, bodyFont: { size: 11 },
+    }),
+
+    alignPrevSeries(current, prev) {
+      const n = (current || []).length;
+      const out = [...(prev || [])];
+      while (out.length < n) out.push(0);
+      return out.slice(0, n);
+    },
+
+    dayCompareOptions(yL, prevLabels) {
+      const base = this.bO(yL);
+      const prev = prevLabels || [];
+      const cur = this.W?.labels || [];
+      return {
+        ...base,
+        plugins: {
+          ...base.plugins,
+          tooltip: {
+            ...this.darkTooltip(),
+            callbacks: {
+              title: (items) => {
+                const i = items[0]?.dataIndex ?? 0;
+                const dia = i + 1;
+                const c = cur[i] || '—';
+                const p = prev[i] || '—';
+                return `Dia ${dia} de ${cur.length} · atual ${c} · anterior ${p}`;
+              },
+            },
+          },
+        },
+      };
+    },
+
+    bO(yL = '') {
+      return {
+        responsive: true, animation: { duration: 450, easing: 'easeOutQuart' },
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: false }, tooltip: this.darkTooltip() },
+        scales: {
+          x: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#4A5168', font: { size: 11 } }, border: { display: false } },
+          y: { grid: { color: 'rgba(255,255,255,.04)' }, ticks: { color: '#4A5168', font: { size: 11 } }, border: { display: false } },
+        },
+      };
+    },
+
+    lds(lbl, data, col, dashed = false, fill = false) {
+      return { label: lbl, data, borderColor: col, backgroundColor: fill ? col + '20' : 'transparent',
+        borderWidth: dashed ? 1.5 : 2, borderDash: dashed ? [5, 4] : [], fill: fill ? 'origin' : false,
+        tension: 0.4, pointRadius: dashed ? 0 : 3, pointHoverRadius: 5, pointBackgroundColor: col, order: dashed ? 2 : 1 };
+    },
+
+    bds(lbl, data, col) {
+      return { label: lbl, data, backgroundColor: col + 'CC', borderRadius: 5, borderSkipped: false, hoverBackgroundColor: col };
+    },
+
+    mk(id, cfg) {
+      if (this.CHS[id]) this.CHS[id].destroy();
+      const el = document.getElementById(id);
+      if (!el) return;
+      this.CHS[id] = new Chart(el.getContext('2d'), cfg);
+    },
+
+    kpi(lbl, val, prv, col, sub = '') {
+      const d = this.dp(val, prv);
+      const up = d >= 0;
+      const ds = prv ? (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs período ant.' : '—';
+      return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col}">${this.S(val)}</div><div class="kdelta ${prv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div>${sub ? `<div class="ksub">${sub}</div>` : ''}</div>`;
+    },
+
+    tag(el, val, prv, inv = false) {
+      const node = document.getElementById(el);
+      if (!node) return;
+      const d = this.dp(val, prv);
+      const up = d >= 0;
+      const good = inv ? !up : up;
+      node.textContent = (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs ant.';
+      node.className = 'ctag ' + (good ? 'tg' : 'tr');
+    },
+
+    render() {
+      if (!this.W) return;
+      if (this.activeTab === 'geral') this.rGeral();
+      else if (this.activeTab === 'fila') this.rFila();
+      else if (this.activeTab === 'reservas') this.rReservas();
+      else if (this.activeTab === 'mensal') this.rMensal();
+      else if (this.activeTab === 'canais') this.rCanais();
+      else if (this.activeTab === 'ranking') this.rRanking();
+      else if (this.activeTab === 'insights') this.rInsights();
+      else if (this.activeTab === 'contexto') this.rContexto();
+    },
+
+    rGeral() {
+      const d = this.W;
+      const LBL = this.chartLabels();
+      const dc = this.dayCount();
+      const tR = this.A(d.reservas), pR = this.A(d.res_p);
+      const tF = this.A(d.fila), pF = this.A(d.fil_p);
+      const tS = this.A(d.sr), pS = this.A(d.sr_p);
+      const tN = this.A(d.nr), pN = this.A(d.nr_p);
+      const tA = this.A(d.ar), pA = this.A(d.ar_p);
+      const avgT = Math.round(this.A(d.tempo) / dc), avgTP = Math.round(this.A(d.tem_p) / dc);
+      const statusSub = tR ? `Sentado ${tS} + No-show ${tN} + Aberto ${tA} = ${tS + tN + tA}` : 'Mesas no período';
+      document.getElementById('kpi-geral').innerHTML =
+        this.kpi('Total Reservas', tR, pR, '#FF6B2B', statusSub) +
+        this.kpi('Fila de Espera', tF, pF, '#F5A623', 'Mesas na fila') +
+        this.kpi('Sentados (Reserva)', tS, pS, '#22D3A5') +
+        this.kpi('No-Show (Reserva)', tN, pN, '#FF4D6D') +
+        this.kpi('Em aberto', tA, pA, '#F5A623', 'New, Confirmed, Pending') +
+        this.kpi('Tempo Médio Fila', avgT, avgTP, '#A78BFA', avgT + ' min');
+      this.originCards('origem-res-cards', this.ORIGEM.labels, this.ORIGEM.counts || {}, this.ORIGEM.countsPrev || {}, ['#FF6B2B', '#4F8EF7', '#22D3A5', '#A78BFA']);
+      this.originCards('origem-fila-cards', this.ORIGEM_FILA.labels, this.ORIGEM_FILA.counts || {}, this.ORIGEM_FILA.countsPrev || {}, ['#F5A623', '#FF6B2B', '#22D3A5']);
+      const prevLabels = d.periodoAnterior?.labels || [];
+      const resPrev = this.alignPrevSeries(d.reservas, d.res_p);
+      const filPrev = this.alignPrevSeries(d.fila, d.fil_p);
+      this.tag('t-res-g', tR, pR); this.tag('t-fila-g', tF, pF);
+      this.mk('ch-res-g', {
+        type: 'line',
+        data: {
+          labels: LBL,
+          datasets: [
+            this.lds('Período atual', d.reservas, '#FF6B2B', false, true),
+            this.lds('Período anterior', resPrev, '#FF6B2B', true),
+          ],
+        },
+        options: this.dayCompareOptions('Reservas', prevLabels),
+      });
+      this.mk('ch-fila-g', {
+        type: 'line',
+        data: {
+          labels: LBL,
+          datasets: [
+            this.lds('Período atual', d.fila, '#F5A623', false, true),
+            this.lds('Período anterior', filPrev, '#F5A623', true),
+          ],
+        },
+        options: this.dayCompareOptions('Entradas', prevLabels),
+      });
+      this.mk('ch-origem-g', { type: 'bar', data: { labels: this.ORIGEM.labels, datasets: [this.bds('Período (%)', this.ORIGEM.a, '#FF6B2B'), this.bds('Anterior (%)', this.ORIGEM.p, '#4F8EF7')] }, options: { ...this.bO('%'), plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+    },
+
+    rFila() {
+      const d = this.W;
+      const LBL = this.chartLabels();
+      const MES = this.mesLabels;
+      const dc = this.dayCount();
+      const HORAS = this.HORAS();
+      const tF = this.A(d.fila), pF = this.A(d.fil_p), tSF = this.A(d.sf), pSF = this.A(d.sf_p), tNF = this.A(d.nf);
+      const tPF = this.A(d.filaPessoas), tPS = this.A(d.filaPessoasSentadas);
+      const avgT = Math.round(this.A(d.tempo) / dc), avgTP = Math.round(this.A(d.tem_p) / dc);
+      const meta = Array(dc).fill(20);
+      document.getElementById('kpi-fila').innerHTML =
+        this.kpi('Solicitações Fila', tF, pF, '#F5A623', 'Mesas') +
+        this.kpi('Pessoas Sentadas', tPS, 0, '#22D3A5', 'Atendidas na fila') +
+        this.kpi('No-Show', tNF, 0, '#FF4D6D', 'Mesas') +
+        this.kpi('Tempo Médio', avgT, avgTP, '#A78BFA', avgT + ' min') +
+        this.kpi('Pessoas na Fila', tPF, this.A(d.filaPessoas_p), '#4F8EF7', 'Total de pessoas');
+      this.tag('t-tempo', avgT, avgTP, true);
+      const sf = this.applyStatusFilter(d.sf, d.sf, d.nf);
+      const nf = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (this.statusFiltro === 'noshow' ? d.nf : d.nf);
+      this.mk('ch-fi-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado período', sf, '#22D3A5'), { ...this.lds('Sentado ant.', d.sf_p, '#22D3A5', true), type: 'line' }, this.bds('No-Show período', nf, '#FF4D6D')] }, options: this.bO('Mesas') });
+      this.mk('ch-fi-tempo', { type: 'line', data: { labels: LBL, datasets: [this.lds('Período', d.tempo, '#F5A623', false, true), this.lds('Anterior', d.tem_p, '#F5A623', true), this.lds('Meta 20min', meta, '#FF4D6D', true)] }, options: this.bO('Minutos') });
+      this.mk('ch-fi-hora', { type: 'bar', data: { labels: HORAS, datasets: [{ ...this.bds('Período', d.hora, '#FF6B2B'), backgroundColor: d.hora.map(v => v >= 35 ? '#FF4D6DCC' : v >= 20 ? '#F5A623CC' : '#22D3A5CC'), borderRadius: 4 }, { ...this.lds('Anterior', d.hor_p, '#A78BFA', true), type: 'line' }] }, options: this.bO('Entradas') });
+      this.mk('ch-fi-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Mesas período', d.fila, '#FF6B2B', false, true), this.lds('Mesas ant.', d.fil_p, '#FF6B2B', true), this.lds('Pessoas período', d.filaPessoas, '#4F8EF7')] }, options: this.bO('Quantidade') });
+      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado', d.fila_mes_sf, '#22D3A5'), this.bds('No-show', d.fila_mes_nf, '#FF4D6D')] }, options: { ...this.bO('Mesas'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+    },
+
+    rReservas() {
+      const d = this.W;
+      const LBL = this.chartLabels();
+      const MES = this.mesLabels;
+      const dc = this.dayCount();
+      const meta15 = Array(dc).fill(15);
+      const tR = this.A(d.reservas), pR = this.A(d.res_p), tS = this.A(d.sr), pS = this.A(d.sr_p);
+      const tN = this.A(d.nr), pN = this.A(d.nr_p), tP = this.A(d.pessoas), pP = this.A(d.pes_p);
+      const tA = this.A(d.ar), pA = this.A(d.ar_p);
+      const statusSub = tR ? `Sentado ${tS} + No-show ${tN} + Aberto ${tA} = ${tS + tN + tA}` : '';
+      document.getElementById('kpi-res').innerHTML =
+        this.kpi('Solicitações Reservas', tR, pR, '#FF6B2B', statusSub) +
+        this.kpi('Pessoas nas Reservas', tP, pP, '#4F8EF7') +
+        this.kpi('Sentados', tS, pS, '#22D3A5') +
+        this.kpi('No-Show', tN, pN, '#FF4D6D', 'Status Canceled') +
+        this.kpi('Em aberto', tA, pA, '#F5A623', 'New, Confirmed, Pending') +
+        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? (tS / tR * 100).toFixed(1) + '% sentados' : '0%');
+      const avgNR = this.A(d.nsr_conc) / dc, avgNRP = this.A(d.nsr_conc_p) / dc;
+      this.tag('t-noshow', avgNR, avgNRP, true);
+      const ar = d.ar || Array(dc).fill(0);
+      const sr = this.applyStatusFilter(d.sr, d.sr, d.nr);
+      const nr = this.statusFiltro === 'seated' ? Array(dc).fill(0) : d.nr;
+      const ab = this.statusFiltro === 'seated' || this.statusFiltro === 'noshow' ? Array(dc).fill(0) : ar;
+      this.mk('ch-re-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado', sr, '#22D3A5'), this.bds('No-Show', nr, '#FF4D6D'), this.bds('Em aberto', ab, '#F5A623')] }, options: { ...this.bO('Mesas'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-noshow', { type: 'line', data: { labels: LBL, datasets: [this.lds('Concluídas (%)', d.nsr_conc, '#FF4D6D', false, true), this.lds('Anterior (%)', d.nsr_conc_p, '#FF4D6D', true), this.lds('Meta 15%', meta15, '#F5A623', true)] }, options: this.bO('%') });
+      this.mk('ch-re-pessoas', { type: 'line', data: { labels: LBL, datasets: [this.lds('Mesas período', d.reservas, '#FF6B2B', false, true), this.lds('Mesas ant.', d.res_p, '#FF6B2B', true), this.lds('Pessoas período', d.pessoas, '#4F8EF7')] }, options: this.bO('Quantidade') });
+      this.mk('ch-re-canal', { type: 'bar', data: { labels: this.CANAL.labels, datasets: [this.bds('Widget', this.CANAL.w, '#FF6B2B'), this.bds('Telefone', this.CANAL.t, '#4F8EF7'), this.bds('Google', this.CANAL.g, '#22D3A5'), this.bds('Canais', this.CANAL.c, '#A78BFA')] }, options: { ...this.bO('%'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado', d.res_mes_sr, '#22D3A5'), this.bds('No-show', d.res_mes_nr, '#FF4D6D'), this.bds('Em aberto', d.res_mes_ar || [], '#F5A623')] }, options: { ...this.bO('Mesas'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Solicitações (mesas)', d.reservas, '#FF6B2B', false, true), this.lds('Pessoas', d.pessoas, '#4F8EF7', false, true)] }, options: this.bO('Quantidade') });
+    },
+
+    rMensal() {
+      const d = this.W;
+      const MES = this.mesLabels;
+      const om = d.res_mes_origem || { w: [], t: [], g: [], c: [] };
+      this.mk('ch-mes-res', { type: 'bar', data: { labels: MES, datasets: [this.bds('Período', d.res_mes, '#FF6B2B'), { ...this.lds('Anterior', d.res_mes_p, '#FF6B2B', true), type: 'line' }] }, options: this.bO('Mesas') });
+      this.mk('ch-mes-fila', { type: 'bar', data: { labels: MES, datasets: [this.bds('Período', d.fila_mes, '#F5A623'), { ...this.lds('Anterior', d.fila_mes_p, '#F5A623', true), type: 'line' }] }, options: this.bO('Mesas') });
+      this.mk('ch-mes-res-origem', { type: 'bar', data: { labels: MES, datasets: [this.bds('Widget', om.w, '#FF6B2B'), this.bds('Telefone', om.t, '#4F8EF7'), this.bds('Google', om.g, '#22D3A5'), this.bds('Canais', om.c, '#A78BFA')] }, options: { ...this.bO('Mesas'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+    },
+
+    rCanais() {
+      const det = this.ORIGEM_DETALHE || { reservas: [], fila: [] };
+      this.detailTable('tbl-origem-res', det.reservas);
+      this.detailTable('tbl-origem-fila', det.fila);
+      this.mk('ch-origem-fila', { type: 'bar', data: { labels: this.ORIGEM_FILA.labels, datasets: [this.bds('Período (%)', this.ORIGEM_FILA.a, '#F5A623'), this.bds('Anterior (%)', this.ORIGEM_FILA.p, '#4F8EF7')] }, options: { ...this.bO('%'), plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+    },
+
+    rRanking() {
+      const d = this.W;
+      const pc = ['gd', 'sv', 'br', ''];
+      const bld = (elId, key, kp, max) => {
+        const sorted = [...(d.unidades || [])].sort((a, b) => b[key] - a[key]);
+        document.getElementById(elId).innerHTML = sorted.map((u, i) => {
+          const dv = this.dp(u[key], u[kp]);
+          const up = dv >= 0;
+          const pb = max ? Math.round(u[key] / max * 100) : 0;
+          return `<div class="rrow"><div class="rpos ${pc[i]}">${i + 1}</div><div class="rname">${u.nome}${u.grupo ? `<span style="display:block;font-size:10px;color:var(--muted);font-weight:500">${u.grupo}</span>` : ''}</div><div style="text-align:right"><div class="rval">${this.S(u[key])}</div><span class="rdelta" style="background:${up ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${up ? '#22D3A5' : '#FF4D6D'}">${up ? '▲' : '▼'}${Math.abs(dv).toFixed(1)}%</span></div><div class="rbw"><div class="rbf" style="width:${pb}%"></div></div></div>`;
+        }).join('');
+      };
+      const units = d.unidades || [];
+      const maxR = Math.max(...units.map(u => u.res), 1);
+      const maxF = Math.max(...units.map(u => u.fila), 1);
+      bld('rk-res', 'res', 'res_p', maxR);
+      bld('rk-fila', 'fila', 'fila_p', maxF);
+      this.mk('ch-rk-comp', { type: 'bar', data: { labels: units.map(u => u.nome), datasets: [this.bds('Reservas período', units.map(u => u.res), '#FF6B2B'), { ...this.lds('Reservas ant.', units.map(u => u.res_p), '#FF6B2B', true), type: 'line' }, this.bds('Fila período', units.map(u => u.fila), '#F5A623')] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } } } } });
+    },
+
+    rInsights() {
+      const d = this.W;
+      const dc = this.dayCount();
+      const avgNR = (this.A(d.nsr_conc) / dc).toFixed(1);
+      const avgT = Math.round(this.A(d.tempo) / dc);
+      const tF = this.A(d.fila), pF = this.A(d.fil_p), tR = this.A(d.reservas), pR = this.A(d.res_p);
+      const tA = this.A(d.ar);
+      const rdp = this.dp(tR, pR).toFixed(1);
+      document.getElementById('ins-date').textContent = this.periodoLabel || '—';
+
+      const googlePct = this.ORIGEM.a[2] || 0;
+      const units = d.unidades || [];
+      const topUnit = [...units].sort((a, b) => b.res - a.res)[0];
+      const worstFila = [...units].sort((a, b) => this.dp(b.fila, b.fila_p) - this.dp(a.fila, a.fila_p))[0];
+
+      const alerts = [
+        { ico: parseFloat(avgNR) > 15 ? '🔴' : '🟢', lbl: `No-Show — ${avgNR}% (concluídas)`, body: parseFloat(avgNR) > 15 ? `Taxa sobre sentados + cancelados acima da meta de 15%.` : `Taxa sobre reservas concluídas dentro da meta de 15%.`, act: 'Configurar confirmação automática →' },
+        { ico: avgT > 20 ? '🟡' : '🟢', lbl: `Tempo de Fila: ${avgT} min`, body: avgT > 20 ? `Acima da meta de 20 min. Pico crítico costuma ser 19–21h.` : `Tempo de espera dentro da meta de 20 min.`, act: 'Ver heatmap de horários →' },
+        { ico: parseFloat(rdp) > 0 ? '🟢' : '🔴', lbl: `Reservas ${rdp > 0 ? '+' + rdp : rdp}% vs período anterior`, body: `Comparativo com o período anterior de mesma duração.`, act: 'Ver ranking de canais →' },
+        { ico: googlePct < 15 ? '🔵' : '🟢', lbl: `Google — ${googlePct}% das reservas`, body: googlePct < 15 ? `Canal Google subutilizado. Ativar Reserve with Google pode aumentar reservas orgânicas.` : `Canal Google com participação saudável.`, act: 'Ativar Reserve with Google →' },
+      ];
+
+      if (worstFila && worstFila.fila_p > 0) {
+        alerts.push({ ico: '🔴', lbl: `${worstFila.nome}: Fila ${this.dp(worstFila.fila, worstFila.fila_p).toFixed(1)}% vs anterior`, body: `Maior variação de fila entre as unidades monitoradas.`, act: `Ver detalhes ${worstFila.nome} →` });
+      }
+      if (topUnit) {
+        alerts.push({ ico: '🟢', lbl: `${topUnit.nome} lidera com ${this.S(topUnit.res)} reservas`, body: `${this.dp(topUnit.res, topUnit.res_p).toFixed(1)}% vs período anterior.`, act: 'Ver ranking completo →' });
+      }
+
+      document.getElementById('ins-alerts').innerHTML = alerts.map(a => `<div class="ins"><div class="ins-top"><span class="ins-ico">${a.ico}</span><div class="ins-lbl">${a.lbl}</div></div><div class="ins-body">${a.body}</div><div class="ins-act">${a.act}</div></div>`).join('');
+    },
+
+    rContexto() {
+      const c = this.CTX;
+      if (!c) {
+        document.getElementById('kpi-ctx').innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Carregando fatores externos…</div>';
+        return;
+      }
+      const b = c.baseline || {};
+      const normal = c.groups?.find((g) => g.key === 'normal');
+      const especial = c.groups?.find((g) => g.key === 'especial');
+      const chuva = c.groups?.find((g) => g.key === 'chuva');
+      const evento = c.groups?.find((g) => g.key === 'evento');
+      document.getElementById('kpi-ctx').innerHTML =
+        this.kpi('Média diária', b.avgReservas, 0, '#FF6B2B', 'Reservas no período') +
+        this.kpi('Dias normais', normal?.avgReservas || 0, b.avgReservas, '#4F8EF7', `${normal?.dayCount || 0} dias`) +
+        this.kpi('Dias especiais', especial?.avgReservas || 0, b.avgReservas, '#A78BFA', `${especial?.dayCount || 0} dias`) +
+        this.kpi('Dias de chuva', chuva?.avgReservas || 0, b.avgReservas, '#22D3A5', `${chuva?.dayCount || 0} dias`) +
+        this.kpi('Dias c/ evento', evento?.avgReservas || 0, b.avgReservas, '#F5A623', `${evento?.dayCount || 0} dias`);
+
+      const geo = c.geo || {};
+      const regionPlace = geo.shortLabel || geo.region?.display || '—';
+
+      const regionBanner = document.getElementById('ctx-weather-region');
+      if (regionBanner) {
+        if (geo.description) {
+          regionBanner.style.display = 'block';
+          regionBanner.innerHTML = `<strong>Região do clima:</strong> <span class="ctx-weather-place">${regionPlace}</span><br>${geo.description}`;
+        } else {
+          regionBanner.style.display = 'none';
+        }
+      }
+
+      const geoEl = document.getElementById('ctx-geo');
+      if (geoEl) {
+        geoEl.textContent = geo.description
+          ? `Referência: ${regionPlace} · ${geo.lat}°, ${geo.lon}°`
+          : '—';
+      }
+
+      const groupLabels = (c.groups || []).map((g) => this.ctxGroupLabel(g.key));
+      const groupAvgs = (c.groups || []).map((g) => g.avgReservas);
+      const groupColors = (c.groups || []).map((g) => {
+        if (g.key === 'normal') return '#4F8EF7';
+        if (g.key === 'chuva') return '#FF4D6D';
+        if (g.key === 'evento') return '#F5A623';
+        if (g.key === 'comemorativo') return '#A78BFA';
+        return '#22D3A5';
+      });
+      const baselineLine = Array(groupAvgs.length).fill(b.avgReservas);
+      this.mk('ch-ctx-groups', {
+        type: 'bar',
+        data: {
+          labels: groupLabels,
+          datasets: [
+            this.bds('Média reservas', groupAvgs, '#FF6B2B'),
+            { ...this.lds('Média geral', baselineLine, '#7B8498', true), type: 'line', pointRadius: 0 },
+          ],
+        },
+        options: {
+          ...this.bO('Reservas/dia'),
+          plugins: {
+            ...this.bO().plugins,
+            legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } },
+            tooltip: {
+              ...this.darkTooltip(),
+              callbacks: {
+                afterBody: (items) => {
+                  const i = items[0]?.dataIndex ?? 0;
+                  const g = c.groups[i];
+                  if (!g) return '';
+                  return [
+                    `Dias: ${g.dayCount}`,
+                    `Δ vs média: ${g.deltaVsBaselinePct > 0 ? '+' : ''}${g.deltaVsBaselinePct}%`,
+                    `Fila média: ${g.avgFila}`,
+                  ];
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const days = c.days || [];
+      const LBL = c.periodo?.labels || [];
+      const baselineArr = Array(LBL.length).fill(b.avgReservas);
+      const pointRadius = days.map((d) => (d.isSpecial || d.weather?.isRainy ? 7 : 2));
+      const pointColors = days.map((d) => {
+        if (d.weather?.isRainy) return '#4F8EF7';
+        if (d.tags.some((t) => t.type === 'evento' || t.type === 'comemorativo')) return '#A78BFA';
+        if (d.tags.some((t) => t.type === 'feriado')) return '#F5A623';
+        return '#FF6B2B';
+      });
+      this.mk('ch-ctx-daily', {
+        type: 'line',
+        data: {
+          labels: LBL,
+          datasets: [
+            {
+              ...this.lds('Reservas', c.reservas, '#FF6B2B', false, true),
+              pointRadius,
+              pointBackgroundColor: pointColors,
+              pointBorderColor: pointColors,
+            },
+            this.lds('Média do período', baselineArr, '#7B8498', true),
+          ],
+        },
+        options: {
+          ...this.bO('Reservas'),
+          plugins: {
+            ...this.bO().plugins,
+            legend: { display: true, labels: { color: '#7B8498', font: { size: 11 }, boxWidth: 10 } },
+            tooltip: {
+              ...this.darkTooltip(),
+              callbacks: {
+                title: (items) => {
+                  const i = items[0]?.dataIndex ?? 0;
+                  const d = days[i];
+                  return d ? `${d.label} (${d.weekday})` : '';
+                },
+                afterBody: (items) => {
+                  const i = items[0]?.dataIndex ?? 0;
+                  const d = days[i];
+                  if (!d) return '';
+                  const lines = [];
+                  if (d.tags.length) lines.push(...d.tags.map((t) => `• ${t.name}`));
+                  if (d.weather) lines.push(`Clima (${regionPlace}): ${d.weather.label || '—'} · ${d.weather.precipMm} mm · máx ${d.weather.tempMaxC ?? '—'}°C`);
+                  lines.push(`Δ vs média: ${d.deltaReservasPct > 0 ? '+' : ''}${d.deltaReservasPct}%`);
+                  return lines;
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const hl = c.highlights || [];
+      const hlNode = document.getElementById('ctx-highlights');
+      if (hlNode) {
+        if (!hl.length) {
+          hlNode.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Nenhum feriado, evento ou dia de chuva forte no período selecionado.</div>';
+        } else {
+          hlNode.innerHTML = `<table class="dtable"><thead><tr><th>Data</th><th>Fatores</th><th>Reservas</th><th>vs média</th><th>Leitura</th></tr></thead><tbody>${hl.map((d) => {
+            const tags = d.tags.map((t) => `<span class="${this.ctxTagClass(t.impact)}">${t.name}</span>`).join('');
+            const rain = d.weather?.isRainy && !d.tags.some((t) => t.type === 'clima')
+              ? `<span class="${this.ctxTagClass('negative')}">Chuva ${d.weather.precipMm} mm</span>` : '';
+            const delta = d.deltaReservasPct;
+            const deltaCls = delta > 5 ? 'color:#22D3A5' : delta < -5 ? 'color:#FF4D6D' : 'color:var(--muted)';
+            return `<tr><td><strong>${d.label}</strong><div style="font-size:10px;color:var(--muted)">${d.weekday}</div></td><td>${tags}${rain}</td><td>${this.S(d.reservas)}</td><td style="${deltaCls};font-weight:700">${delta > 0 ? '+' : ''}${delta}%</td><td style="color:var(--muted);max-width:280px">${d.narrative}</td></tr>`;
+          }).join('')}</tbody></table>`;
+        }
+      }
+
+      const srcNode = document.getElementById('ctx-sources');
+      if (srcNode && c.sources) {
+        const s = c.sources;
+        srcNode.innerHTML = `Fontes: clima <strong>${s.clima}</strong> · feriados <strong>${s.feriados}</strong> · eventos <strong>${s.eventos}</strong>${geo.description ? `<br>Chuva forte = precipitação ≥ ${s.rainThresholdMm} mm/dia na região acima.` : ''}${s.weatherError ? ` · <span style="color:#FF4D6D">Clima indisponível: ${s.weatherError}</span>` : ''}`;
+      }
+    },
+  },
+}).mount('#app');
+</script>
+</body>
+</html>

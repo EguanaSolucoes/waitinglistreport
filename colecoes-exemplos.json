@@ -1,0 +1,4967 @@
+{
+  "meta": {
+    "database": "tagme",
+    "exportedAt": "2026-06-16T22:38:13.837Z",
+    "impettusVenueSample": "681cca16acba6866d6420b63",
+    "note": "ObjectId em JSON aparece como { \"$oid\": \"...\" }. Date como { \"$date\": \"...\" }."
+  },
+  "collections": {
+    "Reservations": {
+      "found": true,
+      "hint": "Usada no dashboard BI",
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "confirmationPeriodStart",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "customer",
+          "type": "ObjectId",
+          "ref": "Customers._id",
+          "bi": null
+        },
+        {
+          "field": "google",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "google.wallet",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "logs",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "note",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.app",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.label",
+          "type": "string",
+          "ref": null,
+          "bi": "Canal de origem (Widget, Phone, Restaurant…)"
+        },
+        {
+          "field": "origin._id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySize",
+          "type": "number",
+          "ref": null,
+          "bi": "Número de pessoas"
+        },
+        {
+          "field": "paymentOrigin",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "preOrderedItems",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "preOrderedItemsSnapshot",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "redemptions",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "reservationDay",
+          "type": "Date",
+          "ref": null,
+          "bi": "Dia da reserva (agrupamento BI)"
+        },
+        {
+          "field": "reservationTime",
+          "type": "string",
+          "ref": null,
+          "bi": "Horário da reserva"
+        },
+        {
+          "field": "rsvp",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "section",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shoppingCart",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "tags",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "voucher",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "rsvpEmailSentAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "cancelReason",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "canceledAt",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data/hora de cancelamento"
+        }
+      ],
+      "example": {
+        "_id": "682349adcdbcd78e7ac9082c",
+        "__v": 0,
+        "confirmationPeriodStart": "2025-05-13T13:39:42.125Z",
+        "created_at": "2025-05-13T13:31:25.240Z",
+        "customer": "62a3e471d5388700127927f9",
+        "google": {
+          "wallet": []
+        },
+        "logs": [
+          {
+            "customer": "62a3e471d5388700127927f9",
+            "actionType": "Add",
+            "_id": "682349adcdbcd78e7ac908b2",
+            "created_at": "2025-05-13T13:31:25.241Z"
+          },
+          {
+            "user": "5717f65fc619973cbcd6f6f5",
+            "actionType": "Send RSVP E-mail",
+            "_id": "68234b9e0e78a24318588385",
+            "created_at": "2025-05-13T13:39:42.117Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Update",
+            "_id": "68234b9e0e78a24318588387",
+            "created_at": "2025-05-13T13:39:42.126Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Remove",
+            "_id": "68273376b48a1cf24df8e839",
+            "created_at": "2025-05-16T12:45:42.363Z"
+          }
+        ],
+        "note": "teste",
+        "origin": {
+          "app": "681cf9e4f1992b3eac381e73",
+          "label": "Reservation Widget",
+          "_id": "682349adcdbcd78e7ac908b3"
+        },
+        "partySize": 7,
+        "paymentOrigin": "",
+        "preOrderedItems": [],
+        "preOrderedItemsSnapshot": [],
+        "redemptions": [],
+        "reservationDay": "2025-05-15T03:00:00.000Z",
+        "reservationTime": "14:30",
+        "rsvp": false,
+        "section": "682347a20d20997c32a2c7cb",
+        "shoppingCart": [],
+        "status": "Canceled",
+        "tags": [],
+        "type": "Regular",
+        "updated_at": "2025-05-16T12:45:42.362Z",
+        "venue": "681cca16acba6866d6420b63",
+        "voucher": "",
+        "rsvpEmailSentAt": "2025-05-13T13:39:42.125Z",
+        "cancelReason": "Customer Requested",
+        "canceledAt": "2025-05-16T12:45:42.329Z"
+      }
+    },
+    "Waitlists": {
+      "found": true,
+      "hint": "Usada no dashboard BI",
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "arrivedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer._id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer.name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer.lastName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer.email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomer.phone",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "customer",
+          "type": "ObjectId",
+          "ref": "Customers._id",
+          "bi": null
+        },
+        {
+          "field": "customerTags",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "estimatedTime",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "logs",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mode",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.label",
+          "type": "string",
+          "ref": null,
+          "bi": "Canal de origem (Widget, Phone, Restaurant…)"
+        },
+        {
+          "field": "origin._id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySize",
+          "type": "number",
+          "ref": null,
+          "bi": "Número de pessoas"
+        },
+        {
+          "field": "redemptions",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "waitingTime",
+          "type": "number",
+          "ref": null,
+          "bi": "Tempo de espera em minutos"
+        },
+        {
+          "field": "priority",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "attention",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "notifiedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "cancelReason",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "canceledAt",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data/hora de cancelamento"
+        }
+      ],
+      "example": {
+        "_id": "682350b2f9e0627b29c48538",
+        "__v": 0,
+        "arrivedAt": "2025-05-13T14:01:20.005Z",
+        "basicCustomer": {
+          "_id": "67991541777dad55a309ffc9",
+          "name": "Marcia",
+          "lastName": "Anjos",
+          "email": "marciaellen1999@gmai.com",
+          "phone": "5521965114201"
+        },
+        "created_at": "2025-05-13T14:01:22.182Z",
+        "customer": "67991541777dad55a309ffc9",
+        "customerTags": [],
+        "estimatedTime": "2025-05-13T14:02:22.181Z",
+        "logs": [
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Add",
+            "origin": "Wailist dashboard",
+            "_id": "682350b2f9e0627b29c4853c",
+            "created_at": "2025-05-13T14:01:22.184Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Update",
+            "origin": "Wailist dashboard",
+            "_id": "682350f0f9e0627b29c48afa",
+            "created_at": "2025-05-13T14:02:24.657Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Update",
+            "origin": "Wailist dashboard",
+            "_id": "6823515606d5d7316ab7e300",
+            "created_at": "2025-05-13T14:04:06.140Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "call",
+            "_id": "6823519206d5d7316ab7eb9e",
+            "created_at": "2025-05-13T14:05:06.003Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Remove",
+            "_id": "682351b31618e3eaecc3156d",
+            "created_at": "2025-05-13T14:05:39.643Z"
+          },
+          {
+            "user": "66e1e4fb9e1c9a2c486507a3",
+            "actionType": "Remove",
+            "_id": "682352677c851609c7770a1a",
+            "created_at": "2025-05-13T14:08:39.748Z"
+          }
+        ],
+        "mode": "afterLast",
+        "origin": {
+          "label": "Restaurant",
+          "_id": "6823515606d5d7316ab7e2ff"
+        },
+        "partySize": 5,
+        "redemptions": [],
+        "status": "red",
+        "updated_at": "2025-05-13T14:08:39.747Z",
+        "venue": "681cca16acba6866d6420b63",
+        "waitingTime": 1,
+        "priority": false,
+        "attention": true,
+        "notifiedAt": "2025-05-13T14:05:06.002Z",
+        "cancelReason": "Customer Requested",
+        "canceledAt": "2025-05-13T14:08:39.746Z"
+      }
+    },
+    "WalkIns": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "customer",
+          "type": "ObjectId",
+          "ref": "Customers._id",
+          "bi": null
+        },
+        {
+          "field": "note",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.label",
+          "type": "string",
+          "ref": null,
+          "bi": "Canal de origem (Widget, Phone, Restaurant…)"
+        },
+        {
+          "field": "partySize",
+          "type": "number",
+          "ref": null,
+          "bi": "Número de pessoas"
+        },
+        {
+          "field": "redemptions",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "seatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data/hora em que sentou"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        }
+      ],
+      "example": {
+        "_id": "67dde087ea16dd5df9a09236",
+        "__v": 0,
+        "created_at": "2025-03-21T21:56:23.129Z",
+        "customer": "67dde087ea16dd5df9a09234",
+        "note": "",
+        "origin": {
+          "label": "Restaurant"
+        },
+        "partySize": 3,
+        "redemptions": [],
+        "seatedAt": "2025-03-21T21:56:23.128Z",
+        "updated_at": "2025-03-21T21:56:23.129Z",
+        "venue": "62600ec3b6a45b0012602f61"
+      }
+    },
+    "Venues": {
+      "found": true,
+      "hint": "Usada no dashboard BI",
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "allowedUsers",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "benefits",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "channels",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "emailUnsubscribe",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "enableGoogleIndexing",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "features",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "focalPoints",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.bradesco",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.digitalMenu",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.itau",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.reservation",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.waitlist",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.newWaitlist",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.walkIn",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.widgetMenu",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.payment",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.brasilSaborSp",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.festivalDeLaTapa",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.tastingMenu",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "has.settimanaItaliana",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "integrations",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "liveMenuPro",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "location",
+          "type": "array<number>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "log",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "loyaltySettings.prizes",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "menu",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "msisdnUnsubscribe",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "operationHours",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "permissions",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "permissions.waitlist",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "search",
+          "type": "array<string>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "slug",
+          "type": "string",
+          "ref": null,
+          "bi": "Identificador textual único"
+        },
+        {
+          "field": "staff",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "tags",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "address",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "cnpj",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "googleId",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.bradesco",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.digitalMenu",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.itau",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.reservation",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.waitlist",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.widgetMenu",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.brasilSaborSp",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.festivalDeLaTapa",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.settimanaItaliana",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiredServices.loginJourney",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "images",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "michelinId",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "priceRange",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "serviceTax",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shortName",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shortName.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shortName.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shortName.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shortName.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "site",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "socialAnalytics",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "socialAnalytics.googleAnalytics",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "socialAnalytics.googleGTM",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "681cca16acba6866d6420b63",
+        "__v": 0,
+        "allowedUsers": [
+          "681e289aacba6866d65cb12e",
+          "682b30e6473fc05f6d74fb8b",
+          "68fa3005f3e36de1aff5fc1b"
+        ],
+        "benefits": [
+          {
+            "benefit": "5724efce753355c00d7483c5",
+            "value": "15%",
+            "menus": [],
+            "_id": "681ccf91f1992b3eac336bdd"
+          }
+        ],
+        "channels": [
+          "5f651e77ceb2ad1a7500fef4"
+        ],
+        "created_at": "2025-05-08T15:13:26.168Z",
+        "disabled": false,
+        "emailUnsubscribe": [],
+        "enableGoogleIndexing": false,
+        "features": [
+          {
+            "feature": "56c774512ceaf5891343090d",
+            "_id": "681cf91ef1992b3eac38158c"
+          },
+          {
+            "feature": "56c774522ceaf5891343090f",
+            "_id": "681cf91ef1992b3eac38158d"
+          },
+          {
+            "feature": "56c774512ceaf5891343090c",
+            "_id": "681cf91ef1992b3eac38158e"
+          },
+          {
+            "feature": "56c774522ceaf58913430913",
+            "_id": "681cf936f1992b3eac381670"
+          },
+          {
+            "feature": "56c774572ceaf58913430933",
+            "_id": "68c07dc7183fe8699f2c9f5b"
+          },
+          {
+            "feature": "56c774562ceaf5891343092e",
+            "_id": "68c08086183fe8699f2ce37e"
+          },
+          {
+            "feature": "56c7745d2ceaf5891343095b",
+            "_id": "681cf936f1992b3eac381672"
+          },
+          {
+            "feature": "56c7745f2ceaf58913430968",
+            "_id": "681cf936f1992b3eac381673"
+          },
+          {
+            "feature": "56c7745f2ceaf58913430967",
+            "_id": "681cf936f1992b3eac381674"
+          },
+          {
+            "feature": "56c7745a2ceaf58913430948",
+            "_id": "681cf936f1992b3eac381675"
+          }
+        ],
+        "focalPoints": [
+          "681e289aacba6866d65cb12e"
+        ],
+        "has": {
+          "bradesco": true,
+          "digitalMenu": false,
+          "itau": false,
+          "reservation": true,
+          "waitlist": true,
+          "newWaitlist": false,
+          "walkIn": true,
+          "widgetMenu": false,
+          "payment": false,
+          "brasilSaborSp": false,
+          "festivalDeLaTapa": false,
+          "tastingMenu": false,
+          "settimanaItaliana": false
+        },
+        "integrations": [],
+        "liveMenuPro": false,
+        "location": [
+          -43.19004146611385,
+          -22.979098904600885
+        ],
+        "log": [
+          {
+            "origin": "Tagme Admin",
+            "type": "addHasBradesco",
+            "_id": "68b847ee91b688c71d1e3580",
+            "created_at": "2025-09-03T13:51:42.792Z"
+          }
+        ],
+        "loyaltySettings": {
+          "prizes": []
+        },
+        "menu": [
+          "681ccfeedd41736ccaff9d64",
+          "681ccfeedd41736ccaff9d61",
+          "681ccff2dd41736ccaff9d80",
+          "681ccff5dd41736ccaff9da3",
+          "681ccffcdd41736ccaff9dd2",
+          "681cd000dd41736ccaff9de9",
+          "681cd003dd41736ccaff9dfe",
+          "681cd009dd41736ccaff9e29",
+          "681cd00cdd41736ccaff9e4a",
+          "681cd011dd41736ccaff9e95",
+          "681cd013dd41736ccaff9ea6",
+          "681cd017dd41736ccaff9ecf",
+          "681cd019dd41736ccaff9ee0",
+          "681cd01cdd41736ccaff9ef1",
+          "681cd01edd41736ccaff9f06",
+          "681cd025dd41736ccaff9f6f",
+          "681ccff1dd41736ccaff9d7d",
+          "681cd028dd41736ccaff9f8b",
+          "681cd028dd41736ccaff9f88",
+          "681cd02cdd41736ccaff9fb1",
+          "681cd030dd41736ccaff9fe0",
+          "681cd035dd41736ccaffa00f",
+          "681cd038dd41736ccaffa028",
+          "681cd02bdd41736ccaff9fae",
+          "681cd03bdd41736ccaffa03e",
+          "681cd041dd41736ccaffa079",
+          "681cd043dd41736ccaffa090",
+          "681cd047dd41736ccaffa0cb",
+          "681cd049dd41736ccaffa0dc",
+          "681cd03add41736ccaffa03b",
+          "681cd04edd41736ccaffa10c",
+          "681cd050dd41736ccaffa11d",
+          "681cd052dd41736ccaffa128",
+          "681cd055dd41736ccaffa145",
+          "681cd04edd41736ccaffa109",
+          "6842e822d887b5b5dffb077c",
+          "6842e822d887b5b5dffb0779",
+          "6842e826d887b5b5dffb0798",
+          "6842e829d887b5b5dffb07b7",
+          "6842e830d887b5b5dffb07e6",
+          "6842e834d887b5b5dffb07fd",
+          "6842e836d887b5b5dffb0812",
+          "6842e83dd887b5b5dffb083b",
+          "6842e840d887b5b5dffb085c",
+          "6842e845d887b5b5dffb08a7",
+          "6842e847d887b5b5dffb08bc",
+          "6842e84bd887b5b5dffb08e5",
+          "6842e84ed887b5b5dffb08f6",
+          "6842e850d887b5b5dffb0907",
+          "6842e852d887b5b5dffb091e",
+          "6842e859d887b5b5dffb0989",
+          "6842e825d887b5b5dffb0795",
+          "6842e85cd887b5b5dffb09a5",
+          "6842e85cd887b5b5dffb09a2",
+          "6842e860d887b5b5dffb09c9",
+          "6842e865d887b5b5dffb09f8",
+          "6842e86ad887b5b5dffb0a27",
+          "6842e86dd887b5b5dffb0a40",
+          "6842e860d887b5b5dffb09c6",
+          "6842e86fd887b5b5dffb0a56",
+          "6842e875d887b5b5dffb0a91",
+          "6842e877d887b5b5dffb0aa6",
+          "6842e87cd887b5b5dffb0ae1",
+          "6842e87ed887b5b5dffb0af2",
+          "6842e86fd887b5b5dffb0a53",
+          "6842e883d887b5b5dffb0b22",
+          "6842e885d887b5b5dffb0b33",
+          "6842e886d887b5b5dffb0b3e",
+          "6842e889d887b5b5dffb0b5b",
+          "6842e883d887b5b5dffb0b1f",
+          "6850819192143128cb530a37",
+          "6850819192143128cb530a34",
+          "6850819492143128cb530a53",
+          "6850819892143128cb530a72",
+          "6850819f92143128cb530aa4",
+          "685081a392143128cb530abe",
+          "685081a692143128cb530ad3",
+          "685081ad92143128cb530aff",
+          "685081b092143128cb530b20",
+          "685081b692143128cb530b6e",
+          "685081b892143128cb530b83",
+          "685081bc92143128cb530bac",
+          "685081be92143128cb530bbd",
+          "685081c192143128cb530bd1",
+          "685081c392143128cb530be8",
+          "685081ca92143128cb530c54",
+          "6850819492143128cb530a50",
+          "685081cd92143128cb530c70",
+          "685081cd92143128cb530c6d",
+          "685081d292143128cb530c99",
+          "685081d792143128cb530cc8",
+          "685081dc92143128cb530cf9",
+          "685081df92143128cb530d13",
+          "685081d292143128cb530c96",
+          "685081e192143128cb530d29",
+          "685081e892143128cb530d67",
+          "685081ea92143128cb530d7c",
+          "685081ef92143128cb530dba",
+          "685081f192143128cb530dcb",
+          "685081e192143128cb530d26",
+          "685081f692143128cb530dfb",
+          "685081f892143128cb530e0d",
+          "685081f992143128cb530e1a",
+          "685081fc92143128cb530e37",
+          "685081f692143128cb530df8"
+        ],
+        "msisdnUnsubscribe": [],
+        "name": {
+          "pt": "Mané Copacabana",
+          "en": "Mané Copacabana",
+          "fr": "Mané Copacabana",
+          "es": "Mané Copacabana"
+        },
+        "operationHours": [
+          {
+            "day": null,
+            "start": null,
+            "end": null
+          }
+        ],
+        "permissions": {
+          "waitlist": []
+        },
+        "phone": [
+          {
+            "name": null,
+            "value": null
+          }
+        ],
+        "search": [
+          "mane",
+          "copacabana"
+        ],
+        "slug": "mane_copacabana",
+        "staff": [],
+        "tags": [],
+        "updated_at": "2026-02-20T14:34:29.882Z",
+        "address": "681ccf91f1992b3eac336bd7",
+        "cnpj": "39.985.417/0001-96",
+        "descript": {
+          "pt": "",
+          "en": "",
+          "fr": "",
+          "es": ""
+        },
+        "email": "Copacabana@manerio.com",
+        "googleId": null,
+        "hiredServices": {
+          "bradesco": true,
+          "digitalMenu": false,
+          "itau": false,
+          "reservation": true,
+          "waitlist": true,
+          "widgetMenu": false,
+          "brasilSaborSp": false,
+          "festivalDeLaTapa": false,
+          "settimanaItaliana": false,
+          "loginJourney": false
+        },
+        "images": {},
+        "michelinId": null,
+        "priceRange": 1,
+        "serviceTax": 0,
+        "shortName": {
+          "pt": "Mané",
+          "en": "",
+          "fr": "",
+          "es": ""
+        },
+        "site": null,
+        "socialAnalytics": {
+          "googleAnalytics": null,
+          "googleGTM": null,
+          "facebookPixel": null
+        },
+        "uniqueMenu": null,
+        "focalPoint": "681e289aacba6866d65cb12e",
+        "parent": "681d1dc0f1992b3eac3cadb0",
+        "whatsAppAdapter": true,
+        "analyticsIntegrations": [
+          {
+            "_id": "6a1889804e5ffdd27288cd59",
+            "type": "analytics",
+            "channel": "reservationWidget",
+            "provider": "facebookPixel",
+            "label": "Reserva - Facebook Pixel",
+            "value": "1362895958641017",
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "Logs": {
+      "found": true,
+      "hint": "Views LiveMenu (legado)",
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "origin",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "user",
+          "type": "ObjectId",
+          "ref": "Users._id",
+          "bi": null
+        },
+        {
+          "field": "device",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "location",
+          "type": "array<number>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.page",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "577ea77bac87c96811b8098e",
+        "origin": "Bradesco",
+        "type": "pageView",
+        "user": "56cf52a14209e97b140da958",
+        "device": "iOS",
+        "location": [
+          -43.337745666503906,
+          -23.00318717956543
+        ],
+        "details": {
+          "page": "faq"
+        },
+        "created_at": "2016-07-07T19:03:23.612Z",
+        "__v": 0
+      }
+    },
+    "LiveMenu": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "pro",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "settings",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "settings.callWaiter",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "settings.driveThru",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "settings.pdvIntegration",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "63ff920196053408db53e53e",
+        "venue": "62600ec3b6a45b0012602f61",
+        "pro": false,
+        "settings": {
+          "callWaiter": false,
+          "driveThru": false,
+          "pdvIntegration": false
+        },
+        "__v": 0,
+        "created_at": "2023-03-01T17:57:21.103Z",
+        "updated_at": "2024-04-17T12:31:27.749Z"
+      }
+    },
+    "Customers": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "lastName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "verificationCodes",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "search",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "macAddress",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venues",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5a07392015bb4e068c174588",
+        "__v": 0,
+        "name": "Alexandre",
+        "lastName": "",
+        "phone": "5521987873040",
+        "email": "",
+        "created_at": "2017-11-11T17:53:36.915Z",
+        "verificationCodes": [],
+        "disabled": false,
+        "search": [],
+        "macAddress": [],
+        "venues": [
+          "5755e12bf1fb67ed11c1700e"
+        ],
+        "updated_at": "2017-11-11T17:53:36.915Z"
+      }
+    },
+    "Users": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "avatarUrl",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "password",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "username",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "details",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.gender",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.backingId",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.originalCreatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.emailVerified",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "role",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "search",
+          "type": "array<string>",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "56c3465f569f575f066b421a",
+        "updated_at": "2016-02-16T15:55:11.461Z",
+        "disabled": false,
+        "email": "alinescbr@gmail.com",
+        "avatarUrl": "no_image.png",
+        "password": "$2a$10$vBY.eDReM5ca6/piRim3cOdOVNahvyc0I6vTWY2madO6HopSzSFSO",
+        "username": " alinescbr@gmail.com",
+        "name": "Aline",
+        "created_at": "2016-02-16T15:55:11.460Z",
+        "details": {
+          "gender": "male",
+          "backingId": "594B3942-6DE8-436B-B797-C0A2082E4F36",
+          "originalCreatedAt": "2011-10-05T00:45:51.000Z",
+          "emailVerified": false
+        },
+        "role": "User",
+        "__v": 0,
+        "search": [
+          "aline"
+        ]
+      }
+    },
+    "ProductUserTrackEvent": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "productUserId",
+          "type": "string",
+          "ref": "ProductUsersUM._id",
+          "bi": null
+        },
+        {
+          "field": "eventType",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.firstName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.lastName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.phone",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.birthday",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "eventBody.productName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "deleted",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "createdAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "68775f782c1195ee40d58883",
+        "productUserId": "68774d46a48caa411dce9548",
+        "eventType": "RESERVATION_LOGIN",
+        "eventBody": {
+          "firstName": "Osmar",
+          "lastName": "Teste",
+          "phone": "+55 21 99398-7303",
+          "email": "osmar@tagme.com.br",
+          "birthday": "",
+          "productName": "Tagme"
+        },
+        "deleted": false,
+        "createdAt": "2025-07-16T08:14:48.063Z",
+        "updatedAt": "2025-07-16T08:14:48.063Z",
+        "__v": 0
+      }
+    },
+    "ProductUsersUM": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "enabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "firstName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "lastName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email.contact",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email.validated",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email.createdAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "email.updatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone.contact",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone.validated",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone.createdAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "phone.updatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "productName",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "deleted",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "createdAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updatedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "gender",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "birthdate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "68774bada48caa411dce94c6",
+        "enabled": true,
+        "firstName": "Cairo Tagme",
+        "lastName": "Teste",
+        "email": {
+          "contact": "cairo.oliveira@tagme.com.br",
+          "validated": true,
+          "createdAt": "2026-05-06T23:54:18.816Z",
+          "updatedAt": "2026-05-06T23:54:18.816Z"
+        },
+        "phone": {
+          "contact": "+5537988413581",
+          "validated": true,
+          "createdAt": "2026-05-06T23:54:18.816Z",
+          "updatedAt": "2026-05-06T23:54:18.816Z"
+        },
+        "productName": "Tagme",
+        "deleted": false,
+        "createdAt": "2025-07-16T06:50:21.881Z",
+        "updatedAt": "2026-05-06T23:54:18.816Z",
+        "__v": 0,
+        "gender": "male",
+        "birthdate": "2026-03-02T00:00:00.000Z"
+      }
+    },
+    "Menus": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "slug",
+          "type": "string",
+          "ref": null,
+          "bi": "Identificador textual único"
+        },
+        {
+          "field": "backingId",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "currency",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "contentType",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venues",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        }
+      ],
+      "example": {
+        "_id": "56dc4717715a42d8d957a12f",
+        "updated_at": "2017-07-03T21:03:03.700Z",
+        "slug": "whiskies_garrafa",
+        "backingId": "pantry_538_08694AB1-6526-487F-8985-2019282982BB",
+        "created_at": "2016-03-06T15:04:45.634Z",
+        "currency": "R$",
+        "descript": {
+          "es": "Whiskies - Garrafa",
+          "fr": "Whiskies - Garrafa",
+          "en": "Whiskies - Garrafa",
+          "pt": "Whiskies - Garrafa"
+        },
+        "name": {
+          "es": "Whiskies - Garrafa",
+          "fr": "Whiskies - Garrafa",
+          "en": "Whiskies - Garrafa",
+          "pt": "Whiskies - Garrafa"
+        },
+        "__v": 0,
+        "contentType": "mixed",
+        "venues": [
+          "57225922f1fb67ed11c16949"
+        ],
+        "type": "Mix"
+      }
+    },
+    "MenuItems": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "slug",
+          "type": "string",
+          "ref": null,
+          "bi": "Identificador textual único"
+        },
+        {
+          "field": "backingId",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "price",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "product",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "details",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.quantity",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "details.priceFix",
+          "type": "array<string>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "productPairing",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "featurePairing",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "tags",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "descript",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "descript.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.es",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.fr",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.en",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "options",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "owner",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "menuOrder",
+          "type": "null",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "56dc4b5181a734dbda68d911",
+        "updated_at": "2020-08-08T12:02:54.383Z",
+        "slug": "belvedere",
+        "backingId": "pantry_1805",
+        "disabled": false,
+        "price": 2800,
+        "product": "56d334bbc10d5ca008913dd2",
+        "type": "pantry",
+        "details": {
+          "quantity": 1,
+          "priceFix": [
+            "20200808_1202"
+          ]
+        },
+        "productPairing": [],
+        "featurePairing": [],
+        "tags": [],
+        "created_at": "2016-03-06T15:22:03.784Z",
+        "descript": {
+          "es": "A vodka polonesa Belvedere, primeira de luxo, é elaborada segundo uma tradição de mais de 500 anos. Assim, ela é produzida em pequenos lotes e destilada 4 vezes, assegurando maior qualidade ao produto. A vodka Belvedere é feita com um único tipo de grão: o de centeio, adquirindo um delicioso sabor de baunilha e um paladar cremoso. ",
+          "fr": "A vodka polonesa Belvedere, primeira de luxo, é elaborada segundo uma tradição de mais de 500 anos. Assim, ela é produzida em pequenos lotes e destilada 4 vezes, assegurando maior qualidade ao produto. A vodka Belvedere é feita com um único tipo de grão: o de centeio, adquirindo um delicioso sabor de baunilha e um paladar cremoso. ",
+          "en": "A vodka polonesa Belvedere, primeira de luxo, é elaborada segundo uma tradição de mais de 500 anos. Assim, ela é produzida em pequenos lotes e destilada 4 vezes, assegurando maior qualidade ao produto. A vodka Belvedere é feita com um único tipo de grão: o de centeio, adquirindo um delicioso sabor de baunilha e um paladar cremoso. ",
+          "pt": "A vodka polonesa Belvedere, primeira de luxo, é elaborada segundo uma tradição de mais de 500 anos. Assim, ela é produzida em pequenos lotes e destilada 4 vezes, assegurando maior qualidade ao produto. A vodka Belvedere é feita com um único tipo de grão: o de centeio, adquirindo um delicioso sabor de baunilha e um paladar cremoso. "
+        },
+        "name": {
+          "es": "Belvedere",
+          "fr": "Belvedere",
+          "en": "Belvedere",
+          "pt": "Belvedere"
+        },
+        "__v": 0,
+        "options": [
+          {
+            "relativePrice": false,
+            "relativePromoPrice": false,
+            "barcodes": [],
+            "disabled": false,
+            "featured": false,
+            "min": 0,
+            "_id": "5f2e946ee9ec0a79dcdcdd38",
+            "price": 2800,
+            "promoPrice": null,
+            "sons": []
+          }
+        ],
+        "owner": "56dc473d715a42d8d957a5d7",
+        "menuOrder": null
+      }
+    },
+    "Orders": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "customer",
+          "type": "ObjectId",
+          "ref": "Customers._id",
+          "bi": null
+        },
+        {
+          "field": "logs",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "payments",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "receivedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.priceInCents",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.vendor",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.vendor.name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address._id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.zip",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.address1",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.number",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.address2",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.reference",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.neighborhood",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.city",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.state",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.address.country",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shipping.pricingType",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shoppingCart",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shoppingCart.priceInCents",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "shoppingCart.items",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "acceptedAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "outForDeliveryAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "deliveredAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5e7cef84c7f94117b44622fc",
+        "__v": 0,
+        "created_at": "2020-03-26T18:08:04.968Z",
+        "customer": "5e7b9bbd2576fe19b4cc40d8",
+        "logs": [
+          {
+            "actionType": "Received",
+            "customer": "5e7b9bbd2576fe19b4cc40d8",
+            "_id": "5e7cef84c7f94117b44622fd",
+            "created_at": "2020-03-26T18:08:04.944Z"
+          },
+          {
+            "actionType": "PaymentStarted",
+            "user": "5717f65fc619973cbcd6f6f5",
+            "_id": "5e7cef857a4a9a1a285bb9c2",
+            "created_at": "2020-03-26T18:08:05.249Z"
+          },
+          {
+            "actionType": "Paid",
+            "user": "5717f65fc619973cbcd6f6f5",
+            "_id": "5e7cef900ae0e6123c6cb7f7",
+            "created_at": "2020-03-26T18:08:16.112Z"
+          },
+          {
+            "user": "5e68e1a76be92d17bc1b1cbd",
+            "actionType": "Accepted",
+            "_id": "5e7cf0fe0ae0e6123c6ceac2",
+            "created_at": "2020-03-26T18:14:22.077Z"
+          },
+          {
+            "user": "5d66d12093c02f203844916d",
+            "actionType": "OutForDelivery",
+            "_id": "5e7e89436ba85419f0e7cdb3",
+            "created_at": "2020-03-27T23:16:19.378Z"
+          },
+          {
+            "user": "5d66d12093c02f203844916d",
+            "actionType": "Delivered",
+            "_id": "5e7e894819e0681524425292",
+            "created_at": "2020-03-27T23:16:24.828Z"
+          }
+        ],
+        "payments": [
+          "5e7cef8524f9df215429f34d"
+        ],
+        "receivedAt": "2020-03-26T18:08:04.178Z",
+        "shipping": {
+          "priceInCents": 1290,
+          "vendor": {
+            "name": "Owned"
+          },
+          "address": {
+            "_id": "5e7cef84c7f94117b44622ff",
+            "zip": "04524-001",
+            "address1": "Alameda dos Arapanés",
+            "number": "570",
+            "address2": "casa",
+            "reference": "",
+            "neighborhood": "Moema",
+            "city": "São Paulo",
+            "state": "SP",
+            "country": "Brasil"
+          },
+          "pricingType": "Dynamic"
+        },
+        "shoppingCart": {
+          "priceInCents": 200,
+          "items": [
+            {
+              "priceInCents": 100,
+              "price": 1,
+              "menuItem": "5e7ce27fe130c46f6b1b1ba7",
+              "quantity": 2,
+              "avatarUrl": "MenuItem/1109096DE8D24F-4DC2-4CF2-BD99-C473E9ACAC8720200323143133.jpg",
+              "_id": "5e7cef84c7f94117b44622fe",
+              "descript": {
+                "pt": "Deliciosos palitos de muçarela empanados. Acompanha molho marinara.",
+                "en": "Delicious breaded mozzarella sticks. Accompanies marinara sauce.",
+                "fr": "Délicieux bâtonnets de mozzarella panés. Accompagne la sauce marinara.",
+                "es": "Deliciosos palitos de mozzarella empanizados. Acompaña la salsa marinara."
+              },
+              "name": {
+                "pt": "Mozzarella Sticks | 9",
+                "en": "Mozzarella Sticks | 9",
+                "fr": "Mozzarella Sticks | 9",
+                "es": "Mozzarella Sticks | 9"
+              }
+            }
+          ]
+        },
+        "status": "Delivered",
+        "type": "Delivery",
+        "updated_at": "2020-04-16T13:25:48.407Z",
+        "venue": "59a871d0d1d80760d5501359",
+        "acceptedAt": "2020-03-26T18:14:22.077Z",
+        "outForDeliveryAt": "2020-03-27T23:16:19.362Z",
+        "deliveredAt": "2020-03-27T23:16:24.812Z"
+      }
+    },
+    "Payments": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "reservation",
+          "type": "ObjectId",
+          "ref": "Reservations._id",
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "billValue",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "orders",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "redePayEvents",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        }
+      ],
+      "example": {
+        "_id": "59cd3af2d1d80760d5502962",
+        "reservation": "59cd3ac658949127806b432b",
+        "updated_at": "2017-09-28T18:10:15.540Z",
+        "billValue": 23980,
+        "status": "Pago",
+        "__v": 0,
+        "orders": [],
+        "redePayEvents": [],
+        "created_at": "2017-09-28T18:09:55.981Z"
+      }
+    },
+    "Notifications": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "customer",
+          "type": "ObjectId",
+          "ref": "Customers._id",
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "sentAt",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "response",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "response.statusMessage",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "response.statusCode",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "data",
+          "type": "object",
+          "ref": null,
+          "bi": "Payload do relatório (estrutura variável)"
+        },
+        {
+          "field": "reservation",
+          "type": "ObjectId",
+          "ref": "Reservations._id",
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "64657f87e0d20b00203d4696",
+        "customer": "61d44c0f220da4001283e647",
+        "venue": "6453a5d97ac8660054752fb6",
+        "status": "Sent",
+        "sentAt": "2023-05-18T01:29:43.095Z",
+        "type": "Email",
+        "response": {
+          "statusMessage": "Accepted",
+          "statusCode": 202
+        },
+        "data": {
+          "origin": "Reservation Widget",
+          "customer": "61d44c0f220da4001283e647"
+        },
+        "reservation": "64657f86e0d20b00203d467e",
+        "created_at": "2023-05-18T01:29:43.096Z",
+        "updated_at": "2023-05-18T01:29:43.096Z",
+        "__v": 0
+      }
+    },
+    "Channels": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "dateRanges",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "slug",
+          "type": "string",
+          "ref": null,
+          "bi": "Identificador textual único"
+        },
+        {
+          "field": "label",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5cd9cbf83091de14f8d80c17",
+        "__v": 0,
+        "created_at": "2019-05-13T19:56:40.341Z",
+        "dateRanges": [
+          {
+            "startDate": "2019-06-26T00:00:00.000Z",
+            "endDate": "2019-06-28T00:00:00.000Z",
+            "_id": "68546d6cea7be07c6d1e0378"
+          }
+        ],
+        "slug": "restaurantsForYou",
+        "label": "Restaurants For You",
+        "updated_at": "2025-06-19T20:05:00.977Z"
+      }
+    },
+    "Vouchers": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "voucher",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "endDate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "exceptHolidays",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "exceptWeekends",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "logs",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.name",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.name.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.description",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.description.pt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.conditions",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.type",
+          "type": "string",
+          "ref": null,
+          "bi": "Tipo de evento ou registro"
+        },
+        {
+          "field": "prize.value",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize.quantity",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "repeatAmount",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "useCount",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "startDate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5fce916bb8e710cce43a1807",
+        "voucher": "UP89508177",
+        "__v": 0,
+        "endDate": "2021-10-06T21:23:47.004Z",
+        "exceptHolidays": false,
+        "exceptWeekends": false,
+        "logs": [
+          {
+            "_id": "5ff62a6322c22c2c1c7a348c",
+            "actionType": "set as used",
+            "user": "5ef121162457a73491a86f57",
+            "email": "devteam@tagme.com.br",
+            "name": "OutbackProcess",
+            "role": "System",
+            "created_at": "2021-01-06T21:23:47.034Z"
+          }
+        ],
+        "name": "Voucher Outback",
+        "origin": "Outback",
+        "prize": {
+          "name": {
+            "pt": "Menu Casual"
+          },
+          "description": {
+            "pt": "Menu Casual para OutBack"
+          },
+          "conditions": "Combo individual; Não inclui taxa de serviço e adicionais; Benefício válido para pagamento com voucher, cartão de débito e crédito Itaú; Sem limite de utilização para portadores do cartão Itaú; Combo sujeito à alteração sem aviso prévio; Obrigatório consumo no restaurante;  Não é válido no período 21 de dezembro a 01 de Janeiro de 2021",
+          "type": "Other",
+          "value": 59,
+          "quantity": 1
+        },
+        "repeatAmount": 1,
+        "updated_at": "2021-01-06T21:23:47.004Z",
+        "useCount": 0,
+        "venue": "5f8de58570a20810ec180d77",
+        "startDate": "2021-01-06T21:23:47.004Z"
+      }
+    },
+    "Redemptions": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "statusDate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "quantity",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "voucher",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customer",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customer.phone",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customer.email",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customer.name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "idGoPoints",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "segment",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "prize",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "environment",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "59285ff422ec920f902899cc",
+        "__v": 0,
+        "created_at": "2017-05-26T17:03:48.598Z",
+        "statusDate": "2017-05-26T17:03:48.348Z",
+        "status": "ativo",
+        "quantity": 1,
+        "voucher": "sfvweij134",
+        "customer": {
+          "phone": "999999999",
+          "email": "felipe.capellari@gopoints.com.br",
+          "name": "Felipe"
+        },
+        "idGoPoints": "1131",
+        "segment": "Personnalite",
+        "prize": "591c7a153a98a714494766bf",
+        "venue": "58a45206a3770501e04930bf",
+        "updated_at": "2017-06-22T17:21:15.028Z",
+        "environment": "approval"
+      }
+    },
+    "WaitlistSettings": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "averageTimes",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "basicCustomerInput",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "clockMode",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "customerTabs",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customerTabs.enabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customerTagGroups",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "delayTolerance",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabledBradesco",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabledSmsSendingByDefault",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiddenCustomerPosition",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hostessClockMode",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "logs",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "maxWaitingTime",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mode",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "operationMode",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySizes",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "sections",
+          "type": "array<any>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "supervisoryPassword",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "supervisoryPassword.enabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "useCustomerTags",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "partySizesWidget",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySizesWidget.min",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySizesWidget.max",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "partySizesWidget._id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "68235016ed655b74edf4d895",
+        "__v": 0,
+        "averageTimes": [
+          {
+            "partySize": "68235016ed655b74edf4d896",
+            "minutes": 1,
+            "_id": "6823501bf9e0627b29c447ef"
+          },
+          {
+            "partySize": "68235016ed655b74edf4d897",
+            "minutes": 1,
+            "_id": "6823501bf9e0627b29c447f0"
+          },
+          {
+            "partySize": "68235016ed655b74edf4d898",
+            "minutes": 1,
+            "_id": "6823501bf9e0627b29c447f1"
+          },
+          {
+            "partySize": "68235016ed655b74edf4d899",
+            "minutes": 1,
+            "_id": "6823501bf9e0627b29c447f2"
+          },
+          {
+            "partySize": "68235016ed655b74edf4d89a",
+            "minutes": 1,
+            "_id": "6823501bf9e0627b29c447f3"
+          }
+        ],
+        "basicCustomerInput": true,
+        "clockMode": "none",
+        "created_at": "2025-05-13T13:58:46.231Z",
+        "customerTabs": {
+          "enabled": false
+        },
+        "customerTagGroups": [],
+        "delayTolerance": 10,
+        "disabled": false,
+        "disabledBradesco": false,
+        "disabledSmsSendingByDefault": false,
+        "hiddenCustomerPosition": false,
+        "hostessClockMode": "asc",
+        "logs": [
+          {
+            "user": "68235048f9e0627b29c45237",
+            "_id": "68235048f9e0627b29c45238",
+            "created_at": "2025-05-13T13:59:36.455Z"
+          },
+          {
+            "user": "68235052ed655b74edf4e4d6",
+            "_id": "68235052ed655b74edf4e4d7",
+            "created_at": "2025-05-13T13:59:46.672Z"
+          }
+        ],
+        "maxWaitingTime": 120,
+        "mode": "afterLast",
+        "operationMode": "advanced",
+        "partySizes": [
+          {
+            "min": 1,
+            "max": 2,
+            "_id": "68235016ed655b74edf4d896"
+          },
+          {
+            "min": 3,
+            "max": 4,
+            "_id": "68235016ed655b74edf4d897"
+          },
+          {
+            "min": 5,
+            "max": 6,
+            "_id": "68235016ed655b74edf4d898"
+          },
+          {
+            "min": 7,
+            "max": 8,
+            "_id": "68235016ed655b74edf4d899"
+          },
+          {
+            "min": 9,
+            "max": 999,
+            "_id": "68235016ed655b74edf4d89a"
+          }
+        ],
+        "sections": [],
+        "supervisoryPassword": {
+          "enabled": false
+        },
+        "updated_at": "2025-05-13T13:59:46.670Z",
+        "useCustomerTags": false,
+        "venue": "681cca16acba6866d6420b63",
+        "partySizesWidget": {
+          "min": 1,
+          "max": 999,
+          "_id": "68235022ed655b74edf4dc0a"
+        }
+      }
+    },
+    "ReservationStatus": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "reservationDay",
+          "type": "string",
+          "ref": null,
+          "bi": "Dia da reserva (agrupamento BI)"
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "minReservationAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "reservationAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "sections",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_truncated": true,
+        "_sizeChars": 57849,
+        "_note": "Exemplo completo omitido por tamanho; ver campos em colecoes-estruturas.md"
+      }
+    },
+    "ReservationSeats": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "reservationAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "minReservationAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "delayTolerance",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "reservationInterval",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "rsvpAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "disabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "disabledAutoRsvpEmailing",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venueSections",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "sectionSchedules",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "bookingApps",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "hiddenNoteEmailsSentToCustomer",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "58ff587cb7eaa2ec0d41e825",
+        "updated_at": "2026-06-16T22:33:45.094Z",
+        "venue": "56c776ed0896b3cd13c60093",
+        "reservationAntecedence": 30,
+        "minReservationAntecedence": 120,
+        "delayTolerance": 15,
+        "reservationInterval": 30,
+        "rsvpAntecedence": 1,
+        "created_at": "2017-04-25T14:09:00.187Z",
+        "disabled": false,
+        "disabledAutoRsvpEmailing": false,
+        "venueSections": [
+          {
+            "label": "Principal",
+            "_id": "58ff58a5b7eaa2ec0d41e826",
+            "capacityGroups": [
+              {
+                "quantity": 1,
+                "max": 2,
+                "min": 1,
+                "_id": "58ff58a5b7eaa2ec0d41e827"
+              }
+            ]
+          }
+        ],
+        "sectionSchedules": [
+          {
+            "section": "58ff58a5b7eaa2ec0d41e826",
+            "_id": "58ff58b8b7eaa2ec0d41e828",
+            "extraSchedules": [],
+            "scheduleBlocks": [],
+            "schedules": [
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 1,
+                "_id": "58ff58b8b7eaa2ec0d41e82f"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82e"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 3,
+                "_id": "58ff58b8b7eaa2ec0d41e82d"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 4,
+                "_id": "58ff58b8b7eaa2ec0d41e82c"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 5,
+                "_id": "58ff58b8b7eaa2ec0d41e82b"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 6,
+                "_id": "58ff58b8b7eaa2ec0d41e82a"
+              },
+              {
+                "seats": 2,
+                "end": "22:00",
+                "start": "20:00",
+                "day": 7,
+                "_id": "58ff58b8b7eaa2ec0d41e829"
+              }
+            ]
+          }
+        ],
+        "bookingApps": [
+          {
+            "schedules": [
+              {
+                "day": 1,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82f"
+              },
+              {
+                "day": 2,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82e"
+              },
+              {
+                "day": 3,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82d"
+              },
+              {
+                "day": 4,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82c"
+              },
+              {
+                "day": 5,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82b"
+              },
+              {
+                "day": 6,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e82a"
+              },
+              {
+                "day": 7,
+                "start": "20:00",
+                "end": "22:00",
+                "seats": 2,
+                "_id": "58ff58b8b7eaa2ec0d41e829"
+              }
+            ],
+            "app": "5b69def9990f811108095684",
+            "section": "58ff58a5b7eaa2ec0d41e826",
+            "_id": "5d3f32152e926d15bcc1552b"
+          }
+        ],
+        "hiddenNoteEmailsSentToCustomer": true,
+        "__v": 0
+      }
+    },
+    "ReservationsDashboardDays": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "reservationDay",
+          "type": "string",
+          "ref": null,
+          "bi": "Dia da reserva (agrupamento BI)"
+        },
+        {
+          "field": "sections",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        }
+      ],
+      "example": {
+        "_id": "6297e2ec8b851700205bd3fb",
+        "__v": 0,
+        "created_at": "2022-06-01T22:06:36.371Z",
+        "reservationDay": "2022-06-04",
+        "sections": [
+          {
+            "_id": "6297e2ec8b851700205bd3fc",
+            "section": "6260385d5b2d6f0012cd0244",
+            "color": "red"
+          }
+        ],
+        "updated_at": "2022-06-01T22:06:36.370Z",
+        "venue": "62601dabe5d0390011da99fe"
+      }
+    },
+    "AvailabilitiesDay": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "day",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.label",
+          "type": "string",
+          "ref": null,
+          "bi": "Canal de origem (Widget, Phone, Restaurant…)"
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.availabilities",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.noShowFeeConfig",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.noShowFeeConfig.maxCancellationTimeDay",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.noShowFeeConfig.maxCancellationTime",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.widgetGroupReservations",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.widgetGroupReservations.enabled",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.details",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.app",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.delayTolerance",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.maxDaysAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.minAntecedence",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.available",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "availability.serverTime",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_truncated": true,
+        "_sizeChars": 34778,
+        "_note": "Exemplo completo omitido por tamanho; ver campos em colecoes-estruturas.md"
+      }
+    },
+    "Reports": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "date_begin",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "date_end",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "data",
+          "type": "object",
+          "ref": null,
+          "bi": "Payload do relatório (estrutura variável)"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        }
+      ],
+      "example": {
+        "_id": "5946d796d1d80760d54ff124",
+        "date_begin": "2017-05-01T00:00:00.000Z",
+        "date_end": "2017-05-31T23:59:59.999Z",
+        "name": "Restaurant Usage",
+        "origin": "bradesco",
+        "updated_at": "2017-06-18T19:42:14.321Z",
+        "data": "H4sIAAAAAAAAA81d3XLbNhZ+FawuujdJh+AfwNzFauKkdRpt4qYzu7Ozc0iCNmqK1PIn3Tjbh8nuRTedaW+aJ6hebEHJTQAJJEiKlnuTH1uijA8H53znO+fAb2cxq4Cn5Tyvs+rkzSuW1Wz24G9vZ//g8ezBzKOW7xPfS3AS+oTFGEeYxZ43uzfLYCleOfMpOgO04NfXrOCA7qMTluboSV7w6zyrWPPCPJtDFrE0ZfELVrLiNVQ8z8rZA6x+c8HyVSqe6d6blRUUlfRi8Vrn5qvfAq9SXlazB9a92Qou2CvOvhdvsu/NqryCdO8jCukLJ2/mUMSbxW6+FxUs5lXzNfVtb2cPl2I9EWTo0b9W4gnlb7+gk7TB5u0sunn7Dz/8cO8jUAQoC0NfBgpwQj8B9RA9KlesgGz9I6BXPMsRQ2heRzwD9G90Kr4Ro6ioUSdith4xX4eYvY8YlhHDvqWFzOmAzB4I2Wmexqh5rYLbvdn5JUOLVLw1q5eb7//2SyuyFNwQMwIOIZZnYWa5gWNFMrLpEtD8kiWd0Fl66CytsdE96GwZOs/RImd1IGfJK/Jix3csaUU0cQKQVrRcv085Q/Ni/ZOwGfGvEygK6FyfM8A0gu6z5HiDDcPpMgzTbt/razq2ahgNjJa/AyPtgvF0/e4168bR1eNIdTgSA46+Fke3A0d3PI5OfxzVA+ZHhPiMWjTwQyeKsRP5luW7Eo5lyUt02phgAsLLT3fODD4dH3TMtusCdV1Eil0Pq4ov8zHWEOhW43ndDtf29THKux17cNX45HmJRx05PhHLJhIY19e1yccc6EOVzSV0gs2N1M2l1qf1nEDI0/WHTJCSUyirIs/ypfj3Z2gu/jyBiqVj3CnG2rX63Wv1yDEdqt3iCArGsm4nkFgqniHIeBYozgVziaq8mMxK3G7gbPdwI0mwuiiZOiiLQosCGnIWQ0PVILvsPgwtXEwbKAwB19Uzsa5AcRdMbAunq8K5pV03cAokAH0NqzzlY5i/rcPOcLZsfZAYTfyHA8IUQLDsVE/Ez1usP/Q8OC2oeCOohz1xOjQUFWKppw47sivJq4pdAPqCpZtMaIwj1kZgU5JI9LZyS37YUQOwbXuUUTkA+4ETfEJFLPE1lA3TF0FKfFIFtUgKDSn0EF9rOEgTBGRiBequUyavr8gb99BoBWLvP3/++fxzdB89reoVvJ6OdxhMwNa72r6r3OxiQnZ2UXKB88uGRZVRw5PRAlKIpttAk3UfFiwpJB6zHDnPdt2Y7C3tnzXjBaCHaZULv1aKRZZlXh4rJ/AO27/NIh3YWWTQtsiX6//m6Jkgi/XRFqh33L3tk1Jmk0S2TxoS2T75BaTix5hKl9vPedQU+M7j0E50lintPBXm29fTttA9bXB2rG5UMNXDMlp6MyUEu4EosBzVhbmOBEshfmJIbxz1Nh6dFjztTpha8NHGaXufDweqNBlo8bGPgo9HPZ8okjfBWMbnxTeNzg1p1HgHgZZ47utuEjPEP5jEOX0u2d9BEMBJrDgIoL60uvo6yjenIg/F1puFxyFr29cEFIWEHubcNwfeVoUs25d27gu2Wv9achG4TvO6WLKqc2HeEAnAtg3BWb80v2Np3qgUb/OOQUmeu+81bZXH2SSWQOQnICzkfvOgjJWINRz+8ngM4DD73y5PDQo2SCznizzLAH25/jBZiDTQtjsPkY6q+tghltCoux2b33JGtGHRNmQgGOsPCemAwj+KYN4iqX169v6p24fZU2GOXAVmNK95ybPpKqYGsB19DesoZkci6juBwlIjN7E/4fEI6o9F0SdvoKq2THwBdTpKr9eKcibVFrfUlG9Jrx9dv6EBjUkcyDkNdkAK6Y/K6FI8Ilm/R2d5wbLueD5EmzMS3Ra2chwrc5wo8QOF6IKc6z0qV+ufi4YOvBT0fzqWYxC1XT25HRTBnERxJg4OlWWlkEEMPVh7y3n5KKSpB8YgOrYoSF0cZ7r6FnMSL4zkzY5d7MmoVLD+sfEiZ2KR4lA1jRcLwW4FRBNWvUwHwtLX1nvT9zDxPVtpMwkjX8rvH6dQXoYQXcmJreBoZ+JZF6OCi/7gjzLxrvxtaDdOv7o2cVUm64CUDpyKd7NuKWRIww02EVf98ThKUrvt4yI7fVwS7T3Nlzyezj7wfjqEe8h4XQLIZHEhwBbDvh/jmFrEt2LPTYR9SEr1E1jWhqR3CBaGzLDlrByP/3uOekRYLENRXnL0sKh60dO2aKI3EZMQqj8ut9Q9o0mCvVDBxfUkws5TdJIXJaSm8tWgQ2NoICG33+No9qqEQciwIh/GPpVq6k8r8QnAAb1Yv4t53ihIk4VXw1HCh7cLEF8tXLqB5CS/ErstzoOBKpJBObGBLGJXTxi6cmIywaY7A2WjTUoHeCelcxXsRuZ0LTEY6y3E0HaEW2ykK6mbLApvDWzHrUQSST37M3qUVQWL1h8Ea4tZQ1B5ieY8BvGfL8XT+XKUB9ZjZWBxuCVK/xEbGAlRz61nOTKsOlSfriBjy+6zPEjfcvZtz+1D/nGXgzpA4PI1xherxhe7RuMT/pwv0QkPeXdvehtUek3UpL0QvTx1ZClwr2VuZKvy1kJVnuVh12ShmwOfdSvrk8o1IxoVp+Wigo8rGNm2CaNnUFyxqvmUiI0antCPm5jCcgs7vaVkboDh7SqtMQ09pZgZBRExgfotKzeQXo+aOWjh+/uQKkMVVN8tP7o5a6Beb26F1G7BPC9WeQFVx2RQU2/3op16u5RunkHzaTyPxN/sNY8uN5NUfaLTEHXCpN3dYcWdktiKAyYL2JYVSULtGRPxJxmXe2qrtd5+kV2djQpakvKuSD1t9kl3ooVcLjrb1FzRpru0mSNbiOeW5WbC5f62Yt80MZ/z7+poOgMyZSpEHztGNzHfkkfcgqs2MXsx6wnuJzI0Ble9qm5KalsKxKOP5i12hxOi1iU8L24D9n4vD4dbjrWjDTGuQVIK9EEbd9ko7jzWPbH0jFgGGiNV6/KePLq0i+XUTNHUzhLoM8PjiZZ0J90LrHZwBKe5Qi8v89WKZxfopIBy/XMqQuwYbkO0R9jUtKq3u6P0nW/RsnfQavV39z8B9Swv6qXB0R0ob6oB5A47ErQhF6AdpVc8hTA3qDFDRoQ03QiOjI6vD69HIWhbdIiCjm/JhESQ1yzeTHSkgJ7xZV5OV1M1JK0t4bF3R3iMiRUq1SAviaQWKJFgXtSVQfNtOQf6gG+ajLzDghBxRXqI1SmVhEje4lnzKawo1v/J2Ebb5xd1t4sYVD43DXsdWD133ZASNRULLby/OmgWNy/eNH3QxxrfwPr8d1DxIlR5LXGVtRUR24ylxDl6LJYYrX8qhSd7wi84y9a/NkN73QSiTeHTV8MNCWcLF+tqFjlA4HMFAROBP2ZllKNHaY6+huyftXDfnS4vVJsHiB9JcPJMuLmrXix2iJUYgqR7mJVsxAhwVTFCLmz+vqyFMImfs7KesDfGVAc/7FKN7YapA+GEJvLKyspU1p/yOOvrTF1eXAlLNk6wz6SNsrHn7C+n0T+5oaNvQpmopZ/vKIMrmx2OVCZLYqnP8Vn9Xf1xcuFYBxIP73DcM9tIVb1JAvKiyu4xhUHx1ZCo4JYgNGw1ao2J2pLVfp0vIbuomQhAdZWXTSgSBozm+QoiCMFgyBN6G/8wJuEnQUSiIE7EobR9z0r8ILCJZIvPU/6abe56enELo7y322Ea4CCmKiWOXCapDwtYrQB9CdHVsUj+gaOtzf74StdkwhKJ1S7YapXf3MZ1xA4nves4yn0wW0hAgSSxJBFlsfjqBH3Fq+iSZeizSbt4DB7VPoziBNgFAKpYL2YSc/tLDXHBk/wi5Xnv03lg86MqB93xlRVk57InmoQ76NRR1J3UtahjWmXDNhwDOrzRb1p1bOcaocCRsibJPtBjWG6Fw1MQttOMvU8XmE3keILOtkS9CiugoX6Zm9DVfdqHDEObEsGWJqPjVB6dOKSOLAjY1JdvkVJwKfgF6xb8BhEUk651+KAj3bmFJYildooXecyEA3x6UUPFlt3HfVDYc/Y3XC2utqzsaJ291FKF3kDmNjew9CmoDHGCmt6wXsNmR/OC1FK1oyCR2OyLeivsNm0K6HEjkF1PNobnmxKslssAgj9gFyK11CFPsMgeiAueXTJeGAamhzQrmcqeuIVwHK12IOiGCostNWe+hJRXBRvUtzBozHNcsnREbxTsgBPug9NHZRzUAWO8T/kOffRGpExgR6QEGZWsWr9H20s5ppGrTdG45bLku5Orx7cExpEXebYywIFlP/Xy+ZPnvfOitksytI7KeAGANXziuvOWDDPK4yauLcCYKsMOIpuWaOM58CtAT6/hCt5MJ2mZimMHlgb82I8TZbCHYjeWF1VUdbJpThQHEC0gT5tKeI+R8jYj0ZZHja3hjj6a0dsxkk4+oGsjHXcoBfjMpzvgJ0bwnzc3zaHHhSAU3eeUtugX2uBgJKstl0d0bQHt2gJjac7UPuWNBj6JXddTjjLz5bvYKygr9vQcPc7zGH3WZ4560I2VhhuR8HHvYlfTAhoFlLJAVtLcBKRRv/P1+2L9v+vpdG3T+HzLLUq9yxNJ0Ez62oEloqDjWbFjQSyr9udNaiPSnFhQrhfi4/PRwqA2/hk2u+V+8OPoggn2fM8O3NgjJAbLhcj15GH5DTTrH3P0tFq/Sw2XwLeNQOoJOt7vxvZVJUSvfnVlgJ0zkON8iWYYyMjR1Db3iDlhovy+gkS+jfo8LzIOyxydFHl+lfJRVxOM6jG+06sJGlgSvAMLaGCZX67fiXC3iYBVjh6KJOBDxqcTYQ1CZUsH3iBBDqs3j4WWsv31d3ldlDdNht1V35bd17anGtxOy6+p+KONMlHPsoSrkO0kdmOprnMuDiNHT2AZ1sVFzUy/qGJQRcdwKSNuKeUdraRDbVXSDOVWkW8yfjXdKTG1hrcMrPev1YJrMaVHLyEy6XjFinxzdY/4IZrxjOaW0ukIiCHFOrxHidpqs0foS/zjVXMZEfoyj67Ym8lYh23wa7jlCv3RU5/jiLhte2B7O6IPk7HJ8j/1vTOgdW5E306xLxEqvde21VKxHT84YjjgVn8v6QzlIVsrVIuBIZUC7l/rKOpXARmiwxqTSqp3HKPbIQbc7TgqZA25/ZHa6q0PIdi7ePcZt2iTNPVZvEHiDfQxa7SkOdlcWYvk0o53Qyj/LhZbL5dQvGm+8fsqG1HCdXaoTPOCgkHa3BayExya8CbslIusL7uJCCRoCSBe0Czl+xtwpadaygOcZrTr//FjDTBpcQAA",
+        "__v": 0,
+        "created_at": "2017-06-18T19:42:14.328Z"
+      }
+    },
+    "CrmDashboards": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "user",
+          "type": "ObjectId",
+          "ref": "Users._id",
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "endDate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "selected",
+          "type": "array<ObjectId>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "startDate",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "60f1fb11e024e58d27bb91b6",
+        "user": "60f1774c4394c894c475cf87",
+        "venue": "5fa16a98545f7e0035a896a7",
+        "__v": 0,
+        "endDate": "2021-07-16T21:32:56.063Z",
+        "selected": [
+          "5f34baf77ff98583a418e3cd",
+          "5f34b9eb7ff98583a418e3cc",
+          "5f352f097ff98583a418e3ce",
+          "5f352f2f7ff98583a418e3cf",
+          "5f349f9c7ff98583a418e3cb",
+          "5f9c024465b3318589fcaf20",
+          "5f9c03f365b3318589fcaf21",
+          "5f9c054a65b3318589fcaf22"
+        ],
+        "startDate": "2021-07-16T21:32:56.063Z"
+      }
+    },
+    "bi_reservation_venue": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "origin.label",
+          "type": "string",
+          "ref": null,
+          "bi": "Canal de origem (Widget, Phone, Restaurant…)"
+        },
+        {
+          "field": "reservationDay",
+          "type": "Date",
+          "ref": null,
+          "bi": "Dia da reserva (agrupamento BI)"
+        },
+        {
+          "field": "reservationTime",
+          "type": "Date",
+          "ref": null,
+          "bi": "Horário da reserva"
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "turno",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce07499f87db11cc8d4306d",
+        "loyaltySettings": null,
+        "nom_restaurante": "mediterraneo_barigui",
+        "venue_id": "574c9c18f1fb67ed11c16f7e",
+        "origin": {
+          "label": "Widget"
+        },
+        "reservationDay": "2016-06-03T03:00:00.000Z",
+        "reservationTime": "1900-01-01T19:30:00.000Z",
+        "status": "Canceled",
+        "updated_at": "2016-06-02T16:37:41.609Z",
+        "turno": "Noite"
+      }
+    },
+    "bi_waitlist_venue": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "arrivedAt",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "status",
+          "type": "string",
+          "ref": null,
+          "bi": "Status operacional"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "time",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "turno",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce0723ef87db11cc8c730f2",
+        "loyaltySettings": null,
+        "nom_restaurante": "mediterraneo_barigui",
+        "venue_id": "574c9c18f1fb67ed11c16f7e",
+        "arrivedAt": "2016-07-03 16:40:35.000",
+        "created_at": "2016-07-03T16:41:01.552Z",
+        "status": "green",
+        "updated_at": "2016-07-10T15:29:23.248Z",
+        "time": "1900-01-01T16:40:00.000Z",
+        "turno": "Noite"
+      }
+    },
+    "bi_venues": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce071baf87db11cc8c705b2",
+        "venue_id": "5a01f2bfaa8a31073cb7e450",
+        "created_at": "2017-11-07T17:51:59.455Z",
+        "loyaltySettings": null,
+        "nom_restaurante": "camarada_camarao_rede",
+        "updated_at": "2017-11-07T17:51:59.471Z"
+      }
+    },
+    "bi_walkIns_venue": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "seatedAt",
+          "type": "string",
+          "ref": null,
+          "bi": "Data/hora em que sentou"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "time",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "turno",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce0729af87db11cc8d0a784",
+        "loyaltySettings": null,
+        "nom_restaurante": "Luce Cucina & Carbone",
+        "venue_id": "5a3a56cfc6ba0bafdb1b6592",
+        "seatedAt": "2018-10-07 00:20:06.243",
+        "updated_at": "2018-10-07T00:20:06.258Z",
+        "time": "1900-01-01T00:20:00.000Z",
+        "turno": "Tarde"
+      }
+    },
+    "bi_reservationStatus_venue": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "schedules",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "reservationDay",
+          "type": "string",
+          "ref": null,
+          "bi": "Dia da reserva (agrupamento BI)"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce07386f87db11cc8d12186",
+        "loyaltySettings": null,
+        "nom_restaurante": "mediterraneo_barigui",
+        "venue_id": "574c9c18f1fb67ed11c16f7e",
+        "schedules": [
+          {
+            "seats": 40,
+            "freeSeats": 40,
+            "reservationTimes": [
+              {
+                "reservationTime": "12:00"
+              },
+              {
+                "reservationTime": "12:30"
+              },
+              {
+                "reservationTime": "13:00"
+              },
+              {
+                "reservationTime": "13:30"
+              },
+              {
+                "reservationTime": "14:00"
+              }
+            ]
+          },
+          {
+            "seats": 40,
+            "freeSeats": 38,
+            "reservationTimes": [
+              {
+                "reservationTime": "19:00"
+              },
+              {
+                "reservationTime": "19:30"
+              },
+              {
+                "reservationTime": "20:00"
+              },
+              {
+                "reservationTime": "20:30"
+              },
+              {
+                "reservationTime": "21:00"
+              }
+            ]
+          }
+        ],
+        "reservationDay": "2018-02-07",
+        "updated_at": "2018-02-07T12:57:08.004Z"
+      }
+    },
+    "bi_customer_venue": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "loyaltyActiveEvents",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "name",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "customer_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "loyaltySettings",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "loyaltySettings.eventsQtyToRedeem",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "nom_restaurante",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "5ce074fff87db11cc8dee82b",
+        "loyaltyActiveEvents": [
+          {
+            "waitlist": "5ce0364ab6292917483b0664"
+          }
+        ],
+        "venue_id": "5c76d0889fb620aa38a4442b",
+        "name": "Daniel",
+        "created_at": "2019-05-18T16:43:54.206Z",
+        "updated_at": "2019-05-18T16:59:39.898Z",
+        "customer_id": "5ce03649b6292917483b0663",
+        "loyaltySettings": {
+          "eventsQtyToRedeem": 10
+        },
+        "nom_restaurante": "Martin Holandesa"
+      }
+    },
+    "Apps": {
+      "found": true,
+      "hint": null,
+      "fields": [
+        {
+          "field": "_id",
+          "type": "ObjectId",
+          "ref": null,
+          "bi": "Chave primária"
+        },
+        {
+          "field": "created_at",
+          "type": "Date",
+          "ref": null,
+          "bi": "Data de criação"
+        },
+        {
+          "field": "label",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "venue",
+          "type": "ObjectId",
+          "ref": "Venues._id",
+          "bi": "Unidade / restaurante"
+        },
+        {
+          "field": "switches",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hiddenMenuItemsPrices",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hasReservations",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hasWaitlist",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hiddenDisabledMenuItems",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hiddenMenuItemsDetails",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "switches.hiddenMenuItemsReviews",
+          "type": "boolean",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "style",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "style.logoUrl",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mobileCovers",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "siteCovers",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mosaicTitle",
+          "type": "object",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mosaicTitle.title",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mosaicTitle.subtitle",
+          "type": "string",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "mosaicButtons",
+          "type": "array<object>",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "__v",
+          "type": "number",
+          "ref": null,
+          "bi": null
+        },
+        {
+          "field": "updated_at",
+          "type": "Date",
+          "ref": null,
+          "bi": null
+        }
+      ],
+      "example": {
+        "_id": "56f9cc89e3e6e7cc20b8093c",
+        "created_at": "2016-03-29T00:30:01.567Z",
+        "label": "Mobile Waitlist",
+        "venue": "56f9c7c9df1532650f699276",
+        "switches": {
+          "hiddenMenuItemsPrices": false,
+          "hasReservations": true,
+          "hasWaitlist": true,
+          "hiddenDisabledMenuItems": false,
+          "hiddenMenuItemsDetails": false,
+          "hiddenMenuItemsReviews": false
+        },
+        "style": {
+          "logoUrl": "App/5f935db0-f545-11e5-b07d-c3134e6097e4.jpg"
+        },
+        "mobileCovers": [
+          {
+            "coverUrl": "App/9a3cd560-2833-11e6-9eb2-b3ccf56d855a.jpg",
+            "order": 1
+          }
+        ],
+        "siteCovers": [
+          {
+            "coverUrl": "App/a1ec8560-3cad-11e6-8e2d-b9f47485eee3.png",
+            "order": 1
+          }
+        ],
+        "mosaicTitle": {
+          "title": "Já pensou no que vai pedir?",
+          "subtitle": "Veja algumas opções do nosso Menu!"
+        },
+        "mosaicButtons": [
+          {
+            "backgroundUrl": "App/5fdaf890-f546-11e5-b07d-c3134e6097e4.png",
+            "order": 1,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cac49bb643fe0f1e1e56",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Petiscos",
+              "en": "Snacks",
+              "fr": "Collations",
+              "es": "Aperitivos"
+            }
+          },
+          {
+            "backgroundUrl": "App/5fec36a0-f546-11e5-b07d-c3134e6097e4.png",
+            "order": 2,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cac49bb643fe0f1e1e58",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Tapas | Frias",
+              "es": "Tapas | Frío",
+              "fr": "Tapas | Froide",
+              "en": "Tapas | Cold"
+            }
+          },
+          {
+            "backgroundUrl": "App/5fb966d0-f546-11e5-b07d-c3134e6097e4.png",
+            "order": 3,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cac49bb643fe0f1e1e53",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Nossos Pratos de Bacalhau",
+              "es": "Nuestros platos de bacalao",
+              "fr": "Nos plats de morue",
+              "en": "Our cod Dishes"
+            }
+          },
+          {
+            "backgroundUrl": "App/5fa14af0-f546-11e5-b07d-c3134e6097e4.png",
+            "order": 4,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cac49bb643fe0f1e1e5c",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Cozinha da Terra",
+              "en": "The kitchen of the Earth",
+              "fr": "La cuisine de la terre",
+              "es": "La cocina de la tierra"
+            }
+          },
+          {
+            "backgroundUrl": "App/5e804a90-f546-11e5-b07d-c3134e6097e4.png",
+            "order": 5,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cac49bb643fe0f1e1e5e",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Sobremesas",
+              "fr": "Desserts",
+              "en": "Desserts",
+              "es": "Postres"
+            }
+          },
+          {
+            "order": 6,
+            "disabled": false,
+            "disabledReviewing": false,
+            "hidden": false,
+            "pointer": {
+              "objectId": "56f9cc01292e0d4c106dab0f",
+              "type": "Menus"
+            },
+            "name": {
+              "pt": "Carta de Vinhos",
+              "en": "Wine list",
+              "es": "Carta de vinos",
+              "fr": "Carte des vins"
+            },
+            "backgroundUrl": "App/b04b6db0-f545-11e5-b07d-c3134e6097e4.jpg"
+          }
+        ],
+        "__v": 0,
+        "updated_at": "2016-06-27T21:25:12.773Z"
+      }
+    },
+    "NewWaitlists": {
+      "found": false,
+      "hint": null
+    },
+    "WaitlistsCMPArrived": {
+      "found": false,
+      "hint": null
+    }
+  }
+}
