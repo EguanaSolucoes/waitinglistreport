@@ -1,7 +1,7 @@
 {
   "name": "waitinglistreport",
   "version": "1.0.0",
-  "description": "Bi Tagme — dashboard conectado ao MongoDB Tagme",
+  "description": "Tagme Report — dashboard conectado ao MongoDB Tagme",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",

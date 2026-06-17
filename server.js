@@ -103,6 +103,6 @@ app.get('/api/context', requireAuth, async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Bi Tagme → http://localhost:${PORT}/`);
+  console.log(`Tagme Report → http://localhost:${PORT}/`);
   console.log(`Login → http://localhost:${PORT}/login`);
 });
