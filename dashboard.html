@@ -240,19 +240,19 @@ canvas{max-height:230px!important}
 .rk-empty{color:var(--muted);font-size:12px;padding:12px 8px;text-align:center}
 
 /* HEATMAP HORÁRIO */
-.hora-heatmap-host{min-height:0;display:flex;justify-content:center;padding:4px 0 8px}
-.hora-heatmap{display:flex;flex-direction:column;align-items:center;gap:8px;width:fit-content;max-width:100%}
-.hh-table{display:flex;flex-direction:column;gap:2px;width:fit-content}
-.hh-row{display:grid;grid-template-columns:26px repeat(7,22px);gap:2px;align-items:center;width:fit-content}
+.hora-heatmap-host{width:100%;min-height:0;padding:4px 0 8px}
+.hora-heatmap{display:flex;flex-direction:column;gap:8px;width:100%}
+.hh-table{display:flex;flex-direction:column;gap:2px;width:100%}
+.hh-row{display:grid;grid-template-columns:32px repeat(7,1fr);gap:2px;align-items:stretch;width:100%}
 .hh-row.hh-head{margin-bottom:1px}
-.hh-lbl{font-size:9px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;line-height:1}
-.hh-hour{justify-content:flex-end;padding-right:4px;color:var(--muted2);font-size:8px}
-.hh-dow{font-size:9px;font-weight:700;color:var(--text)}
-.hh-cell{width:22px;height:13px;border-radius:2px;transition:box-shadow .1s ease}
+.hh-lbl{font-size:10px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:center;line-height:1}
+.hh-hour{justify-content:flex-end;padding-right:6px;color:var(--muted2);font-size:9px}
+.hh-dow{font-size:10px;font-weight:700;color:var(--text)}
+.hh-cell{width:100%;min-height:14px;border-radius:2px;transition:box-shadow .1s ease}
 .hh-cell:hover{box-shadow:0 0 0 1px var(--border);z-index:1;position:relative}
-.hh-legend{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2px}
+.hh-legend{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2px;width:100%}
 .hh-leg-lbl{font-size:9px;color:var(--muted);font-weight:600}
-.hh-leg-bar{width:100px;height:6px;border-radius:99px;background:linear-gradient(90deg,#FFF8F0 0%,#FFD699 25%,#FF6B2B 60%,#7A0C0C 100%);border:1px solid var(--border)}
+.hh-leg-bar{flex:1;max-width:200px;height:6px;border-radius:99px;background:linear-gradient(90deg,#FFF8F0 0%,#FFD699 25%,#FF6B2B 60%,#7A0C0C 100%);border:1px solid var(--border)}
 
 .igrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-bottom:20px}
 .ins{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;display:flex;flex-direction:column;gap:8px;transition:.15s}
@@ -1455,7 +1455,7 @@ createApp({
           ${comparativo ? `<div style="margin-top:4px">${comparativo}</div>` : ''}
           ${diasTxt ? `<div style="margin-top:4px">${diasTxt}</div>` : ''}
           <div style="margin-top:8px"><strong style="color:${text}">Lojas (${this.selectedVenues.length}):</strong></div>
-          <div class="pdf-export-venues">${this.pdfVenuesHtml()}</div>
+          <div class="pdf-export-venues">${this.pdfVenuesHtml}</div>
           <div style="margin-top:10px;font-size:10px;color:${muted}">Gerado em ${this.escapeHtml(this.footerTs || formatDateTimeBr(new Date()) + ' (BRT)')}</div>
         </div>
         <div style="border-top:1px solid ${border};margin-top:14px"></div>
