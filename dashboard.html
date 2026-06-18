@@ -1231,7 +1231,9 @@ createApp({
     },
 
     bootstrapVenuesFromSession(me) {
-      if (!me || me.bypassAcl) {
+      if (!me) return;
+
+      if (me.bypassAcl && !me.impersonating) {
         this.restoreVenuesFromStorage();
         return;
       }
@@ -1245,6 +1247,7 @@ createApp({
 
       const fromSso = new URLSearchParams(window.location.search).get('sso') === '1';
       const fromViewAs = new URLSearchParams(window.location.search).get('viewAs') === '1';
+      const forceAll = fromSso || fromViewAs || me.impersonating || me.venueBootstrap;
       if (fromSso || fromViewAs) {
         window.history.replaceState({}, '', window.location.pathname);
       }
@@ -1254,7 +1257,7 @@ createApp({
       );
       const sortVenues = (list) => [...list].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
-      if (fromSso || fromViewAs) {
+      if (forceAll) {
         this.selectedVenues = sortVenues(Object.values(allowedMap));
         this.saveVenuesToStorage();
         return;

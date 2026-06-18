@@ -136,7 +136,7 @@ app.post('/api/logout', async (req, res) => {
 app.get('/api/me', requireAuth, async (req, res) => {
   try {
     const me = sessionToMe(req.session);
-    if (!me.bypassAcl) {
+    if (!me.bypassAcl || me.impersonating) {
       const venueIds = req.session.venueIds || [];
       me.venueIds = venueIds;
       me.venues = venueIds.length ? await getVenuesByIds(venueIds) : [];
@@ -144,6 +144,13 @@ app.get('/api/me', requireAuth, async (req, res) => {
       me.venueIds = [];
       me.venues = [];
     }
+
+    if (req.session.venueBootstrap) {
+      const session = { ...req.session, venueBootstrap: false };
+      setSession(res, session);
+      req.session = session;
+    }
+
     res.json(me);
   } catch (err) {
     console.error('Erro /api/me:', err);
