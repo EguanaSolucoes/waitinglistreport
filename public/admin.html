@@ -74,11 +74,11 @@ tr:hover td{background:var(--nitem-hover)}
     <div class="filters">
       <div>
         <label for="qUser">Buscar usuário</label>
-        <input id="qUser" type="search" placeholder="E-mail, nome ou login (mín. 2 caracteres)"/>
+        <input id="qUser" type="text" placeholder="E-mail, nome ou login (mín. 2 caracteres)" autocomplete="off"/>
       </div>
       <div>
         <label for="qVenue">Filtrar por loja</label>
-        <input id="qVenue" type="search" placeholder="Nome da loja (lista geral)"/>
+        <input id="qVenue" type="text" placeholder="Nome da loja" autocomplete="off"/>
       </div>
       <div>
         <button type="button" class="btn btn-primary" id="btnSearch" style="width:100%">Buscar</button>
@@ -294,8 +294,6 @@ btnSearch.addEventListener('click', () => {
   page = 1;
   loadUsers();
 });
-qUser.addEventListener('keydown', (e) => { if (e.key === 'Enter') { page = 1; loadUsers(); } });
-qVenue.addEventListener('keydown', (e) => { if (e.key === 'Enter') { page = 1; loadUsers(); } });
 btnPrev.addEventListener('click', () => { if (page > 1) { page -= 1; loadUsers(); } });
 btnNext.addEventListener('click', () => { if (hasMore) { page += 1; loadUsers(); } });
 document.getElementById('btnLogout').addEventListener('click', async () => {
