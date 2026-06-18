@@ -839,6 +839,14 @@ axios.interceptors.response.use(
   },
 );
 
+if (typeof Chart !== 'undefined') {
+  Chart.defaults.animation = false;
+  Chart.defaults.animations = {};
+  Chart.defaults.transitions.active.animation.duration = 0;
+  Chart.defaults.responsive = true;
+  Chart.defaults.maintainAspectRatio = true;
+}
+
 const TZ = 'America/Sao_Paulo';
 
 const NF_INT = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
@@ -1115,7 +1123,11 @@ createApp({
   },
   watch: {
     statusFiltro() {
-      if (this.W) this.$nextTick(() => this.render());
+      if (this.W) {
+        this.$nextTick(() => {
+          try { this.render(); } catch (err) { console.error('[render]', err); }
+        });
+      }
     },
   },
   methods: {
@@ -1384,6 +1396,7 @@ createApp({
       this.selectedVenues = [];
       this.saveVenuesToStorage();
       this.W = null;
+      this.destroyAllCharts();
       this.error = null;
     },
 
@@ -1524,7 +1537,9 @@ createApp({
         if (!target) return;
         const chart = this.CHS[canvas.id];
         if (chart) {
-          try { chart.update('none'); } catch (_) { /* ignore */ }
+          try {
+            if (chart.canvas && chart.ctx) chart.draw();
+          } catch (_) { /* ignore */ }
         }
         let dataUrl = '';
         try {
@@ -1734,6 +1749,7 @@ createApp({
       if (!this.validateDates()) return;
       if (!this.selectedVenues.length) {
         this.W = null;
+        this.destroyAllCharts();
         this.error = null;
         this.loading = false;
         return;
@@ -1776,7 +1792,14 @@ createApp({
         this.ORIGEM = data.origem || this.ORIGEM;
         this.ORIGEM_FILA = data.origemFila || this.ORIGEM_FILA;
         this.ORIGEM_DETALHE = data.origemDetalhe || { reservas: [], fila: [] };
-        this.CANAL = data.canal || this.CANAL;
+        const canal = data.canal || {};
+        this.CANAL = {
+          labels: Array.isArray(canal.labels) ? canal.labels : [],
+          w: Array.isArray(canal.w) ? canal.w : [],
+          t: Array.isArray(canal.t) ? canal.t : [],
+          g: Array.isArray(canal.g) ? canal.g : [],
+          c: Array.isArray(canal.c) ? canal.c : [],
+        };
         this.metaFonte = data.meta?.fonte ? `Dados reais · ${data.meta.fonte}` : 'MongoDB tagme';
         if (data.meta?.atualizadoEm) {
           this.footerTs = formatDateTimeBr(new Date(data.meta.atualizadoEm)) + ' (BRT)';
@@ -1795,6 +1818,7 @@ createApp({
         }
         this.error = msg;
         this.W = null;
+        this.destroyAllCharts();
         console.error(e);
       } finally {
         this.loading = false;
@@ -1802,6 +1826,7 @@ createApp({
     },
 
     go(tab) {
+      this.destroyAllCharts();
       this.activeTab = tab;
       if (tab === 'contexto' && !this.CTX && this.selectedVenues.length) this.loadContext();
       this.$nextTick(() => this.render());
@@ -1809,7 +1834,11 @@ createApp({
 
     setRankingMetric(metric) {
       this.rankingMetric = metric;
-      if (this.activeTab === 'ranking') this.$nextTick(() => this.rRanking());
+      if (this.activeTab === 'ranking') {
+        this.$nextTick(() => {
+          try { this.rRanking(); } catch (err) { console.error('[ranking]', err); }
+        });
+      }
     },
 
     rankDelta(cur, prev) {
@@ -1948,7 +1977,8 @@ createApp({
     bO(yL = '') {
       const t = this.chartTheme();
       return {
-        responsive: true, animation: { duration: 450, easing: 'easeOutQuart' },
+        responsive: true,
+        animation: false,
         interaction: { mode: 'index', intersect: false },
         plugins: { legend: { display: false }, tooltip: this.darkTooltip() },
         scales: {
@@ -1959,20 +1989,19 @@ createApp({
     },
 
     lds(lbl, data, col, dashed = false, fill = false) {
-      return { label: lbl, data, borderColor: col, backgroundColor: fill ? col + '20' : 'transparent',
+      const arr = Array.isArray(data) ? data.map((v) => (Number.isFinite(Number(v)) ? Number(v) : 0)) : [];
+      return { label: lbl, data: arr, borderColor: col, backgroundColor: fill ? col + '20' : 'transparent',
         borderWidth: dashed ? 1.5 : 2, borderDash: dashed ? [5, 4] : [], fill: fill ? 'origin' : false,
         tension: 0.4, pointRadius: dashed ? 0 : 3, pointHoverRadius: 5, pointBackgroundColor: col, order: dashed ? 2 : 1 };
     },
 
     bds(lbl, data, col) {
-      return { label: lbl, data, backgroundColor: col + 'CC', borderRadius: 5, borderSkipped: false, hoverBackgroundColor: col };
+      const arr = Array.isArray(data) ? data.map((v) => (Number.isFinite(Number(v)) ? Number(v) : 0)) : [];
+      return { label: lbl, data: arr, backgroundColor: col + 'CC', borderRadius: 5, borderSkipped: false, hoverBackgroundColor: col };
     },
 
     renderHoraHeatmap(containerId, matrix) {
-      if (this.CHS[containerId]) {
-        this.CHS[containerId].destroy();
-        delete this.CHS[containerId];
-      }
+      this.destroyChart(containerId);
       const el = document.getElementById(containerId);
       if (!el) return;
       const data = matrix || emptyHeatmapMatrix();
@@ -2045,6 +2074,10 @@ createApp({
       const total = items.reduce((s, x) => s + x.count, 0);
       this.renderOrigemDonutCenter(centerId, total);
       this.renderOrigemDonutLegend(legendId, items, total);
+      if (!total) {
+        this.destroyChart(canvasId);
+        return;
+      }
       this.mk(canvasId, {
         type: 'doughnut',
         data: {
@@ -2061,7 +2094,7 @@ createApp({
           responsive: true,
           maintainAspectRatio: true,
           cutout: '72%',
-          animation: { duration: 450, easing: 'easeOutQuart' },
+          animation: false,
           plugins: {
             legend: { display: false },
             tooltip: {
@@ -2084,11 +2117,107 @@ createApp({
       this.mkOrigemDonut('ch-origem-g-prev', 'origem-g-prev-center', 'origem-g-prev-legend', this.ORIGEM.countsPrev || {});
     },
 
-    mk(id, cfg) {
-      if (this.CHS[id]) this.CHS[id].destroy();
+    destroyChart(id) {
       const el = document.getElementById(id);
-      if (!el) return;
-      this.CHS[id] = new Chart(el.getContext('2d'), cfg);
+      let ch = this.CHS[id];
+      if (!ch && el && typeof Chart !== 'undefined') {
+        try { ch = Chart.getChart(el); } catch (_) { /* ignore */ }
+      }
+      if (!ch) return;
+      try {
+        ch.stop();
+        ch.destroy();
+      } catch (_) { /* ignore */ }
+      delete this.CHS[id];
+      if (el && typeof Chart !== 'undefined') {
+        try {
+          const orphan = Chart.getChart(el);
+          if (orphan) orphan.destroy();
+        } catch (_) { /* ignore */ }
+      }
+    },
+
+    destroyAllCharts() {
+      Object.keys({ ...this.CHS }).forEach((id) => this.destroyChart(id));
+    },
+
+    isCanvasDrawable(el) {
+      if (!el || !el.isConnected || el.tagName !== 'CANVAS') return false;
+      const panel = el.closest('.tpanel');
+      if (panel && !panel.classList.contains('on')) return false;
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    },
+
+    numSeries(data, len) {
+      const src = Array.isArray(data) ? data : [];
+      const out = src.map((v) => (Number.isFinite(Number(v)) ? Number(v) : 0));
+      const n = Math.max(0, Number(len) || 0);
+      while (out.length < n) out.push(0);
+      return n ? out.slice(0, n) : out;
+    },
+
+    sanitizeChartConfig(cfg) {
+      if (!cfg?.type) return null;
+      const data = cfg.data || {};
+      const rawSets = Array.isArray(data.datasets) ? data.datasets : [];
+      let labels = Array.isArray(data.labels) ? data.labels.map(String) : [];
+
+      if (cfg.type === 'doughnut' || cfg.type === 'pie') {
+        const rawValues = Array.isArray(rawSets[0]?.data) ? rawSets[0].data : [];
+        const n = Math.max(labels.length, rawValues.length, 1);
+        labels = Array.from({ length: n }, (_, i) => labels[i] || `Item ${i + 1}`);
+        const values = this.numSeries(rawValues, n);
+        if (values.every((v) => v === 0)) return null;
+        const ds0 = { ...(rawSets[0] || {}), data: values };
+        return {
+          ...cfg,
+          data: {
+            ...data,
+            labels: labels.slice(0, n),
+            datasets: [ds0, ...rawSets.slice(1)],
+          },
+        };
+      }
+
+      const maxLen = rawSets.reduce((m, ds) => Math.max(m, Array.isArray(ds.data) ? ds.data.length : 0), 0);
+      const n = Math.max(labels.length, maxLen, 1);
+      if (!labels.length) labels = Array.from({ length: n }, (_, i) => (i === 0 ? '—' : ''));
+      while (labels.length < n) labels.push('');
+      labels = labels.slice(0, n);
+
+      const datasets = rawSets.length
+        ? rawSets.map((ds) => ({ ...ds, data: this.numSeries(ds.data, n) }))
+        : [{ label: '—', data: Array(n).fill(0) }];
+
+      return { ...cfg, data: { ...data, labels, datasets } };
+    },
+
+    setHtml(id, html) {
+      const node = document.getElementById(id);
+      if (node) node.innerHTML = html;
+    },
+
+    mk(id, cfg) {
+      this.destroyChart(id);
+      const el = document.getElementById(id);
+      if (!this.isCanvasDrawable(el)) return;
+      let ctx;
+      try {
+        ctx = el.getContext('2d');
+      } catch (_) {
+        return;
+      }
+      if (!ctx) return;
+      const safe = this.sanitizeChartConfig(cfg);
+      if (!safe) return;
+      safe.options = { animation: false, ...(safe.options || {}) };
+      try {
+        this.CHS[id] = new Chart(ctx, safe);
+      } catch (err) {
+        console.warn('[chart]', id, err);
+        this.destroyChart(id);
+      }
     },
 
     clienteTipoStackOptions(yLabel = 'Mesas') {
@@ -2194,7 +2323,7 @@ createApp({
       if (passante) {
         html += this.kpiRp('Passantes/pessoas', passante.res, passante.pes, passante.resPrv, passante.pesPrv, KPI_COL.passante, 'entrada direta');
       }
-      document.getElementById(elId).innerHTML = html;
+      this.setHtml(elId, html);
     },
 
     kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '') {
@@ -2217,13 +2346,27 @@ createApp({
 
     render() {
       if (!this.W) return;
-      if (this.activeTab === 'geral') this.rGeral();
-      else if (this.activeTab === 'fila') this.rFila();
-      else if (this.activeTab === 'reservas') this.rReservas();
-      else if (this.activeTab === 'mensal') this.rMensal();
-      else if (this.activeTab === 'canais') this.rCanais();
-      else if (this.activeTab === 'ranking') this.rRanking();
-      else if (this.activeTab === 'contexto') this.rContexto();
+      this.destroyAllCharts();
+      const tabs = {
+        geral: () => this.rGeral(),
+        fila: () => this.rFila(),
+        reservas: () => this.rReservas(),
+        mensal: () => this.rMensal(),
+        canais: () => this.rCanais(),
+        ranking: () => this.rRanking(),
+        contexto: () => this.rContexto(),
+      };
+      const tab = this.activeTab;
+      const draw = tabs[tab];
+      if (!draw) return;
+      requestAnimationFrame(() => {
+        if (this.activeTab !== tab || !this.W) return;
+        try {
+          draw();
+        } catch (err) {
+          console.error('[render]', tab, err);
+        }
+      });
     },
 
     rGeral() {
@@ -2275,9 +2418,9 @@ createApp({
       const fut = d.resFuturo || {};
       if ((fut.abertas || 0) > 0 || tW > 0) {
         const futPeriodo = fut.label || 'próximos 30 dias';
-        document.getElementById('kpi-geral-futuro').innerHTML =
+        this.setHtml('kpi-geral-futuro',
           this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, `New, Confirmed, Pending · ${futPeriodo}`) +
-          this.kpiRp('Passantes/pessoas', tW, tWP, pW, pWP, KPI_COL.passante, 'entrada direta · período filtrado');
+          this.kpiRp('Passantes/pessoas', tW, tWP, pW, pWP, KPI_COL.passante, 'entrada direta · período filtrado'));
       }
       const prevLabels = d.periodoAnterior?.labels || [];
       const resPrev = this.alignPrevSeries(d.reservas, d.res_p);
@@ -2350,12 +2493,12 @@ createApp({
       const avgT = this.avgTempoFila(d.tempo, d.sf);
       const avgTP = this.avgTempoFila(d.tem_p, d.sf_p);
       const meta = Array(dc).fill(20);
-      document.getElementById('kpi-fila').innerHTML =
+      this.setHtml('kpi-fila',
         this.kpiRp('Solicitações Fila', tF, tFP, pF, pFP, '#F5A623', 'mesas / pessoas') +
         this.kpiRp('Sentados na Fila', tSF, tSFP, pSF, pSFP, '#22D3A5', 'mesas / pessoas atendidas') +
         this.kpiRp('No-Show', tNF, tNFP, 0, pNFP, '#FF4D6D', 'mesas / pessoas') +
         this.kpi('Tempo Médio', avgT, avgTP, '#A78BFA', `${this.S(avgT)} min`) +
-        this.kpi('Média por mesa', tF ? parseFloat((tFP / tF).toFixed(1)) : 0, pF ? parseFloat((pFP / pF).toFixed(1)) : 0, '#4F8EF7', 'pessoas por solicitação na fila');
+        this.kpi('Média por mesa', tF ? parseFloat((tFP / tF).toFixed(1)) : 0, pF ? parseFloat((pFP / pF).toFixed(1)) : 0, '#4F8EF7', 'pessoas por solicitação na fila'));
       this.tag('t-tempo', avgT, avgTP, true);
       const sf = this.applyStatusFilter(d.sf, d.sf, d.nf);
       const nf = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (this.statusFiltro === 'noshow' ? d.nf : d.nf);
@@ -2385,12 +2528,12 @@ createApp({
       const tA = this.A(d.ar), pA = this.A(d.ar_p);
       const tAP = this.A(d.ar_pes), pAP = this.A(d.ar_pes_p);
       const statusSub = tR ? this.rpSub(tS + tN + tA, tSP + tNP + tAP, 'sentado + no-show + aberto') : 'reservas / pessoas';
-      document.getElementById('kpi-res').innerHTML =
+      this.setHtml('kpi-res',
         this.kpiRp('Total Reservas/pessoas', tR, tP, pR, pP, '#FF6B2B', statusSub) +
         this.kpiRp('Sentados', tS, tSP, pS, pSP, '#22D3A5') +
         this.kpiRp('No-Show', tN, tNP, pN, pNP, '#FF4D6D', 'Status Canceled') +
         this.kpiRp('Em aberto', tA, tAP, pA, pAP, '#F5A623', 'New, Confirmed, Pending') +
-        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? `${this.pct(tS / tR * 100)} mesas sentadas` : '0%');
+        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? `${this.pct(tS / tR * 100)} mesas sentadas` : '0%'));
       const avgNR = this.A(d.nsr_conc) / dc, avgNRP = this.A(d.nsr_conc_p) / dc;
       this.tag('t-noshow', avgNR, avgNRP, true);
       const ar = d.ar || Array(dc).fill(0);
