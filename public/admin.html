@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin · Usuários × Lojas</title>
+<link rel="stylesheet" href="/theme.css"/>
+<script src="/theme-init.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--text);min-height:100vh}
+.wrap{max-width:1200px;margin:0 auto;padding:24px 20px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px}
+.brand{display:flex;align-items:center;gap:10px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.title{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{opacity:.92;color:#fff}
+.panel{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:18px}
+.filters{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}
+@media(max-width:800px){.filters{grid-template-columns:1fr}}
+label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
+input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;outline:none}
+input:focus{border-color:var(--accent)}
+.hint{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.45}
+.meta{font-size:12px;color:var(--muted);margin-bottom:12px}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+th{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);background:var(--bg2);position:sticky;top:0}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--nitem-hover)}
+.user-name{font-weight:700}
+.user-email{color:var(--muted);font-size:11px;margin-top:2px}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(255,107,43,.15);color:var(--accent);border:1px solid rgba(255,107,43,.25)}
+.venue-list{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.venue-tag{font-size:10px;padding:2px 7px;border-radius:99px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.venue-tag.more{color:var(--accent);border-color:rgba(255,107,43,.25)}
+.btn-view{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-view:hover{opacity:.92}
+.btn-view:disabled{opacity:.5;cursor:not-allowed}
+.empty{padding:32px;text-align:center;color:var(--muted);font-size:13px}
+.err{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:var(--red);border-radius:8px;padding:10px 12px;font-size:12px;margin-bottom:14px;display:none}
+.err.on{display:block}
+.pager{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;flex-wrap:wrap}
+.pager-btns{display:flex;gap:8px}
+.loading{opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<button type="button" class="btn-theme theme-toggle-float" id="themeBtn" title="Alternar tema">☀ Claro</button>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="dot"></div>
+      <div>
+        <div class="title">Admin · Usuários × Lojas</div>
+        <div class="sub">Visualize permissões e acesse o painel como outro usuário</div>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="btn" href="/">Voltar ao painel</a>
+      <button type="button" class="btn" id="btnLogout">Sair</button>
+    </div>
+  </div>
+
+  <div id="err" class="err"></div>
+
+  <div class="panel">
+    <div class="filters">
+      <div>
+        <label for="qUser">Buscar usuário</label>
+        <input id="qUser" type="search" placeholder="E-mail, nome ou login (mín. 2 caracteres)"/>
+      </div>
+      <div>
+        <label for="qVenue">Filtrar por loja</label>
+        <input id="qVenue" type="search" placeholder="Nome da loja (lista geral)"/>
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary" id="btnSearch" style="width:100%">Buscar</button>
+      </div>
+    </div>
+    <p class="hint">Sem busca de usuário, lista quem tem ao menos uma loja vinculada em <code>allowedUsers</code>. Use “Ver como” para abrir o dashboard com o acesso daquele usuário.</p>
+  </div>
+
+  <div class="meta" id="meta"></div>
+
+  <div class="table-wrap" id="tableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Usuário</th>
+          <th>Lojas</th>
+          <th style="width:120px">Ação</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div id="empty" class="empty hidden">Nenhum usuário encontrado.</div>
+  </div>
+
+  <div class="pager hidden" id="pager">
+    <span id="pagerInfo"></span>
+    <div class="pager-btns">
+      <button type="button" class="btn" id="btnPrev">Anterior</button>
+      <button type="button" class="btn" id="btnNext">Próxima</button>
+    </div>
+  </div>
+</div>
+<script>
+const tbody = document.getElementById('tbody');
+const empty = document.getElementById('empty');
+const err = document.getElementById('err');
+const meta = document.getElementById('meta');
+const pager = document.getElementById('pager');
+const pagerInfo = document.getElementById('pagerInfo');
+const tableWrap = document.getElementById('tableWrap');
+const qUser = document.getElementById('qUser');
+const qVenue = document.getElementById('qVenue');
+const btnSearch = document.getElementById('btnSearch');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+const themeBtn = document.getElementById('themeBtn');
+const THEME_KEY = 'bi_tagme_theme';
+
+let page = 1;
+let hasMore = false;
+let total = 0;
+let loading = false;
+
+function showError(message) {
+  if (!message) {
+    err.classList.remove('on');
+    err.textContent = '';
+    return;
+  }
+  err.textContent = message;
+  err.classList.add('on');
+}
+
+function escapeHtml(s) {
+  return String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderVenues(venues) {
+  if (!venues.length) return '<span class="venue-tag">Nenhuma loja</span>';
+  const max = 6;
+  const tags = venues.slice(0, max).map((v) =>
+    `<span class="venue-tag" title="${escapeHtml(v.nome)}">${escapeHtml(v.nome)}</span>`,
+  );
+  if (venues.length > max) {
+    tags.push(`<span class="venue-tag more">+${venues.length - max} lojas</span>`);
+  }
+  return `<div class="venue-list">${tags.join('')}</div>`;
+}
+
+function renderRows(items) {
+  if (!items.length) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = items.map((row) => `
+    <tr>
+      <td>
+        <div class="user-name">${escapeHtml(row.name || '—')}</div>
+        <div class="user-email">${escapeHtml(row.email || row.userId)}</div>
+        ${row.role ? `<div class="user-email">${escapeHtml(row.role)}</div>` : ''}
+      </td>
+      <td>
+        <span class="badge">${row.venueCount} loja${row.venueCount === 1 ? '' : 's'}</span>
+        ${renderVenues(row.venues || [])}
+      </td>
+      <td>
+        <button type="button" class="btn-view" data-user-id="${escapeHtml(row.userId)}" ${row.venueCount ? '' : 'disabled title="Usuário sem lojas"'}>
+          Ver como
+        </button>
+      </td>
+    </tr>
+  `).join('');
+
+  tbody.querySelectorAll('.btn-view').forEach((btn) => {
+    btn.addEventListener('click', () => impersonate(btn.dataset.userId, btn));
+  });
+}
+
+async function loadUsers() {
+  if (loading) return;
+  loading = true;
+  tableWrap.classList.add('loading');
+  showError('');
+  try {
+    const params = new URLSearchParams({ page: String(page), limit: '50' });
+    const userQ = qUser.value.trim();
+    const venueQ = qVenue.value.trim();
+    if (userQ.length >= 2) params.set('q', userQ);
+    if (venueQ.length >= 2) params.set('venueQ', venueQ);
+
+    const res = await fetch(`/api/admin/users?${params}`, { credentials: 'same-origin' });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 403) {
+      window.location.href = '/';
+      return;
+    }
+    if (!res.ok) throw new Error(data.error || 'Falha ao carregar usuários');
+
+    total = data.total || 0;
+    hasMore = Boolean(data.hasMore);
+    renderRows(data.items || []);
+
+    const searchingUser = userQ.length >= 2;
+    meta.textContent = searchingUser
+      ? `${data.items?.length || 0} resultado(s) para “${userQ}”`
+      : `${total.toLocaleString('pt-BR')} usuário(s) com lojas vinculadas · página ${page}`;
+
+    if (!searchingUser && total > 50) {
+      pager.classList.remove('hidden');
+      pagerInfo.textContent = `Página ${page} · ${total.toLocaleString('pt-BR')} no total`;
+      btnPrev.disabled = page <= 1;
+      btnNext.disabled = !hasMore;
+    } else {
+      pager.classList.add('hidden');
+    }
+  } catch (ex) {
+    showError(ex.message || 'Erro ao carregar lista');
+    renderRows([]);
+  } finally {
+    loading = false;
+    tableWrap.classList.remove('loading');
+  }
+}
+
+async function impersonate(userId, btn) {
+  if (!userId || btn.disabled) return;
+  btn.disabled = true;
+  btn.textContent = 'Abrindo…';
+  showError('');
+  try {
+    const res = await fetch(`/api/admin/impersonate/${encodeURIComponent(userId)}`, {
+      method: 'POST',
+      credentials: 'same-origin',
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || 'Falha ao impersonar usuário');
+    window.location.href = data.redirect || '/?viewAs=1';
+  } catch (ex) {
+    showError(ex.message || 'Não foi possível abrir como este usuário');
+    btn.disabled = false;
+    btn.textContent = 'Ver como';
+  }
+}
+
+function updateThemeBtn() {
+  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
+  themeBtn.innerHTML = dark ? '☀ Claro' : '☽ Escuro';
+}
+
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem(THEME_KEY, next); } catch (_) { /* ignore */ }
+  updateThemeBtn();
+});
+updateThemeBtn();
+
+btnSearch.addEventListener('click', () => {
+  page = 1;
+  loadUsers();
+});
+qUser.addEventListener('keydown', (e) => { if (e.key === 'Enter') { page = 1; loadUsers(); } });
+qVenue.addEventListener('keydown', (e) => { if (e.key === 'Enter') { page = 1; loadUsers(); } });
+btnPrev.addEventListener('click', () => { if (page > 1) { page -= 1; loadUsers(); } });
+btnNext.addEventListener('click', () => { if (hasMore) { page += 1; loadUsers(); } });
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+  window.location.href = '/login';
+});
+
+fetch('/api/me', { credentials: 'same-origin' })
+  .then((r) => {
+    if (!r.ok) throw new Error('auth');
+    return r.json();
+  })
+  .then((me) => {
+    if (!me.isAdmin) window.location.href = '/';
+    else loadUsers();
+  })
+  .catch(() => { window.location.href = '/login'; });
+</script>
+</body>
+</html>

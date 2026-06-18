@@ -9,7 +9,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
-.card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;width:min(380px,100%);box-shadow:var(--card-shadow)}
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:12px;padding:32px 28px;width:min(400px,100%);box-shadow:var(--card-shadow)}
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:24px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
 .title{font-size:18px;font-weight:800;letter-spacing:-.3px}
@@ -17,11 +17,15 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px}
 input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:14px;outline:none;margin-bottom:14px}
 input:focus{border-color:var(--accent)}
-button[type=submit]{width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px}
-button[type=submit]:hover{opacity:.92}
-button[type=submit]:disabled{opacity:.5;cursor:not-allowed}
+button[type=submit],.btn-sso{width:100%;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;margin-top:6px;text-decoration:none;display:block;text-align:center}
+button[type=submit]:hover,.btn-sso:hover{opacity:.92}
+button[type=submit]:disabled,.btn-sso:disabled{opacity:.5;cursor:not-allowed}
 .err{background:rgba(255,77,109,.12);border:1px solid rgba(255,77,109,.3);color:var(--red);border-radius:8px;padding:10px 12px;font-size:12px;margin-bottom:14px;display:none}
 .err.on{display:block}
+.sso-note{font-size:11px;color:var(--muted);text-align:center;margin-top:14px;line-height:1.45}
+.legacy{margin-top:22px;padding-top:18px;border-top:1px solid var(--border)}
+.legacy-title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:10px}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -35,20 +39,36 @@ button[type=submit]:disabled{opacity:.5;cursor:not-allowed}
     </div>
   </div>
   <div id="err" class="err"></div>
-  <form id="form">
-    <label for="user">Usuário</label>
-    <input id="user" name="user" type="text" autocomplete="username" required autofocus/>
-    <label for="password">Senha</label>
-    <input id="password" name="password" type="password" autocomplete="current-password" required/>
-    <button type="submit" id="btn">Entrar</button>
-  </form>
+
+  <div id="ssoBlock">
+    <a id="btnSso" class="btn-sso" href="/auth/keycloak/login">Entrar com SSO Tagme</a>
+    <p class="sso-note">Acesso seguro via portal Tagme · você verá apenas as lojas vinculadas à sua conta.</p>
+  </div>
+
+  <div id="legacyBlock" class="legacy hidden">
+    <div class="legacy-title">Acesso local (dev)</div>
+    <form id="form">
+      <label for="user">Usuário</label>
+      <input id="user" name="user" type="text" autocomplete="username"/>
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" autocomplete="current-password"/>
+      <button type="submit" id="btnLegacy">Entrar</button>
+    </form>
+  </div>
 </div>
 <script>
-const form = document.getElementById('form');
 const err = document.getElementById('err');
-const btn = document.getElementById('btn');
 const themeBtn = document.getElementById('themeBtn');
+const legacyBlock = document.getElementById('legacyBlock');
+const form = document.getElementById('form');
+const btnLegacy = document.getElementById('btnLegacy');
 const THEME_KEY = 'bi_tagme_theme';
+
+function showError(message) {
+  if (!message) return;
+  err.textContent = message;
+  err.classList.add('on');
+}
 
 function currentTheme() {
   return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
@@ -69,31 +89,42 @@ themeBtn.addEventListener('click', () => {
 
 updateThemeBtn();
 
+const params = new URLSearchParams(window.location.search);
+showError(params.get('error'));
+
+fetch('/api/auth/config', { credentials: 'same-origin' })
+  .then((r) => r.json())
+  .then((cfg) => {
+    if (!cfg.sso) {
+      document.getElementById('ssoBlock').classList.add('hidden');
+    }
+    if (cfg.legacyAuth) legacyBlock.classList.remove('hidden');
+  })
+  .catch(() => {});
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   err.classList.remove('on');
-  btn.disabled = true;
-  btn.textContent = 'Entrando…';
+  btnLegacy.disabled = true;
+  btnLegacy.textContent = 'Entrando…';
   try {
-    const body = {
-      user: document.getElementById('user').value.trim(),
-      password: document.getElementById('password').value,
-    };
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'same-origin',
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        user: document.getElementById('user').value.trim(),
+        password: document.getElementById('password').value,
+      }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || 'Falha no login');
     window.location.href = '/';
   } catch (ex) {
-    err.textContent = ex.message || 'Usuário ou senha inválidos';
-    err.classList.add('on');
+    showError(ex.message || 'Usuário ou senha inválidos');
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
+    btnLegacy.disabled = false;
+    btnLegacy.textContent = 'Entrar';
   }
 });
 </script>

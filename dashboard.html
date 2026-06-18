@@ -51,6 +51,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .btn-apply:hover{opacity:.9}
 .btn-logout{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:4px}
 .btn-logout:hover{color:var(--text);border-color:var(--red)}
+.btn-admin{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center}
+.btn-admin:hover{color:var(--accent);border-color:var(--accent)}
+.impersonate-banner{background:rgba(245,166,35,.12);border-bottom:1px solid rgba(245,166,35,.28);color:var(--yellow);padding:8px 20px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.impersonate-banner strong{color:var(--text)}
+.impersonate-banner button{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer}
+.impersonate-banner button:hover{border-color:var(--accent);color:var(--accent)}
 .fchip-presets{display:flex;gap:4px}
 .fchip-preset{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
 .fchip-preset:hover{color:var(--text);border-color:var(--accent)}
@@ -315,6 +321,11 @@ canvas{max-height:230px!important}
 <body>
 <div id="app" v-cloak>
 
+<div v-if="impersonating" class="impersonate-banner">
+  <span>Visualizando como <strong>{{ authUser }}</strong> ({{ authEmail }}) · {{ authVenueCount ?? 0 }} loja(s)</span>
+  <button type="button" @click="stopImpersonate">Voltar ao admin</button>
+</div>
+
 <div class="header-wrap">
 <header class="topbar">
   <div class="topbar-brand">
@@ -342,6 +353,7 @@ canvas{max-height:230px!important}
     <button type="button" class="btn-theme btn-theme-topbar" @click="toggleTheme" :title="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'">
       <span v-html="themeIcon()" aria-hidden="true"></span> {{ theme === 'dark' ? 'Claro' : 'Escuro' }}
     </button>
+    <a v-if="isAdmin && !impersonating" href="/admin" class="btn-admin">Admin</a>
     <button type="button" class="btn-logout" @click="logout" title="Sair">{{ authUser }} · Sair</button>
   </div>
 </header>
@@ -981,7 +993,11 @@ createApp({
       periodoLabel: '',
       periodoAnteriorLabel: '',
       metaFonte: 'MongoDB tagme',
-      authUser: 'admin',
+      authUser: 'Usuário',
+      authEmail: '',
+      authVenueCount: null,
+      isAdmin: false,
+      impersonating: false,
       theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
       exportingPdf: false,
       CHS: {},
@@ -1074,10 +1090,16 @@ createApp({
     },
   },
   async mounted() {
+    let me = null;
     if (window.location.protocol !== 'file:') {
       try {
         const { data } = await axios.get(`${API_BASE}/me`);
-        this.authUser = data.user || 'admin';
+        me = data;
+        this.authUser = data.user || data.email || 'Usuário';
+        this.authEmail = data.email || '';
+        this.authVenueCount = data.bypassAcl ? null : (data.venueCount ?? null);
+        this.isAdmin = Boolean(data.isAdmin);
+        this.impersonating = Boolean(data.impersonating);
       } catch {
         window.location.href = '/login';
         return;
@@ -1086,7 +1108,7 @@ createApp({
     this.tick();
     setInterval(this.tick, 30000);
     setInterval(() => { if (!this.loading && this.selectedVenues.length) this.loadData(); }, 300000);
-    this.restoreVenuesFromStorage();
+    this.bootstrapVenuesFromSession(me);
     if (!this.selectedVenues.length) this.filtersOpen = true;
     if (this.selectedVenues.length) await this.loadData();
     else this.loading = false;
@@ -1206,6 +1228,48 @@ createApp({
           this.selectedVenues = parsed;
         }
       } catch (_) { /* ignore */ }
+    },
+
+    bootstrapVenuesFromSession(me) {
+      if (!me || me.bypassAcl) {
+        this.restoreVenuesFromStorage();
+        return;
+      }
+
+      const allowed = Array.isArray(me.venues) ? me.venues : [];
+      if (!allowed.length) {
+        this.selectedVenues = [];
+        this.saveVenuesToStorage();
+        return;
+      }
+
+      const fromSso = new URLSearchParams(window.location.search).get('sso') === '1';
+      const fromViewAs = new URLSearchParams(window.location.search).get('viewAs') === '1';
+      if (fromSso || fromViewAs) {
+        window.history.replaceState({}, '', window.location.pathname);
+      }
+
+      const allowedMap = Object.fromEntries(
+        allowed.map((v) => [v.id, { id: v.id, nome: v.nome, grupoLabel: v.grupoLabel || null }]),
+      );
+      const sortVenues = (list) => [...list].sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+
+      if (fromSso || fromViewAs) {
+        this.selectedVenues = sortVenues(Object.values(allowedMap));
+        this.saveVenuesToStorage();
+        return;
+      }
+
+      this.restoreVenuesFromStorage();
+      const allowedIds = new Set(Object.keys(allowedMap));
+      this.selectedVenues = this.selectedVenues
+        .filter((v) => allowedIds.has(v.id))
+        .map((v) => allowedMap[v.id]);
+
+      if (!this.selectedVenues.length) {
+        this.selectedVenues = sortVenues(Object.values(allowedMap));
+      }
+      this.saveVenuesToStorage();
     },
 
     openFiltersForVenues() {
@@ -1391,9 +1455,22 @@ createApp({
       }[key] || key;
     },
 
+    async stopImpersonate() {
+      try {
+        const { data } = await axios.post(`${API_BASE}/admin/stop-impersonate`);
+        window.location.href = data.redirect || '/admin';
+      } catch (e) {
+        this.error = e.response?.data?.error || e.message || 'Falha ao voltar ao admin';
+      }
+    },
+
     async logout() {
       try {
-        await axios.post(`${API_BASE}/logout`);
+        const { data } = await axios.post(`${API_BASE}/logout`);
+        if (data?.logoutUrl) {
+          window.location.href = data.logoutUrl;
+          return;
+        }
       } catch (_) { /* ignore */ }
       window.location.href = '/login';
     },
@@ -1703,9 +1780,15 @@ createApp({
         this.$nextTick(() => this.render());
         this.loadContext();
       } catch (e) {
+        const status = e.response?.status;
         const msg = e.code === 'ECONNABORTED'
           ? 'Tempo esgotado ao consultar MongoDB. Tente um período menor.'
           : (e.response?.data?.error || e.message || 'Falha ao carregar dados');
+        if (status === 403) {
+          this.selectedVenues = [];
+          this.saveVenuesToStorage();
+          this.filtersOpen = true;
+        }
         this.error = msg;
         this.W = null;
         console.error(e);
