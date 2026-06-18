@@ -84,10 +84,10 @@ tr:hover td{background:var(--nitem-hover)}
         <button type="button" class="btn btn-primary" id="btnSearch" style="width:100%">Buscar</button>
       </div>
     </div>
-    <p class="hint">Sem busca de usuário, lista quem tem ao menos uma loja vinculada em <code>allowedUsers</code>. Use “Ver como” para abrir o dashboard com o acesso daquele usuário.</p>
+    <p class="hint">Busque por usuário (e-mail, nome ou login) e/ou por nome de loja. Nenhum dado é carregado até você clicar em Buscar.</p>
   </div>
 
-  <div class="meta" id="meta"></div>
+  <div class="meta" id="meta">Informe um critério de busca (mín. 2 caracteres) e clique em Buscar.</div>
 
   <div class="table-wrap" id="tableWrap">
     <table>
@@ -100,7 +100,7 @@ tr:hover td{background:var(--nitem-hover)}
       </thead>
       <tbody id="tbody"></tbody>
     </table>
-    <div id="empty" class="empty hidden">Nenhum usuário encontrado.</div>
+    <div id="empty" class="empty">Informe um critério de busca para listar usuários.</div>
   </div>
 
   <div class="pager hidden" id="pager">
@@ -131,6 +131,7 @@ let page = 1;
 let hasMore = false;
 let total = 0;
 let loading = false;
+let hasSearched = false;
 
 function showError(message) {
   if (!message) {
@@ -166,6 +167,9 @@ function renderRows(items) {
   if (!items.length) {
     tbody.innerHTML = '';
     empty.classList.remove('hidden');
+    empty.textContent = hasSearched
+      ? 'Nenhum usuário encontrado.'
+      : 'Informe um critério de busca para listar usuários.';
     return;
   }
   empty.classList.add('hidden');
@@ -195,13 +199,23 @@ function renderRows(items) {
 
 async function loadUsers() {
   if (loading) return;
+  const userQ = qUser.value.trim();
+  const venueQ = qVenue.value.trim();
+  if (userQ.length < 2 && venueQ.length < 2) {
+    showError('Informe ao menos 2 caracteres no usuário ou na loja para buscar.');
+    hasSearched = false;
+    renderRows([]);
+    meta.textContent = 'Informe um critério de busca (mín. 2 caracteres) e clique em Buscar.';
+    pager.classList.add('hidden');
+    return;
+  }
+
+  hasSearched = true;
   loading = true;
   tableWrap.classList.add('loading');
   showError('');
   try {
     const params = new URLSearchParams({ page: String(page), limit: '50' });
-    const userQ = qUser.value.trim();
-    const venueQ = qVenue.value.trim();
     if (userQ.length >= 2) params.set('q', userQ);
     if (venueQ.length >= 2) params.set('venueQ', venueQ);
 
@@ -218,9 +232,13 @@ async function loadUsers() {
     renderRows(data.items || []);
 
     const searchingUser = userQ.length >= 2;
-    meta.textContent = searchingUser
-      ? `${data.items?.length || 0} resultado(s) para “${userQ}”`
-      : `${total.toLocaleString('pt-BR')} usuário(s) com lojas vinculadas · página ${page}`;
+    if (searchingUser && venueQ.length >= 2) {
+      meta.textContent = `${data.items?.length || 0} resultado(s) para “${userQ}” com loja “${venueQ}”`;
+    } else if (searchingUser) {
+      meta.textContent = `${data.items?.length || 0} resultado(s) para “${userQ}”`;
+    } else {
+      meta.textContent = `${total.toLocaleString('pt-BR')} usuário(s) com loja “${venueQ}” · página ${page}`;
+    }
 
     if (!searchingUser && total > 50) {
       pager.classList.remove('hidden');
@@ -292,7 +310,7 @@ fetch('/api/me', { credentials: 'same-origin' })
   })
   .then((me) => {
     if (!me.isAdmin) window.location.href = '/';
-    else loadUsers();
+    else renderRows([]);
   })
   .catch(() => { window.location.href = '/login'; });
 </script>

@@ -7,7 +7,7 @@ const { getDashboard } = require('./lib/dashboardService');
 const { getContextAnalysis } = require('./lib/contextService');
 const { searchVenues, getVenuesByIds } = require('./lib/venuesService');
 const { listUsersWithVenues } = require('./lib/adminService');
-const { resolveUserSessionById } = require('./lib/usersService');
+const { getAllowedVenueIds, resolveUserSessionById } = require('./lib/usersService');
 const {
   LEGACY_AUTH_ENABLED,
   checkLegacyCredentials,
@@ -236,6 +236,8 @@ app.post('/api/admin/impersonate/:userId', requireAdmin, async (req, res) => {
     if (!profile) {
       return res.status(404).json({ error: 'Usuário não encontrado.' });
     }
+    // Sempre todas as lojas do usuário, independente do filtro da listagem admin
+    profile.venueIds = await getAllowedVenueIds(profile.userId);
     const newSession = buildImpersonatedSession(req.session, profile);
     setSession(res, newSession);
     res.json({
