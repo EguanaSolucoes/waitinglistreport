@@ -829,6 +829,22 @@ axios.interceptors.response.use(
 
 const TZ = 'America/Sao_Paulo';
 
+const NF_INT = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 });
+
+function fmtInt(n) {
+  const num = Number(n);
+  if (!Number.isFinite(num)) return '0';
+  return NF_INT.format(Math.round(num));
+}
+
+function fmtDec(n, digits = 1) {
+  const num = Number(n);
+  if (!Number.isFinite(num)) {
+    return new Intl.NumberFormat('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(0);
+  }
+  return new Intl.NumberFormat('pt-BR', { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(num);
+}
+
 function isoHoje() {
   return new Intl.DateTimeFormat('en-CA', { timeZone: TZ }).format(new Date());
 }
@@ -983,7 +999,7 @@ createApp({
     },
     periodoCs() {
       const n = this.W?.dayCount || 0;
-      return n ? `${n} dia${n > 1 ? 's' : ''} · dd/mm/aaaa` : 'Por dia (dd/mm/aaaa)';
+      return n ? `${fmtInt(n)} dia${n > 1 ? 's' : ''} · dd/mm/aaaa` : 'Por dia (dd/mm/aaaa)';
     },
     periodoDiaCs() {
       const n = this.W?.periodo?.dayCount || this.W?.dayCount || 0;
@@ -991,8 +1007,8 @@ createApp({
       const atual = this.periodoLabel || 'período atual';
       const ant = this.periodoAnteriorLabel;
       return ant
-        ? `${n} dia${n > 1 ? 's' : ''} · atual: ${atual} · anterior: ${ant}`
-        : `${n} dia${n > 1 ? 's' : ''} · atual: ${atual}`;
+        ? `${fmtInt(n)} dia${n > 1 ? 's' : ''} · atual: ${atual} · anterior: ${ant}`
+        : `${fmtInt(n)} dia${n > 1 ? 's' : ''} · atual: ${atual}`;
     },
     hasFilaAlert() {
       if (!this.W) return false;
@@ -1014,7 +1030,7 @@ createApp({
       const n = this.selectedVenues.length;
       if (!n) return '';
       if (n === 1) return this.selectedVenues[0].nome;
-      return `${n} lojas selecionadas`;
+      return `${fmtInt(n)} lojas selecionadas`;
     },
     filterSummary() {
       const fmt = (iso) => {
@@ -1030,7 +1046,7 @@ createApp({
       };
       const period = presetLbl[this.periodoPreset] || `${fmt(this.dataInicio)} – ${fmt(this.dataFim)}`;
       const n = this.selectedVenues.length;
-      const venues = n === 0 ? 'sem lojas' : n === 1 ? this.selectedVenues[0].nome : `${n} lojas`;
+      const venues = n === 0 ? 'sem lojas' : n === 1 ? this.selectedVenues[0].nome : `${fmtInt(n)} lojas`;
       return `${period} · ${venues}`;
     },
     pdfVenuesHtml() {
@@ -1086,7 +1102,14 @@ createApp({
     chartLabels() { return this.W?.labels || []; },
     dayCount() { return this.W?.dayCount || 1; },
     HORAS: () => [...Array(24).keys()].map(horaLabelBr),
-    S(n) { return String(Math.round(Number(n) || 0)); },
+    S(n) { return fmtInt(n); },
+    D(n, digits = 1) { return fmtDec(n, digits); },
+    pct(n, digits = 1) { return `${fmtDec(n, digits)}%`; },
+    deltaPct(d) { return `${fmtDec(Math.abs(Number(d) || 0), 1)}%`; },
+    deltaSigned(d) {
+      const n = Number(d) || 0;
+      return `${n > 0 ? '+' : ''}${fmtDec(n, 1)}%`;
+    },
     escapeHtml(s) {
       return String(s ?? '')
         .replace(/&/g, '&amp;')
@@ -1313,7 +1336,7 @@ createApp({
         const pct = total ? Math.round((val / total) * 100) : 0;
         const d = this.dp(val, prv);
         const up = d >= 0;
-        return `<div class="ocard"><div class="ocard-lbl">${lbl}</div><div class="ocard-num" style="color:${colors[i]}">${this.rp(val, pes)}</div><div class="ocard-pct">${pct}% do total (res.)</div><div class="ocard-sub" style="color:${up ? 'var(--green)' : 'var(--red)'}">${prv ? (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs ant.' : '—'}</div></div>`;
+        return `<div class="ocard"><div class="ocard-lbl">${lbl}</div><div class="ocard-num" style="color:${colors[i]}">${this.rp(val, pes)}</div><div class="ocard-pct">${pct}% do total (res.)</div><div class="ocard-sub" style="color:${up ? 'var(--green)' : 'var(--red)'}">${prv ? (up ? '▲' : '▼') + this.deltaPct(d) + ' vs ant.' : '—'}</div></div>`;
       }).join('');
     },
 
@@ -1362,7 +1385,7 @@ createApp({
         feriado: 'Feriados',
         comemorativo: 'Datas comemorativas',
         evento: 'Eventos (esporte/cultura)',
-        chuva: `Chuva forte (≥${this.CTX?.sources?.rainThresholdMm || 10} mm)`,
+        chuva: `Chuva forte (≥${fmtDec(this.CTX?.sources?.rainThresholdMm || 10, 1)} mm)`,
         fim_semana: 'Fim de semana',
         especial: 'Qualquer dia especial',
       }[key] || key;
@@ -1452,7 +1475,7 @@ createApp({
         ? `Comparativo com período anterior: <strong style="color:${text}">${this.escapeHtml(this.periodoAnteriorLabel)}</strong>`
         : '';
       const dias = this.W?.dayCount || this.W?.periodo?.dayCount || 0;
-      const diasTxt = dias ? `${dias} dia${dias > 1 ? 's' : ''} analisados` : '';
+      const diasTxt = dias ? `${fmtInt(dias)} dia${dias > 1 ? 's' : ''} analisados` : '';
 
       const head = document.createElement('div');
       head.className = 'pdf-export-head';
@@ -1463,7 +1486,7 @@ createApp({
           <div><strong style="color:${text}">Período:</strong> ${this.escapeHtml(periodo)}${this.dataInicio && this.dataFim ? ` <span style="color:${muted}">(${this.dataInicio} → ${this.dataFim})</span>` : ''}</div>
           ${comparativo ? `<div style="margin-top:4px">${comparativo}</div>` : ''}
           ${diasTxt ? `<div style="margin-top:4px">${diasTxt}</div>` : ''}
-          <div style="margin-top:8px"><strong style="color:${text}">Lojas (${this.selectedVenues.length}):</strong></div>
+          <div style="margin-top:8px"><strong style="color:${text}">Lojas (${fmtInt(this.selectedVenues.length)}):</strong></div>
           <div class="pdf-export-venues">${this.pdfVenuesHtml}</div>
           <div style="margin-top:10px;font-size:10px;color:${muted}">Gerado em ${this.escapeHtml(this.footerTs || formatDateTimeBr(new Date()) + ' (BRT)')}</div>
         </div>
@@ -1729,11 +1752,11 @@ createApp({
       const dv = this.rankDelta(val, prev);
       const up = dv == null ? null : dv >= 0;
       const pb = maxVal ? Math.round(val / maxVal * 100) : 0;
-      const share = totalVal ? ((val / totalVal) * 100).toFixed(1) : '0.0';
+      const share = totalVal ? fmtDec((val / totalVal) * 100, 1) : '0,0';
       const meta = [u.grupo, `${share}% do total`].filter(Boolean).join(' · ');
       const deltaHtml = dv == null
         ? '<span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span>'
-        : `<span class="rdelta" style="background:${up ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${up ? '#22D3A5' : '#FF4D6D'}">${up ? '▲' : '▼'}${Math.abs(dv).toFixed(1)}%</span>`;
+        : `<span class="rdelta" style="background:${up ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${up ? '#22D3A5' : '#FF4D6D'}">${up ? '▲' : '▼'}${this.deltaPct(dv)}</span>`;
       const subLine = cfg.mode === 'growth' ? `ant. ${this.S(prev)}` : 'res. / pess.';
       return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${this.rp(mesas, pessoas)}</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%"></div></div></div>`;
     },
@@ -1792,6 +1815,15 @@ createApp({
         backgroundColor: t.tooltipBg, borderColor: t.tooltipBorder, borderWidth: 1,
         titleColor: t.tooltipTitle, bodyColor: t.tooltipBody, padding: 10,
         titleFont: { size: 12, weight: '700' }, bodyFont: { size: 11 },
+        callbacks: {
+          label: (ctx) => {
+            let label = ctx.dataset.label || '';
+            if (label) label += ': ';
+            const v = ctx.parsed.y ?? ctx.parsed.x ?? ctx.raw;
+            label += typeof v === 'number' ? fmtInt(v) : v;
+            return label;
+          },
+        },
       };
     },
 
@@ -1834,7 +1866,7 @@ createApp({
         plugins: { legend: { display: false }, tooltip: this.darkTooltip() },
         scales: {
           x: { grid: { color: t.grid }, ticks: { color: t.tick, font: { size: 11 } }, border: { display: false } },
-          y: { grid: { color: t.grid }, ticks: { color: t.tick, font: { size: 11 } }, border: { display: false } },
+          y: { grid: { color: t.grid }, ticks: { color: t.tick, font: { size: 11 }, callback: (v) => fmtInt(v) }, border: { display: false } },
         },
       };
     },
@@ -1873,7 +1905,7 @@ createApp({
         for (let d = 0; d < 7; d++) {
           const v = data[d]?.[h] || 0;
           const t = max > 0 ? v / max : 0;
-          const tip = `${HEATMAP_DOW[d]} ${h}h · média ${v}`;
+          const tip = `${HEATMAP_DOW[d]} ${h}h · média ${fmtInt(v)}`;
           rows += `<div class="hh-cell" style="background:${heatColor(t)}" title="${tip}" aria-label="${tip}"></div>`;
         }
         rows += '</div>';
@@ -2052,12 +2084,13 @@ createApp({
     kpi(lbl, val, prv, col, sub = '') {
       const d = this.dp(val, prv);
       const up = d >= 0;
-      const ds = prv ? (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs período ant.' : '—';
-      return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col}">${this.S(val)}</div><div class="kdelta ${prv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div>${sub ? `<div class="ksub">${sub}</div>` : ''}</div>`;
+      const ds = prv ? (up ? '▲' : '▼') + this.deltaPct(d) + ' vs período ant.' : '—';
+      const num = Math.abs(Number(val) - Math.round(Number(val) || 0)) > 1e-6 ? this.D(val) : this.S(val);
+      return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col}">${num}</div><div class="kdelta ${prv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div>${sub ? `<div class="ksub">${sub}</div>` : ''}</div>`;
     },
 
     rp(res, pes) {
-      return `${this.S(res)}/${this.S(pes)}`;
+      return `${this.S(res)} / ${this.S(pes)}`;
     },
 
     rpSub(res, pes, extra = '') {
@@ -2080,7 +2113,7 @@ createApp({
     kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '') {
       const d = this.dp(res, resPrv);
       const up = d >= 0;
-      const ds = resPrv ? (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs período ant. (res.)' : '—';
+      const ds = resPrv ? (up ? '▲' : '▼') + this.deltaPct(d) + ' vs período ant. (res.)' : '—';
       const subLine = sub || 'reservas / pessoas';
       return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col};font-size:1.35rem;line-height:1.2">${this.rp(res, pes)}</div><div class="kdelta ${resPrv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div><div class="ksub">${subLine}</div></div>`;
     },
@@ -2091,7 +2124,7 @@ createApp({
       const d = this.dp(val, prv);
       const up = d >= 0;
       const good = inv ? !up : up;
-      node.textContent = (up ? '▲' : '▼') + Math.abs(d).toFixed(1) + '% vs ant.';
+      node.textContent = (up ? '▲' : '▼') + this.deltaPct(d) + ' vs ant.';
       node.className = 'ctag ' + (good ? 'tg' : 'tr');
     },
 
@@ -2234,7 +2267,7 @@ createApp({
         this.kpiRp('Solicitações Fila', tF, tFP, pF, pFP, '#F5A623', 'mesas / pessoas') +
         this.kpiRp('Sentados na Fila', tSF, tSFP, pSF, pSFP, '#22D3A5', 'mesas / pessoas atendidas') +
         this.kpiRp('No-Show', tNF, tNFP, 0, pNFP, '#FF4D6D', 'mesas / pessoas') +
-        this.kpi('Tempo Médio', avgT, avgTP, '#A78BFA', avgT + ' min') +
+        this.kpi('Tempo Médio', avgT, avgTP, '#A78BFA', `${this.S(avgT)} min`) +
         this.kpi('Média por mesa', tF ? parseFloat((tFP / tF).toFixed(1)) : 0, pF ? parseFloat((pFP / pF).toFixed(1)) : 0, '#4F8EF7', 'pessoas por solicitação na fila');
       this.tag('t-tempo', avgT, avgTP, true);
       const sf = this.applyStatusFilter(d.sf, d.sf, d.nf);
@@ -2270,7 +2303,7 @@ createApp({
         this.kpiRp('Sentados', tS, tSP, pS, pSP, '#22D3A5') +
         this.kpiRp('No-Show', tN, tNP, pN, pNP, '#FF4D6D', 'Status Canceled') +
         this.kpiRp('Em aberto', tA, tAP, pA, pAP, '#F5A623', 'New, Confirmed, Pending') +
-        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? (tS / tR * 100).toFixed(1) + '% mesas sentadas' : '0%');
+        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? `${this.pct(tS / tR * 100)} mesas sentadas` : '0%');
       const avgNR = this.A(d.nsr_conc) / dc, avgNRP = this.A(d.nsr_conc_p) / dc;
       this.tag('t-noshow', avgNR, avgNRP, true);
       const ar = d.ar || Array(dc).fill(0);
@@ -2343,7 +2376,7 @@ createApp({
                   const u = chartUnits[ctx.dataIndex];
                   if (!u) return '';
                   const dr = this.rankDelta(u.res, u.res_p);
-                  return dr == null ? '' : `Δ reservas: ${dr > 0 ? '+' : ''}${dr.toFixed(1)}%`;
+                  return dr == null ? '' : `Δ reservas: ${this.deltaSigned(dr)}`;
                 },
               },
             },
@@ -2365,10 +2398,10 @@ createApp({
       const evento = c.groups?.find((g) => g.key === 'evento');
       document.getElementById('kpi-ctx').innerHTML =
         this.kpiRp('Média diária', Math.round(b.avgReservas), Math.round(b.avgPessoas || 0), 0, 0, '#FF6B2B', 'reservas / pessoas no período') +
-        this.kpiRp('Dias normais', Math.round(normal?.avgReservas || 0), Math.round(normal?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#4F8EF7', `${normal?.dayCount || 0} dias`) +
-        this.kpiRp('Dias especiais', Math.round(especial?.avgReservas || 0), Math.round(especial?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#A78BFA', `${especial?.dayCount || 0} dias`) +
-        this.kpiRp('Dias de chuva', Math.round(chuva?.avgReservas || 0), Math.round(chuva?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#22D3A5', `${chuva?.dayCount || 0} dias`) +
-        this.kpiRp('Dias c/ evento', Math.round(evento?.avgReservas || 0), Math.round(evento?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#F5A623', `${evento?.dayCount || 0} dias`);
+        this.kpiRp('Dias normais', Math.round(normal?.avgReservas || 0), Math.round(normal?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#4F8EF7', `${this.S(normal?.dayCount || 0)} dias`) +
+        this.kpiRp('Dias especiais', Math.round(especial?.avgReservas || 0), Math.round(especial?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#A78BFA', `${this.S(especial?.dayCount || 0)} dias`) +
+        this.kpiRp('Dias de chuva', Math.round(chuva?.avgReservas || 0), Math.round(chuva?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#22D3A5', `${this.S(chuva?.dayCount || 0)} dias`) +
+        this.kpiRp('Dias c/ evento', Math.round(evento?.avgReservas || 0), Math.round(evento?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#F5A623', `${this.S(evento?.dayCount || 0)} dias`);
 
       const geo = c.geo || {};
       const regionPlace = geo.shortLabel || geo.region?.display || '—';
@@ -2424,10 +2457,10 @@ createApp({
                   const g = c.groups[i];
                   if (!g) return '';
                   return [
-                    `Dias: ${g.dayCount}`,
-                    `Reservas: ${g.avgReservas} · Pessoas: ${g.avgPessoas || 0}`,
-                    `Δ vs média: ${g.deltaVsBaselinePct > 0 ? '+' : ''}${g.deltaVsBaselinePct}%`,
-                    `Fila média: ${g.avgFila} mesas · ${g.avgFilaPessoas || 0} pess.`,
+                    `Dias: ${fmtInt(g.dayCount)}`,
+                    `Reservas: ${fmtDec(g.avgReservas, 1)} · Pessoas: ${fmtDec(g.avgPessoas || 0, 1)}`,
+                    `Δ vs média: ${this.deltaSigned(g.deltaVsBaselinePct)}`,
+                    `Fila média: ${fmtDec(g.avgFila, 1)} mesas · ${fmtDec(g.avgFilaPessoas || 0, 1)} pess.`,
                   ];
                 },
               },
@@ -2480,9 +2513,9 @@ createApp({
                   if (!d) return '';
                   const lines = [];
                   if (d.tags.length) lines.push(...d.tags.map((t) => `• ${t.name}`));
-                  if (d.weather) lines.push(`Clima (${regionPlace}): ${d.weather.label || '—'} · ${d.weather.precipMm} mm · máx ${d.weather.tempMaxC ?? '—'}°C`);
-                  lines.push(`Reservas: ${d.reservas} · Pessoas: ${d.pessoas || 0}`);
-                  lines.push(`Δ vs média: ${d.deltaReservasPct > 0 ? '+' : ''}${d.deltaReservasPct}%`);
+                  if (d.weather) lines.push(`Clima (${regionPlace}): ${d.weather.label || '—'} · ${fmtDec(d.weather.precipMm, 1)} mm · máx ${d.weather.tempMaxC ?? '—'}°C`);
+                  lines.push(`Reservas: ${fmtInt(d.reservas)} · Pessoas: ${fmtInt(d.pessoas || 0)}`);
+                  lines.push(`Δ vs média: ${this.deltaSigned(d.deltaReservasPct)}`);
                   return lines;
                 },
               },
@@ -2500,10 +2533,10 @@ createApp({
           hlNode.innerHTML = `<table class="dtable"><thead><tr><th>Data</th><th>Fatores</th><th>Reservas / Pessoas</th><th>vs média</th><th>Leitura</th></tr></thead><tbody>${hl.map((d) => {
             const tags = d.tags.map((t) => `<span class="${this.ctxTagClass(t.impact)}">${t.name}</span>`).join('');
             const rain = d.weather?.isRainy && !d.tags.some((t) => t.type === 'clima')
-              ? `<span class="${this.ctxTagClass('negative')}">Chuva ${d.weather.precipMm} mm</span>` : '';
+              ? `<span class="${this.ctxTagClass('negative')}">Chuva ${fmtDec(d.weather.precipMm, 1)} mm</span>` : '';
             const delta = d.deltaReservasPct;
             const deltaCls = delta > 5 ? 'color:#22D3A5' : delta < -5 ? 'color:#FF4D6D' : 'color:var(--muted)';
-            return `<tr><td><strong>${d.label}</strong><div style="font-size:10px;color:var(--muted)">${d.weekday}</div></td><td>${tags}${rain}</td><td>${this.rp(d.reservas, d.pessoas || 0)}</td><td style="${deltaCls};font-weight:700">${delta > 0 ? '+' : ''}${delta}%</td><td style="color:var(--muted);max-width:280px">${d.narrative}</td></tr>`;
+            return `<tr><td><strong>${d.label}</strong><div style="font-size:10px;color:var(--muted)">${d.weekday}</div></td><td>${tags}${rain}</td><td>${this.rp(d.reservas, d.pessoas || 0)}</td><td style="${deltaCls};font-weight:700">${this.deltaSigned(delta)}</td><td style="color:var(--muted);max-width:280px">${d.narrative}</td></tr>`;
           }).join('')}</tbody></table>`;
         }
       }
@@ -2511,7 +2544,7 @@ createApp({
       const srcNode = document.getElementById('ctx-sources');
       if (srcNode && c.sources) {
         const s = c.sources;
-        srcNode.innerHTML = `Fontes: clima <strong>${s.clima}</strong> · feriados <strong>${s.feriados}</strong> · eventos <strong>${s.eventos}</strong>${geo.description ? `<br>Chuva forte = precipitação ≥ ${s.rainThresholdMm} mm/dia na região acima.` : ''}${s.weatherError ? ` · <span style="color:#FF4D6D">Clima indisponível: ${s.weatherError}</span>` : ''}`;
+        srcNode.innerHTML = `Fontes: clima <strong>${s.clima}</strong> · feriados <strong>${s.feriados}</strong> · eventos <strong>${s.eventos}</strong>${geo.description ? `<br>Chuva forte = precipitação ≥ ${fmtDec(s.rainThresholdMm, 1)} mm/dia na região acima.` : ''}${s.weatherError ? ` · <span style="color:#FF4D6D">Clima indisponível: ${s.weatherError}</span>` : ''}`;
       }
     },
   },
