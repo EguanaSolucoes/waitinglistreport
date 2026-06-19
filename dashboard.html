@@ -61,6 +61,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .fchip-preset{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
 .fchip-preset:hover{color:var(--text);border-color:var(--accent)}
 .fchip-preset.on{background:rgba(255,107,43,.12);border-color:var(--accent);color:var(--accent)}
+.fchip-preset:disabled{opacity:.45;cursor:not-allowed}
 .filter-field{display:flex;flex-direction:column;gap:8px;width:100%}
 .filter-field-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
 .filter-period-btns{display:flex;gap:6px;flex-wrap:wrap}
@@ -389,11 +390,11 @@ canvas{max-height:230px!important}
       <div class="filter-field">
         <div class="filter-field-label">Período</div>
         <div class="filter-period-btns">
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'hoje' }" @click="setPeriodoPreset('hoje')">Hoje</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '7d' }" @click="setPeriodoPreset('7d')">7 dias</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '15d' }" @click="setPeriodoPreset('15d')">15 dias</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes' }" @click="setPeriodoPreset('mes')">Mês atual</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'custom' }" @click="setPeriodoPreset('custom')">Personalizado</button>
+          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'hoje' }" :disabled="loading" @click="setPeriodoPreset('hoje')">Hoje</button>
+          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '7d' }" :disabled="loading" @click="setPeriodoPreset('7d')">7 dias</button>
+          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '15d' }" :disabled="loading" @click="setPeriodoPreset('15d')">15 dias</button>
+          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes' }" :disabled="loading" @click="setPeriodoPreset('mes')">Mês atual</button>
+          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'custom' }" :disabled="loading" @click="setPeriodoPreset('custom')">Personalizado</button>
         </div>
         <div v-if="periodoPreset === 'custom'" class="filter-custom-dates">
           <div class="fchip">
@@ -407,7 +408,7 @@ canvas{max-height:230px!important}
         </div>
       </div>
       <div class="filter-actions">
-        <button class="btn-apply" @click="applyFilters" :disabled="loading">Aplicar</button>
+        <button class="btn-apply" @click="applyFilters" :disabled="loading">{{ loading ? 'Carregando…' : 'Aplicar' }}</button>
       </div>
     </div>
   </div>
@@ -471,7 +472,7 @@ canvas{max-height:230px!important}
   </div>
 </div>
 
-<div v-if="loading && !W" class="overlay"><div class="overlay-box"><div class="spinner"></div><div style="color:var(--muted);font-size:13px">Consultando MongoDB…</div></div></div>
+<div v-if="loading" class="overlay"><div class="overlay-box"><div class="spinner"></div><div style="color:var(--muted);font-size:13px">{{ loadingMessage }}</div></div></div>
 
 <div class="shell">
 <nav class="sidenav">
@@ -525,15 +526,21 @@ canvas{max-height:230px!important}
   <div v-if="hasBlocoFuturo" class="kpi-block">
     <div class="kgrid" id="kpi-geral-futuro"></div>
   </div>
+  <div v-if="hasFuturoChart" class="slabel"><div class="sl-text">Reservas futuras</div><div class="sl-line"></div><div class="sl-tag">{{ futuroPeriodoTag }}</div></div>
+  <div v-if="hasFuturoChart" class="card gf">
+    <div class="ch"><div><div class="ct">Em aberto por Dia · Futuro</div><div class="cs">New, Confirmed, Pending · reservas e pessoas · atual vs anterior</div></div><span class="ctag" id="t-futuro-dia">—</span></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas em aberto</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.5"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas em aberto</div><div class="wli"><div class="wld" style="border-color:#4F8EF7;opacity:.5"></div>Pessoas ant.</div></div>
+    <canvas id="ch-futuro-dia"></canvas>
+  </div>
   <div class="slabel"><div class="sl-text">Perfil de clientes</div><div class="sl-line"></div><div class="sl-tag">1ª visita na unidade vs cliente recorrente</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Clientes nas Reservas</div><div class="cs">Mesas por dia · 1ª visita vs recorrente</div></div></div>
+      <div class="ch"><div><div class="ct">Clientes nas Reservas</div><div class="cs">Reservas por dia · 1ª visita vs recorrente</div></div></div>
       <div class="wleg"><div class="wli"><div class="wls" style="background:#22D3A5"></div>1ª visita</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Recorrente</div></div>
       <canvas id="ch-geral-cliente-res"></canvas>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Clientes na Fila</div><div class="cs">Mesas por dia · 1ª visita vs recorrente</div></div></div>
+      <div class="ch"><div><div class="ct">Clientes na Fila</div><div class="cs">Reservas por dia · 1ª visita vs recorrente</div></div></div>
       <div class="wleg"><div class="wli"><div class="wls" style="background:#22D3A5"></div>1ª visita</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Recorrente</div></div>
       <canvas id="ch-geral-cliente-fila"></canvas>
     </div>
@@ -561,6 +568,12 @@ canvas{max-height:230px!important}
       <canvas id="ch-fila-g"></canvas>
     </div>
   </div>
+  <div class="slabel"><div class="sl-text">Tempo de espera na fila</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Tempo Médio de Espera</div><div class="cs">Minutos · média ponderada por sentados · atual vs anterior</div></div><span class="ctag" id="t-tempo-g">—</span></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#F5A623"></div>Atual</div><div class="wli"><div class="wld" style="border-color:#F5A623;opacity:.5"></div>Anterior</div><div class="wli"><div class="wls" style="background:#FF4D6D"></div>Meta 20min</div></div>
+    <canvas id="ch-geral-tempo"></canvas>
+  </div>
   <div class="slabel"><div class="sl-text">Distribuição por horário</div><div class="sl-line"></div><div class="sl-tag">Mapa de calor · média por dia da semana</div></div>
   <div class="g2">
     <div class="card">
@@ -575,8 +588,8 @@ canvas{max-height:230px!important}
   <div class="slabel"><div class="sl-text">Passantes · entrada direta</div><div class="sl-line"></div><div class="sl-tag">Sem fila digital</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Mesas e pessoas · atual vs anterior</div></div><span class="ctag" id="t-wi-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:#8B5CF6"></div>Mesas atual</div><div class="wli"><div class="wld" style="border-color:#8B5CF6;opacity:.5"></div>Mesas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
+      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Reservas e pessoas · atual vs anterior</div></div><span class="ctag" id="t-wi-g">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#8B5CF6"></div>Reservas atual</div><div class="wli"><div class="wld" style="border-color:#8B5CF6;opacity:.5"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
       <canvas id="ch-wi-g"></canvas>
     </div>
     <div class="card">
@@ -634,19 +647,19 @@ canvas{max-height:230px!important}
     <div id="ch-fi-hora" class="hora-heatmap-host"></div>
   </div>
   <div class="card gf" style="margin-top:14px">
-    <div class="ch"><div><div class="ct">Mesas vs Pessoas na Fila</div><div class="cs">Ocorrências da fila · atual vs anterior</div></div></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Mesas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Mesas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
+    <div class="ch"><div><div class="ct">Reservas vs Pessoas na Fila</div><div class="cs">Ocorrências da fila · atual vs anterior</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
     <canvas id="ch-fi-ocorr"></canvas>
   </div>
   <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Sentado vs No-show por mês</div></div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Solicitações por Status na Fila (Mesa)</div><div class="cs">Modelo CIATC · por mês</div></div></div>
+    <div class="ch"><div><div class="ct">Solicitações por Status na Fila (Reserva)</div><div class="cs">Modelo CIATC · por mês</div></div></div>
     <canvas id="ch-fi-mes-status"></canvas>
   </div>
   <div class="slabel"><div class="sl-text">Perfil de clientes</div><div class="sl-line"></div><div class="sl-tag">1ª visita na unidade vs recorrente · por customer</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Fila por Perfil</div><div class="cs">Mesas por dia · atual</div></div></div>
+      <div class="ch"><div><div class="ct">Fila por Perfil</div><div class="cs">Reservas por dia · atual</div></div></div>
       <canvas id="ch-fi-cliente-dia"></canvas>
     </div>
     <div class="card">
@@ -674,8 +687,8 @@ canvas{max-height:230px!important}
   </div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Pessoas vs Mesas por Dia</div><div class="cs">Tamanho médio dos grupos · atual vs anterior</div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Mesas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Mesas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
+      <div class="ch"><div><div class="ct">Pessoas vs Reservas por Dia</div><div class="cs">Tamanho médio dos grupos · atual vs anterior</div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas atual</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas atual</div></div>
       <canvas id="ch-re-pessoas"></canvas>
     </div>
     <div class="card">
@@ -691,7 +704,7 @@ canvas{max-height:230px!important}
   <div class="slabel"><div class="sl-text">Perfil de clientes</div><div class="sl-line"></div><div class="sl-tag">1ª visita na unidade vs recorrente · por customer</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Reservas por Perfil</div><div class="cs">Mesas por dia · atual</div></div></div>
+      <div class="ch"><div><div class="ct">Reservas por Perfil</div><div class="cs">Reservas por dia · atual</div></div></div>
       <canvas id="ch-re-cliente-dia"></canvas>
     </div>
     <div class="card">
@@ -701,11 +714,11 @@ canvas{max-height:230px!important}
   </div>
   <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Status por mês</div></div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Solicitações por Status da Reserva (Mesa)</div><div class="cs">Sentado · No-show · Em aberto (New, Confirmed, Pending)</div></div></div>
+    <div class="ch"><div><div class="ct">Solicitações por Status da Reserva (Reserva)</div><div class="cs">Sentado · No-show · Em aberto (New, Confirmed, Pending)</div></div></div>
     <canvas id="ch-re-mes-status"></canvas>
   </div>
   <div class="card gf" style="margin-top:14px">
-    <div class="ch"><div><div class="ct">Ocorrências da Reserva</div><div class="cs">Mesas vs Pessoas · por dia</div></div></div>
+    <div class="ch"><div><div class="ct">Ocorrências da Reserva</div><div class="cs">Reservas vs Pessoas · por dia</div></div></div>
     <canvas id="ch-re-ocorr"></canvas>
   </div>
 </div>
@@ -715,13 +728,18 @@ canvas{max-height:230px!important}
   <div class="page-header"><div><div class="page-title">Visão Mensal</div><div class="page-sub">{{ periodoSubtitulo }} · Resumo executivo</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('mensal')" :disabled="exportingPdf || !canExportTab('mensal')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Reservas por Mês</div><div class="cs">Mesas e pessoas · atual vs anterior</div></div></div>
+      <div class="ch"><div><div class="ct">Reservas por Mês</div><div class="cs">Reservas e pessoas · atual vs anterior</div></div></div>
       <canvas id="ch-mes-res"></canvas>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Fila de Espera por Mês</div><div class="cs">Mesas e pessoas · atual vs anterior</div></div></div>
+      <div class="ch"><div><div class="ct">Fila de Espera por Mês</div><div class="cs">Reservas e pessoas · atual vs anterior</div></div></div>
       <canvas id="ch-mes-fila"></canvas>
     </div>
+  </div>
+  <div class="card gf">
+    <div class="ch"><div><div class="ct">Tempo Médio de Espera na Fila</div><div class="cs">Minutos por mês · atual vs anterior · meta 20min</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#F5A623"></div>Atual</div><div class="wli"><div class="wld" style="border-color:#F5A623;opacity:.5"></div>Anterior</div><div class="wli"><div class="wls" style="background:#FF4D6D"></div>Meta 20min</div></div>
+    <canvas id="ch-mes-tempo"></canvas>
   </div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Reservas por Mês por Origem</div><div class="cs">Widget · Manual · Google · Parceiros</div></div></div>
@@ -770,14 +788,20 @@ canvas{max-height:230px!important}
       <div class="rlist" id="rk-worst"></div>
     </div>
   </div>
-  <div class="slabel" style="margin-top:6px"><div class="sl-text">Líderes por volume</div><div class="sl-line"></div><div class="sl-tag">Top 10 reservas e fila</div></div>
-  <div class="g2">
-    <div class="card"><div class="ch"><div><div class="ct">📅 Reservas</div><div class="cs">mesas / pessoas · participação</div></div></div><div class="rlist" id="rk-res-vol"></div></div>
-    <div class="card"><div class="ch"><div><div class="ct">⏳ Fila de Espera</div><div class="cs">mesas / pessoas · participação</div></div></div><div class="rlist" id="rk-fila-vol"></div></div>
+  <div v-if="hasTempoRanking" class="slabel" style="margin-top:6px"><div class="sl-text">Tempo médio de espera na fila</div><div class="sl-line"></div><div class="sl-tag">Quanto menor o tempo (&gt; 0), melhor</div></div>
+  <div v-if="hasTempoRanking" class="g2">
+    <div class="card">
+      <div class="rk-section-hd"><span class="rk-badge best">Top 10 melhores</span><span class="cs">Menor tempo médio de espera</span></div>
+      <div class="rlist" id="rk-tempo-best"></div>
+    </div>
+    <div class="card">
+      <div class="rk-section-hd"><span class="rk-badge worst">Top 10 piores</span><span class="cs">Maior tempo médio de espera</span></div>
+      <div class="rlist" id="rk-tempo-worst"></div>
+    </div>
   </div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Comparativo · Top 10 por reservas</div><div class="cs">Mesas e pessoas · atual vs anterior</div></div></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas (mesas)</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas</div><div class="wli"><div class="wls" style="background:#F5A623"></div>Fila (mesas)</div></div>
+    <div class="ch"><div><div class="ct">Comparativo · Top 10 por reservas</div><div class="cs">Reservas e pessoas · atual vs anterior</div></div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:#FF6B2B"></div>Reservas</div><div class="wli"><div class="wld" style="border-color:#FF6B2B;opacity:.45"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:#4F8EF7"></div>Pessoas</div><div class="wli"><div class="wls" style="background:#F5A623"></div>Fila (reservas)</div></div>
     <canvas id="ch-rk-comp"></canvas>
   </div>
 </div>
@@ -801,7 +825,7 @@ canvas{max-height:230px!important}
   </div>
   <div class="slabel"><div class="sl-text">Série diária com destaques</div><div class="sl-line"></div><div class="sl-tag">Pontos roxos = dia com fator externo</div></div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Reservas e pessoas por dia · contexto</div><div class="cs">Linha tracejada = média de mesas no período</div></div></div>
+    <div class="ch"><div><div class="ct">Reservas e pessoas por dia · contexto</div><div class="cs">Linha tracejada = média de reservas no período</div></div></div>
     <canvas id="ch-ctx-daily"></canvas>
   </div>
   <div class="slabel"><div class="sl-text">Dias com maior impacto</div><div class="sl-line"></div><div class="sl-tag">Feriados · eventos · chuva</div></div>
@@ -1044,6 +1068,18 @@ createApp({
       const tW = this.W ? this.A(this.W.walkin) : 0;
       return abertas > 0 || tW > 0;
     },
+    hasFuturoChart() {
+      const fut = this.W?.resFuturo;
+      return Boolean(fut?.labels?.length && (fut.abertas > 0 || fut.total > 0));
+    },
+    hasTempoRanking() {
+      const units = this.W?.unidades || [];
+      return units.filter((u) => (u.tempo || 0) > 0).length >= 2;
+    },
+    futuroPeriodoTag() {
+      const fut = this.W?.resFuturo;
+      return fut?.label ? `Próximos 30 dias · ${fut.label}` : 'Próximos 30 dias';
+    },
     semDados() {
       if (!this.W) return false;
       const t = this.A(this.W.reservas) + this.A(this.W.fila) + this.A(this.W.sr);
@@ -1095,6 +1131,9 @@ createApp({
     },
     venueResultsPickCount() {
       return this.venueSearchResults.filter((v) => this.venueModalPick[v.id]).length;
+    },
+    loadingMessage() {
+      return this.W ? 'Atualizando dados…' : 'Consultando MongoDB…';
     },
   },
   async mounted() {
@@ -1437,6 +1476,8 @@ createApp({
         this.contextError = null;
         return;
       }
+      const ownsLoading = !this.loading;
+      if (ownsLoading) this.loading = true;
       try {
         const params = {
           inicio: this.dataInicio,
@@ -1450,6 +1491,8 @@ createApp({
       } catch (e) {
         this.CTX = null;
         this.contextError = e.response?.data?.error || e.message || 'Falha ao carregar fatores externos';
+      } finally {
+        if (ownsLoading) this.loading = false;
       }
     },
 
@@ -1764,6 +1807,7 @@ createApp({
       }
       this.loading = true;
       this.error = null;
+      this.CTX = null;
       try {
         const params = {
           inicio: this.dataInicio,
@@ -1804,8 +1848,9 @@ createApp({
         if (data.meta?.atualizadoEm) {
           this.footerTs = formatDateTimeBr(new Date(data.meta.atualizadoEm)) + ' (BRT)';
         }
-        this.$nextTick(() => this.render());
-        this.loadContext();
+        await this.$nextTick();
+        this.render();
+        await this.loadContext();
       } catch (e) {
         const status = e.response?.status;
         const msg = e.code === 'ECONNABORTED'
@@ -1849,9 +1894,9 @@ createApp({
 
     rankingMetricConfig(metric) {
       const map = {
-        res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'volume', label: 'volume de reservas (mesas)', best: 'Maior volume', worst: 'Menor volume' },
+        res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'volume', label: 'volume de reservas', best: 'Maior volume', worst: 'Menor volume' },
         res_pes: { key: 'res_pes', prev: 'res_pes_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'volume', label: 'volume de pessoas nas reservas', best: 'Mais pessoas', worst: 'Menos pessoas' },
-        fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'volume', label: 'volume na fila (mesas)', best: 'Maior fila', worst: 'Menor fila' },
+        fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'volume', label: 'volume na fila (reservas)', best: 'Maior fila', worst: 'Menor fila' },
         growth_res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de reservas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_pes: { key: 'res_pes', prev: 'res_pes_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de pessoas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'growth', label: 'crescimento da fila vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
@@ -1904,17 +1949,57 @@ createApp({
         : '<div class="rk-empty">Sem dados para este critério.</div>';
     },
 
-    buildVolumeTop10(elId, key, pesKey, prevKey) {
+    rankTempoRow(u, i, maxVal) {
+      const pc = ['gd', 'sv', 'br', ''];
+      const tempo = u.tempo || 0;
+      const prev = u.tempo_p || 0;
+      const dv = prev ? this.dp(tempo, prev) : null;
+      const improved = dv == null ? null : dv <= 0;
+      const pb = maxVal ? Math.round(tempo / maxVal * 100) : 0;
+      const meta = [u.grupo, `${this.S(u.tempo_sf || 0)} sentados`].filter(Boolean).join(' · ');
+      const deltaHtml = dv == null
+        ? '<span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span>'
+        : `<span class="rdelta" style="background:${improved ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${improved ? '#22D3A5' : '#FF4D6D'}">${improved ? '▼' : '▲'}${this.deltaPct(Math.abs(dv))}</span>`;
+      const subLine = prev ? `ant. ${this.S(prev)} min` : 'sem período anterior';
+      return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${this.S(tempo)} min</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%;background:#A78BFA"></div></div></div>`;
+    },
+
+    buildTempoRanking(elId, units, direction) {
       const node = document.getElementById(elId);
       if (!node) return;
-      const units = [...(this.W?.unidades || [])];
-      const sorted = units.sort((a, b) => (b[key] || 0) - (a[key] || 0)).slice(0, 10);
-      const maxVal = Math.max(...sorted.map((u) => u[key] || 0), 1);
-      const totalVal = units.reduce((s, u) => s + (u[key] || 0), 0) || 1;
-      const cfg = { key, prev: prevKey, pes: pesKey, mode: 'volume' };
-      node.innerHTML = sorted.length
-        ? sorted.map((u, i) => this.rankRow(u, i, cfg, maxVal, totalVal)).join('')
-        : '<div class="rk-empty">Sem dados no período.</div>';
+      const list = [...units].filter((u) => (u.tempo || 0) > 0 && (u.tempo_sf || 0) > 0);
+      if (!list.length) {
+        node.innerHTML = '<div class="rk-empty">Sem dados de tempo no período.</div>';
+        return;
+      }
+      const sorted = list.sort((a, b) => (
+        direction === 'best' ? (a.tempo || 0) - (b.tempo || 0) : (b.tempo || 0) - (a.tempo || 0)
+      )).slice(0, 10);
+      const maxVal = Math.max(...sorted.map((u) => u.tempo || 0), 1);
+      node.innerHTML = sorted.map((u, i) => this.rankTempoRow(u, i, maxVal)).join('');
+    },
+
+    mkTempoFilaChart(canvasId, labels, tempo, tempoPrev, seated, seatedPrev, tagId = null) {
+      const LBL = labels || [];
+      const dc = LBL.length;
+      const meta = Array(dc).fill(20);
+      if (tagId) {
+        const avgT = this.avgTempoFila(tempo, seated);
+        const avgTP = this.avgTempoFila(tempoPrev, seatedPrev);
+        this.tag(tagId, avgT, avgTP, true);
+      }
+      this.mk(canvasId, {
+        type: 'line',
+        data: {
+          labels: LBL,
+          datasets: [
+            this.lds('Período', tempo, '#F5A623', false, true),
+            this.lds('Anterior', tempoPrev, '#F5A623', true),
+            this.lds('Meta 20min', meta, '#FF4D6D', true),
+          ],
+        },
+        options: this.bO('Minutos'),
+      });
     },
 
     tick() {
@@ -1967,6 +2052,30 @@ createApp({
                 const c = cur[i] || '—';
                 const p = prev[i] || '—';
                 return `Dia ${dia} de ${cur.length} · atual ${c} · anterior ${p}`;
+              },
+            },
+          },
+        },
+      };
+    },
+
+    futureDayOptions(yL, curLabels, prevLabels) {
+      const base = this.bO(yL);
+      const cur = curLabels || [];
+      const prev = prevLabels || [];
+      return {
+        ...base,
+        plugins: {
+          ...base.plugins,
+          tooltip: {
+            ...this.darkTooltip(),
+            callbacks: {
+              title: (items) => {
+                const i = items[0]?.dataIndex ?? 0;
+                const dia = i + 1;
+                const c = cur[i] || '—';
+                const p = prev[i] || '—';
+                return `Dia ${dia} de ${cur.length} · futuro ${c} · anterior ${p}`;
               },
             },
           },
@@ -2220,7 +2329,7 @@ createApp({
       }
     },
 
-    clienteTipoStackOptions(yLabel = 'Mesas') {
+    clienteTipoStackOptions(yLabel = 'Reservas') {
       const base = this.bO(yLabel);
       return {
         ...base,
@@ -2253,7 +2362,7 @@ createApp({
             { ...this.lds('Recorrentes ant.', this.alignPrevSeries(c.recorrente, p.recorrente), '#4F8EF7', true), type: 'line', order: 0 },
           ],
         },
-        options: this.clienteTipoStackOptions('Mesas'),
+        options: this.clienteTipoStackOptions('Reservas'),
       });
     },
 
@@ -2271,8 +2380,8 @@ createApp({
         data: {
           labels: ['1ª visita', 'Recorrentes'],
           datasets: [
-            this.bds('Mesas período', [c1, c2], '#22D3A5'),
-            this.bds('Mesas anterior', [p1, p2], '#4F8EF7'),
+            this.bds('Reservas período', [c1, c2], '#22D3A5'),
+            this.bds('Reservas anterior', [p1, p2], '#4F8EF7'),
             { ...this.lds('Pessoas período', [c1p, c2p], '#A78BFA'), type: 'line', order: 0 },
           ],
         },
@@ -2318,7 +2427,7 @@ createApp({
       let html = this.kpiRp(totalLbl, total, totalPes, totalPrev, totalPesPrev, KPI_COL.total, totalSub);
       for (const def of GERAL_KPI_OUTCOMES) {
         const o = outcomes[def.key];
-        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'mesas / pessoas');
+        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'reservas / pessoas');
       }
       if (passante) {
         html += this.kpiRp('Passantes/pessoas', passante.res, passante.pes, passante.resPrv, passante.pesPrv, KPI_COL.passante, 'entrada direta');
@@ -2393,8 +2502,8 @@ createApp({
       const tFOP = Math.max(0, tFP - tSFP - tNFP);
       const pFO = Math.max(0, pF - pSF - pNF);
       const pFOP = Math.max(0, pFP - pSFP - pNFP);
-      const resStatusSub = tR ? this.rpSub(tA + tN + tS, tAP + tNP + tSP, 'em aberto + no-show + sentado') : 'mesas / pessoas';
-      const filaStatusSub = tF ? this.rpSub(tFO + tNF + tSF, tFOP + tNFP + tSFP, 'em aberto + no-show + sentado') : 'mesas / pessoas';
+      const resStatusSub = tR ? this.rpSub(tA + tN + tS, tAP + tNP + tSP, 'em aberto + no-show + sentado') : 'reservas / pessoas';
+      const filaStatusSub = tF ? this.rpSub(tFO + tNF + tSF, tFOP + tNFP + tSFP, 'em aberto + no-show + sentado') : 'reservas / pessoas';
       this.renderGeralKpiGroup('kpi-geral-res', {
         totalLbl: 'Total Reservas/pessoas',
         total: tR, totalPes: tP, totalPrev: pR, totalPesPrev: pP,
@@ -2422,6 +2531,27 @@ createApp({
           this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, `New, Confirmed, Pending · ${futPeriodo}`) +
           this.kpiRp('Passantes/pessoas', tW, tWP, pW, pWP, KPI_COL.passante, 'entrada direta · período filtrado'));
       }
+      if (fut.labels?.length && (fut.abertas > 0 || fut.total > 0)) {
+        const futPrevLabels = fut.periodoAnterior?.labels || [];
+        const futAbPrev = this.alignPrevSeries(fut.abertasByDay, fut.abertasByDayPrev);
+        const futAbPesPrev = this.alignPrevSeries(fut.abertasPessoasByDay, fut.abertasPessoasByDayPrev);
+        const tFutAb = this.A(fut.abertasByDay);
+        const tFutAbPrev = this.A(fut.abertasByDayPrev);
+        this.tag('t-futuro-dia', tFutAb, tFutAbPrev);
+        this.mk('ch-futuro-dia', {
+          type: 'line',
+          data: {
+            labels: fut.labels,
+            datasets: [
+              this.lds('Reservas em aberto', fut.abertasByDay, '#FF6B2B', false, true),
+              this.lds('Reservas ant.', futAbPrev, '#FF6B2B', true),
+              this.lds('Pessoas em aberto', fut.abertasPessoasByDay, '#4F8EF7'),
+              this.lds('Pessoas ant.', futAbPesPrev, '#4F8EF7', true),
+            ],
+          },
+          options: this.futureDayOptions('Reservas / Pessoas em aberto', fut.labels, futPrevLabels),
+        });
+      }
       const prevLabels = d.periodoAnterior?.labels || [];
       const resPrev = this.alignPrevSeries(d.reservas, d.res_p);
       const filPrev = this.alignPrevSeries(d.fila, d.fil_p);
@@ -2435,8 +2565,8 @@ createApp({
         data: {
           labels: LBL,
           datasets: [
-            this.lds('Mesas período', d.reservas, '#FF6B2B', false, true),
-            this.lds('Mesas anterior', resPrev, '#FF6B2B', true),
+            this.lds('Reservas período', d.reservas, '#FF6B2B', false, true),
+            this.lds('Reservas anterior', resPrev, '#FF6B2B', true),
             this.lds('Pessoas período', d.pessoas, '#4F8EF7'),
             this.lds('Pessoas anterior', pesPrev, '#4F8EF7', true),
           ],
@@ -2448,8 +2578,8 @@ createApp({
         data: {
           labels: LBL,
           datasets: [
-            this.lds('Mesas período', d.fila, '#F5A623', false, true),
-            this.lds('Mesas anterior', filPrev, '#F5A623', true),
+            this.lds('Reservas período', d.fila, '#F5A623', false, true),
+            this.lds('Reservas anterior', filPrev, '#F5A623', true),
             this.lds('Pessoas período', d.filaPessoas, '#4F8EF7'),
             this.lds('Pessoas anterior', filPesPrev, '#4F8EF7', true),
           ],
@@ -2463,8 +2593,8 @@ createApp({
         data: {
           labels: LBL,
           datasets: [
-            this.lds('Mesas período', d.walkin || [], '#8B5CF6', false, true),
-            this.lds('Mesas anterior', wiPrev, '#8B5CF6', true),
+            this.lds('Reservas período', d.walkin || [], '#8B5CF6', false, true),
+            this.lds('Reservas anterior', wiPrev, '#8B5CF6', true),
             this.lds('Pessoas período', d.walkinPessoas || [], '#4F8EF7'),
             this.lds('Pessoas anterior', wiPesPrev, '#4F8EF7', true),
           ],
@@ -2477,6 +2607,7 @@ createApp({
       this.mkClienteTipoDaily('ch-geral-cliente-fila', LBL, d.clienteFila, d.clienteFila_p);
       this.mkClienteTipoTotal('ch-geral-cliente-res-tot', d.clienteRes, d.clienteRes_p);
       this.mkClienteTipoTotal('ch-geral-cliente-fila-tot', d.clienteFila, d.clienteFila_p);
+      this.mkTempoFilaChart('ch-geral-tempo', LBL, d.tempo, d.tem_p, d.sf, d.sf_p, 't-tempo-g');
     },
 
     rFila() {
@@ -2492,23 +2623,21 @@ createApp({
       const tNFP = this.A(d.nf_pes), pNFP = this.A(d.nf_pes_p);
       const avgT = this.avgTempoFila(d.tempo, d.sf);
       const avgTP = this.avgTempoFila(d.tem_p, d.sf_p);
-      const meta = Array(dc).fill(20);
       this.setHtml('kpi-fila',
-        this.kpiRp('Solicitações Fila', tF, tFP, pF, pFP, '#F5A623', 'mesas / pessoas') +
-        this.kpiRp('Sentados na Fila', tSF, tSFP, pSF, pSFP, '#22D3A5', 'mesas / pessoas atendidas') +
-        this.kpiRp('No-Show', tNF, tNFP, 0, pNFP, '#FF4D6D', 'mesas / pessoas') +
+        this.kpiRp('Solicitações Fila', tF, tFP, pF, pFP, '#F5A623', 'reservas / pessoas') +
+        this.kpiRp('Sentados na Fila', tSF, tSFP, pSF, pSFP, '#22D3A5', 'reservas / pessoas atendidas') +
+        this.kpiRp('No-Show', tNF, tNFP, 0, pNFP, '#FF4D6D', 'reservas / pessoas') +
         this.kpi('Tempo Médio', avgT, avgTP, '#A78BFA', `${this.S(avgT)} min`) +
-        this.kpi('Média por mesa', tF ? parseFloat((tFP / tF).toFixed(1)) : 0, pF ? parseFloat((pFP / pF).toFixed(1)) : 0, '#4F8EF7', 'pessoas por solicitação na fila'));
-      this.tag('t-tempo', avgT, avgTP, true);
+        this.kpi('Média por reserva', tF ? parseFloat((tFP / tF).toFixed(1)) : 0, pF ? parseFloat((pFP / pF).toFixed(1)) : 0, '#4F8EF7', 'pessoas por solicitação na fila'));
       const sf = this.applyStatusFilter(d.sf, d.sf, d.nf);
       const nf = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (this.statusFiltro === 'noshow' ? d.nf : d.nf);
       const sfPes = d.filaPessoasSentadas || Array(dc).fill(0);
       const nfPes = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (d.nf_pes || Array(dc).fill(0));
-      this.mk('ch-fi-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado (mesas)', sf, '#22D3A5'), { ...this.lds('Sentado ant.', d.sf_p, '#22D3A5', true), type: 'line' }, this.bds('No-Show (mesas)', nf, '#FF4D6D'), { ...this.lds('Pessoas sentadas', sfPes, '#4F8EF7', false, true), type: 'line' }, { ...this.lds('Pessoas no-show', nfPes, '#A78BFA', true), type: 'line' }] }, options: this.bO('Quantidade') });
-      this.mk('ch-fi-tempo', { type: 'line', data: { labels: LBL, datasets: [this.lds('Período', d.tempo, '#F5A623', false, true), this.lds('Anterior', d.tem_p, '#F5A623', true), this.lds('Meta 20min', meta, '#FF4D6D', true)] }, options: this.bO('Minutos') });
+      this.mk('ch-fi-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado (reservas)', sf, '#22D3A5'), { ...this.lds('Sentado ant.', d.sf_p, '#22D3A5', true), type: 'line' }, this.bds('No-Show (reservas)', nf, '#FF4D6D'), { ...this.lds('Pessoas sentadas', sfPes, '#4F8EF7', false, true), type: 'line' }, { ...this.lds('Pessoas no-show', nfPes, '#A78BFA', true), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mkTempoFilaChart('ch-fi-tempo', LBL, d.tempo, d.tem_p, d.sf, d.sf_p, 't-tempo');
       this.renderHoraHeatmap('ch-fi-hora', d.hora_heat);
-      this.mk('ch-fi-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Mesas período', d.fila, '#FF6B2B', false, true), this.lds('Mesas ant.', d.fil_p, '#FF6B2B', true), this.lds('Pessoas período', d.filaPessoas, '#4F8EF7')] }, options: this.bO('Quantidade') });
-      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado (mesas)', d.fila_mes_sf, '#22D3A5'), this.bds('No-show (mesas)', d.fila_mes_nf, '#FF4D6D'), { ...this.lds('Pessoas sentadas', d.fila_mes_sf_pes || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', d.fila_mes_nf_pes || [], '#A78BFA', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-fi-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Reservas período', d.fila, '#FF6B2B', false, true), this.lds('Reservas ant.', d.fil_p, '#FF6B2B', true), this.lds('Pessoas período', d.filaPessoas, '#4F8EF7')] }, options: this.bO('Quantidade') });
+      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado (reservas)', d.fila_mes_sf, '#22D3A5'), this.bds('No-show (reservas)', d.fila_mes_nf, '#FF4D6D'), { ...this.lds('Pessoas sentadas', d.fila_mes_sf_pes || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', d.fila_mes_nf_pes || [], '#A78BFA', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.mkClienteTipoDaily('ch-fi-cliente-dia', LBL, d.clienteFila, d.clienteFila_p);
       this.mkClienteTipoTotal('ch-fi-cliente-tot', d.clienteFila, d.clienteFila_p);
     },
@@ -2533,7 +2662,7 @@ createApp({
         this.kpiRp('Sentados', tS, tSP, pS, pSP, '#22D3A5') +
         this.kpiRp('No-Show', tN, tNP, pN, pNP, '#FF4D6D', 'Status Canceled') +
         this.kpiRp('Em aberto', tA, tAP, pA, pAP, '#F5A623', 'New, Confirmed, Pending') +
-        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? `${this.pct(tS / tR * 100)} mesas sentadas` : '0%'));
+        this.kpi('Conversão', tR ? parseFloat((tS / tR * 100).toFixed(1)) : 0, pR ? parseFloat((pS / pR * 100).toFixed(1)) : 0, '#A78BFA', tR ? `${this.pct(tS / tR * 100)} reservas sentadas` : '0%'));
       const avgNR = this.A(d.nsr_conc) / dc, avgNRP = this.A(d.nsr_conc_p) / dc;
       this.tag('t-noshow', avgNR, avgNRP, true);
       const ar = d.ar || Array(dc).fill(0);
@@ -2543,13 +2672,13 @@ createApp({
       const srPes = d.sr_pes || Array(dc).fill(0);
       const nrPes = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (d.nr_pes || Array(dc).fill(0));
       const abPes = this.statusFiltro === 'seated' || this.statusFiltro === 'noshow' ? Array(dc).fill(0) : (d.ar_pes || Array(dc).fill(0));
-      this.mk('ch-re-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado (mesas)', sr, '#22D3A5'), this.bds('No-Show (mesas)', nr, '#FF4D6D'), this.bds('Em aberto (mesas)', ab, '#F5A623'), { ...this.lds('Pessoas sentadas', srPes, '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', nrPes, '#A78BFA', true), type: 'line' }, { ...this.lds('Pessoas em aberto', abPes, '#F5A623', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-status', { type: 'bar', data: { labels: LBL, datasets: [this.bds('Sentado (reservas)', sr, '#22D3A5'), this.bds('No-Show (reservas)', nr, '#FF4D6D'), this.bds('Em aberto (reservas)', ab, '#F5A623'), { ...this.lds('Pessoas sentadas', srPes, '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', nrPes, '#A78BFA', true), type: 'line' }, { ...this.lds('Pessoas em aberto', abPes, '#F5A623', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.mk('ch-re-noshow', { type: 'line', data: { labels: LBL, datasets: [this.lds('Concluídas (%)', d.nsr_conc, '#FF4D6D', false, true), this.lds('Anterior (%)', d.nsr_conc_p, '#FF4D6D', true), this.lds('Meta 15%', meta15, '#F5A623', true)] }, options: this.bO('%') });
-      this.mk('ch-re-pessoas', { type: 'line', data: { labels: LBL, datasets: [this.lds('Mesas período', d.reservas, '#FF6B2B', false, true), this.lds('Mesas ant.', d.res_p, '#FF6B2B', true), this.lds('Pessoas período', d.pessoas, '#4F8EF7'), this.lds('Pessoas ant.', d.pes_p, '#4F8EF7', true)] }, options: this.bO('Quantidade') });
+      this.mk('ch-re-pessoas', { type: 'line', data: { labels: LBL, datasets: [this.lds('Reservas período', d.reservas, '#FF6B2B', false, true), this.lds('Reservas ant.', d.res_p, '#FF6B2B', true), this.lds('Pessoas período', d.pessoas, '#4F8EF7'), this.lds('Pessoas ant.', d.pes_p, '#4F8EF7', true)] }, options: this.bO('Quantidade') });
       this.mk('ch-re-canal', { type: 'bar', data: { labels: this.CANAL.labels, datasets: [this.bds('Widget', this.CANAL.w, '#EC4899'), this.bds('Manual', this.CANAL.t, '#F5A623'), this.bds('Google', this.CANAL.g, '#22D3A5'), this.bds('Canais', this.CANAL.c, '#1A1A1A')] }, options: { ...this.bO('%'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.renderHoraHeatmap('ch-re-hora', d.res_hora_heat);
-      this.mk('ch-re-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado (mesas)', d.res_mes_sr, '#22D3A5'), this.bds('No-show (mesas)', d.res_mes_nr, '#FF4D6D'), this.bds('Em aberto (mesas)', d.res_mes_ar || [], '#F5A623'), { ...this.lds('Pessoas sentadas', d.res_mes_sr_pes || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', d.res_mes_nr_pes || [], '#A78BFA', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
-      this.mk('ch-re-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Mesas', d.reservas, '#FF6B2B', false, true), this.lds('Pessoas', d.pessoas, '#4F8EF7', false, true)] }, options: this.bO('Quantidade') });
+      this.mk('ch-re-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.bds('Sentado (reservas)', d.res_mes_sr, '#22D3A5'), this.bds('No-show (reservas)', d.res_mes_nr, '#FF4D6D'), this.bds('Em aberto (reservas)', d.res_mes_ar || [], '#F5A623'), { ...this.lds('Pessoas sentadas', d.res_mes_sr_pes || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas no-show', d.res_mes_nr_pes || [], '#A78BFA', true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-ocorr', { type: 'line', data: { labels: LBL, datasets: [this.lds('Reservas', d.reservas, '#FF6B2B', false, true), this.lds('Pessoas', d.pessoas, '#4F8EF7', false, true)] }, options: this.bO('Quantidade') });
       this.mkClienteTipoDaily('ch-re-cliente-dia', LBL, d.clienteRes, d.clienteRes_p);
       this.mkClienteTipoTotal('ch-re-cliente-tot', d.clienteRes, d.clienteRes_p);
     },
@@ -2557,10 +2686,23 @@ createApp({
     rMensal() {
       const d = this.W;
       const MES = this.mesLabels;
+      const mesMeta = Array(MES.length).fill(20);
       const om = d.res_mes_origem || { w: [], t: [], g: [], c: [] };
-      this.mk('ch-mes-res', { type: 'bar', data: { labels: MES, datasets: [this.bds('Mesas período', d.res_mes, '#FF6B2B'), { ...this.lds('Mesas anterior', d.res_mes_p, '#FF6B2B', true), type: 'line' }, { ...this.lds('Pessoas período', d.res_mes_pessoas || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas anterior', d.res_mes_pessoas_p || [], '#4F8EF7', true), type: 'line' }] }, options: this.bO('Quantidade') });
-      this.mk('ch-mes-fila', { type: 'bar', data: { labels: MES, datasets: [this.bds('Mesas período', d.fila_mes, '#F5A623'), { ...this.lds('Mesas anterior', d.fila_mes_p, '#F5A623', true), type: 'line' }, { ...this.lds('Pessoas período', d.fila_mes_pessoas || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas anterior', d.fila_mes_pessoas_p || [], '#4F8EF7', true), type: 'line' }] }, options: this.bO('Quantidade') });
-      this.mk('ch-mes-res-origem', { type: 'bar', data: { labels: MES, datasets: [this.bds('Widget', om.w, '#EC4899'), this.bds('Manual', om.t, '#F5A623'), this.bds('Google', om.g, '#22D3A5'), this.bds('Canais', om.c, '#1A1A1A')] }, options: { ...this.bO('Mesas'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-mes-res', { type: 'bar', data: { labels: MES, datasets: [this.bds('Reservas período', d.res_mes, '#FF6B2B'), { ...this.lds('Reservas anterior', d.res_mes_p, '#FF6B2B', true), type: 'line' }, { ...this.lds('Pessoas período', d.res_mes_pessoas || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas anterior', d.res_mes_pessoas_p || [], '#4F8EF7', true), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mk('ch-mes-fila', { type: 'bar', data: { labels: MES, datasets: [this.bds('Reservas período', d.fila_mes, '#F5A623'), { ...this.lds('Reservas anterior', d.fila_mes_p, '#F5A623', true), type: 'line' }, { ...this.lds('Pessoas período', d.fila_mes_pessoas || [], '#4F8EF7'), type: 'line' }, { ...this.lds('Pessoas anterior', d.fila_mes_pessoas_p || [], '#4F8EF7', true), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mk('ch-mes-tempo', {
+        type: 'line',
+        data: {
+          labels: MES,
+          datasets: [
+            this.lds('Período', d.fila_mes_tempo || [], '#F5A623', false, true),
+            this.lds('Anterior', d.fila_mes_tempo_p || [], '#F5A623', true),
+            this.lds('Meta 20min', mesMeta, '#FF4D6D', true),
+          ],
+        },
+        options: this.bO('Minutos'),
+      });
+      this.mk('ch-mes-res-origem', { type: 'bar', data: { labels: MES, datasets: [this.bds('Widget', om.w, '#EC4899'), this.bds('Manual', om.t, '#F5A623'), this.bds('Google', om.g, '#22D3A5'), this.bds('Canais', om.c, '#1A1A1A')] }, options: { ...this.bO('Reservas'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
     },
 
     rCanais() {
@@ -2580,18 +2722,18 @@ createApp({
       if (worstSub) worstSub.textContent = cfg.worst;
       this.buildRankingList('rk-best', units, cfg, 'best');
       this.buildRankingList('rk-worst', units, cfg, 'worst');
-      this.buildVolumeTop10('rk-res-vol', 'res', 'res_pes', 'res_p');
-      this.buildVolumeTop10('rk-fila-vol', 'fila', 'fila_pes', 'fila_p');
+      this.buildTempoRanking('rk-tempo-best', units, 'best');
+      this.buildTempoRanking('rk-tempo-worst', units, 'worst');
       const chartUnits = [...units].sort((a, b) => (b.res || 0) - (a.res || 0)).slice(0, 10);
       this.mk('ch-rk-comp', {
         type: 'bar',
         data: {
           labels: chartUnits.map((u) => u.nome),
           datasets: [
-            this.bds('Reservas (mesas)', chartUnits.map((u) => u.res), '#FF6B2B'),
+            this.bds('Reservas', chartUnits.map((u) => u.res), '#FF6B2B'),
             { ...this.lds('Reservas ant.', chartUnits.map((u) => u.res_p), '#FF6B2B', true), type: 'line' },
             this.bds('Pessoas', chartUnits.map((u) => u.res_pes || 0), '#4F8EF7'),
-            this.bds('Fila (mesas)', chartUnits.map((u) => u.fila), '#F5A623'),
+            this.bds('Fila (reservas)', chartUnits.map((u) => u.fila), '#F5A623'),
           ],
         },
         options: {
@@ -2690,7 +2832,7 @@ createApp({
                     `Dias: ${fmtInt(g.dayCount)}`,
                     `Reservas: ${fmtDec(g.avgReservas, 1)} · Pessoas: ${fmtDec(g.avgPessoas || 0, 1)}`,
                     `Δ vs média: ${this.deltaSigned(g.deltaVsBaselinePct)}`,
-                    `Fila média: ${fmtDec(g.avgFila, 1)} mesas · ${fmtDec(g.avgFilaPessoas || 0, 1)} pess.`,
+                    `Fila média: ${fmtDec(g.avgFila, 1)} reservas · ${fmtDec(g.avgFilaPessoas || 0, 1)} pess.`,
                   ];
                 },
               },
@@ -2715,7 +2857,7 @@ createApp({
           labels: LBL,
           datasets: [
             {
-              ...this.lds('Reservas (mesas)', c.reservas, '#FF6B2B', false, true),
+              ...this.lds('Reservas', c.reservas, '#FF6B2B', false, true),
               pointRadius,
               pointBackgroundColor: pointColors,
               pointBorderColor: pointColors,
