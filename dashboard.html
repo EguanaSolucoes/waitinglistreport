@@ -25,9 +25,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
 .brand-name{font-weight:800;font-size:15px;letter-spacing:-.3px}
 .brand-sub{font-size:11px;color:var(--muted)}
-.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-left:auto}
-.btn-filters-toggle{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;max-width:min(420px,100%);min-width:0}
-.btn-filters-toggle:hover{border-color:var(--accent)}
+.btn-filters-toggle{display:flex;align-items:center;gap:8px;background:transparent;border:none;border-radius:8px;padding:7px 8px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;max-width:min(420px,42vw);min-width:0;margin-left:auto;flex-shrink:0}
+.btn-filters-toggle:hover{color:var(--accent)}
 .btn-filters-toggle .filter-summary{color:var(--muted);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .btn-filters-toggle .chev{flex-shrink:0;color:var(--muted);transition:transform .2s ease;display:inline-flex}
 .btn-filters-toggle.open .chev{transform:rotate(180deg)}
@@ -49,10 +48,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .fchip input[type=date]::-webkit-calendar-picker-indicator{filter:var(--date-picker-filter);cursor:pointer;opacity:.9}
 .btn-apply{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 .btn-apply:hover{opacity:.9}
-.btn-logout{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;margin-left:4px}
-.btn-logout:hover{color:var(--text);border-color:var(--red)}
-.btn-admin{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 10px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center}
-.btn-admin:hover{color:var(--accent);border-color:var(--accent)}
+.btn-logout{background:transparent;border:none;color:var(--muted);border-radius:6px;padding:5px 8px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-logout:hover{color:var(--red)}
+.nitem-logout:hover{color:var(--red)}
 .impersonate-banner{background:rgba(245,166,35,.12);border-bottom:1px solid rgba(245,166,35,.28);color:var(--yellow);padding:8px 20px;font-size:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .impersonate-banner strong{color:var(--text)}
 .impersonate-banner button{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer}
@@ -61,12 +59,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .fchip-preset{background:var(--bg3);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 8px;font-size:10px;font-weight:600;cursor:pointer}
 .fchip-preset:hover{color:var(--text);border-color:var(--accent)}
 .fchip-preset.on{background:rgba(255,107,43,.12);border-color:var(--accent);color:var(--accent)}
+.fchip-preset-danger{color:var(--red);border-color:rgba(255,77,109,.35)}
+.fchip-preset-danger:hover{color:var(--red);border-color:var(--red);background:rgba(255,77,109,.1)}
 .fchip-preset:disabled{opacity:.45;cursor:not-allowed}
 .filter-field{display:flex;flex-direction:column;gap:8px;width:100%}
 .filter-field-label{font-size:10px;color:var(--muted2);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
 .filter-period-btns{display:flex;gap:6px;flex-wrap:wrap}
 .filter-custom-dates{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .filter-actions{display:flex;justify-content:flex-end}
+.filter-panel-foot{display:contents}
+.filter-venues-scroll{display:contents}
 .fchip-venue .btn-venue-pick{background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
 .fchip-venue .btn-venue-pick:hover{border-color:var(--accent)}
 .venue-bar{width:100%;padding:0;background:transparent;border:none}
@@ -118,8 +120,8 @@ body.nav-open{overflow:hidden}
 .sidenav-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:4px}
 .sidenav-close:hover{color:var(--text)}
 .nav-backdrop{display:none}
-.btn-nav-toggle{display:none;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;background:var(--bg2);border:1px solid var(--border);border-radius:8px;color:var(--text);cursor:pointer;padding:0}
-.btn-nav-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.btn-nav-toggle{display:none;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;background:transparent;border:none;border-radius:8px;color:var(--text);cursor:pointer;padding:0}
+.btn-nav-toggle:hover{color:var(--accent);background:var(--nitem-hover)}
 .btn-nav-toggle svg{width:20px;height:20px;display:block}
 .sidenav-spacer{flex:1;min-height:16px}
 .nsec{padding:8px 20px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2);font-weight:600}
@@ -129,8 +131,8 @@ body.nav-open{overflow:hidden}
 .nico{width:20px;height:20px;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;color:currentColor}
 .nico svg{width:18px;height:18px;display:block}
 .nitem.on .nico{color:var(--accent)}
-.btn-theme-topbar{display:inline-flex;align-items:center;gap:6px}
-.btn-theme-topbar svg{width:15px;height:15px;flex-shrink:0}
+.nitem-link{text-decoration:none}
+.sidenav-foot{border-top:1px solid var(--border);margin-top:8px;padding-top:8px}
 .nbadge{margin-left:auto;background:rgba(255,107,43,.2);color:var(--accent);font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px}
 
 /* CONTENT */
@@ -230,7 +232,15 @@ canvas{max-height:230px!important}
 .origem-leg-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 1px rgba(0,0,0,.12)}
 .origem-leg-pct{color:var(--muted);font-weight:600;min-width:36px;text-align:right;font-size:11px;padding-left:8px}
 .origem-leg-cnt{color:var(--text);font-weight:700;min-width:40px;text-align:right;font-size:11px;padding-left:8px}
-@media(max-width:900px){.origem-donut-stack{grid-template-columns:1fr}.origem-donut-panel{flex-wrap:wrap;justify-content:center;gap:20px}.origem-donut-legend{width:100%;padding:8px 12px}}
+@media(max-width:900px){
+  .origem-donut-stack{grid-template-columns:1fr;gap:16px;padding:0}
+  .origem-donut-block{padding:14px 12px}
+  .origem-donut-panel{flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;padding:4px 0}
+  .origem-donut-chart-wrap{width:min(168px,52vw);height:min(168px,52vw);margin:0}
+  .origem-donut-legend{flex:none;width:100%;max-width:100%;min-width:0;padding:0 2px}
+  .origem-leg-row{gap:10px}
+  .origem-leg-name{min-width:5.5rem}
+}
 
 /* TABS */
 .tpanel{display:none}
@@ -338,28 +348,32 @@ canvas{max-height:230px!important}
   .sidenav-head{display:flex}
   .topbar{padding:8px 12px;gap:8px;min-height:52px;flex-wrap:wrap;align-items:center}
   .topbar-brand{flex:1;min-width:0}
-  .topbar-actions{display:contents}
-  .btn-nav-toggle{order:1}
-  .topbar-brand{order:2}
-  .btn-theme-topbar,.btn-admin,.btn-logout{order:3}
-  .btn-theme-topbar{margin-left:auto}
-  .btn-filters-toggle{order:10;flex:1 1 100%;width:100%;max-width:100%;margin-top:2px}
+  .btn-filters-toggle{order:3;max-width:min(200px,46vw);padding:8px 6px}
+  .btn-filters-toggle .chev{display:none}
   .brand-sub{display:none}
-  .btn-logout{padding:8px 10px;font-size:10px;max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-left:auto}
-  .btn-admin{padding:8px 10px}
-  .btn-theme-topbar{padding:8px 10px}
-  .filter-panel-body{padding:0 12px 12px}
+  .filter-panel.open .filter-panel-inner{overflow:hidden;max-height:calc(100dvh - 3.75rem)}
+  .filter-panel.open .filter-panel-body{display:flex;flex-direction:column;gap:0;min-height:calc(100dvh - 3.75rem);max-height:calc(100dvh - 3.75rem);padding:0 0 15rem}
+  .filter-panel-venues-zone{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 12px 0;overflow:hidden}
+  .filter-field-venues{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}
+  .filter-venues-scroll{display:block;flex:1;min-height:0;margin-top:4px;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border:1px solid var(--border);border-radius:10px;background:var(--bg2);padding:10px}
+  .filter-panel.open .filter-panel-foot{display:flex;flex-direction:column;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:201;padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:var(--topbar-bg);backdrop-filter:blur(16px);box-shadow:0 -10px 28px rgba(0,0,0,.08)}
+  .filter-panel.open .filter-panel-foot .filter-actions{justify-content:stretch}
+  .filter-panel.open .filter-panel-foot .btn-apply{width:100%;padding:11px 14px;font-size:12px;border-radius:8px}
   .filter-summary{display:none}
   .filter-period-btns{gap:6px}
   .fchip-preset{padding:8px 10px;font-size:11px;min-height:36px}
   .fchip input[type=date]{width:100%;min-width:0}
   .filter-custom-dates{width:100%}
   .filter-custom-dates .fchip{flex:1;min-width:140px}
-  .venue-chips{grid-template-columns:1fr}
+  .venue-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .venue-chip{flex:0 1 auto;max-width:100%;width:auto}
+  .venue-chip span{flex:0 1 auto;max-width:min(220px,72vw)}
   .content{padding:14px 12px 24px}
   .g2,.g3{grid-template-columns:1fr}
-  .kpi-num{font-size:22px}
+  .kgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kgrid-geral{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi{padding:14px 12px}
+  .kpi-num{font-size:22px}
   .page-header{flex-direction:column;align-items:stretch;margin-bottom:16px}
   .page-title{font-size:18px}
   .page-sub{font-size:11px}
@@ -375,9 +389,12 @@ canvas{max-height:230px!important}
   .hh-cell{min-height:12px}
 }
 @media(max-width:480px){
-  .kgrid,.kgrid-geral{grid-template-columns:1fr}
-  .btn-logout{max-width:72px}
-  .btn-theme-label{display:none}
+  .kgrid,.kgrid-geral{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .kpi{padding:12px 10px}
+  .kpi-num{font-size:18px;letter-spacing:-1px}
+  .kpi-eye{font-size:9px;letter-spacing:.4px}
+  .kdelta{font-size:10px;padding:2px 6px}
+  .ksub{font-size:10px;line-height:1.35}
 }
 </style>
 </head>
@@ -407,85 +424,83 @@ canvas{max-height:230px!important}
     <div class="brand-dot"></div>
     <div><div class="brand-name">Tagme Report</div><div class="brand-sub">Reservas & Fila de Espera</div></div>
   </div>
-  <div class="topbar-actions">
-    <button
-      type="button"
-      class="btn-filters-toggle"
-      :class="{ open: filtersOpen }"
-      @click="filtersOpen = !filtersOpen"
-      :aria-expanded="filtersOpen"
-      aria-controls="filter-panel"
-    >
-      <span class="filt-ico" aria-hidden="true">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-      </span>
-      <span>Filtros</span>
-      <span v-if="!filtersOpen" class="filter-summary">{{ filterSummary }}</span>
-      <span class="chev" aria-hidden="true">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-      </span>
-    </button>
-    <button type="button" class="btn-theme btn-theme-topbar" @click="toggleTheme" :title="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'" :aria-label="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'">
-      <span v-html="themeIcon()" aria-hidden="true"></span>
-      <span class="btn-theme-label">{{ theme === 'dark' ? 'Claro' : 'Escuro' }}</span>
-    </button>
-    <a v-if="isAdmin && !impersonating" href="/admin" class="btn-admin">Admin</a>
-    <button type="button" class="btn-logout" @click="logout" title="Sair">{{ authUser }} · Sair</button>
-  </div>
+  <button
+    type="button"
+    class="btn-filters-toggle"
+    :class="{ open: filtersOpen }"
+    @click="filtersOpen = !filtersOpen"
+    :aria-expanded="filtersOpen"
+    aria-controls="filter-panel"
+  >
+    <span class="filt-ico" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+    </span>
+    <span>Filtros</span>
+    <span v-if="!filtersOpen" class="filter-summary">{{ filterSummary }}</span>
+    <span class="chev" aria-hidden="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </span>
+  </button>
 </header>
 
 <div id="filter-panel" class="filter-panel" :class="{ open: filtersOpen }">
   <div class="filter-panel-inner">
     <div class="filter-panel-body">
-      <div class="filter-field">
-        <div class="filter-field-label">Lojas</div>
-        <div class="filter-panel-row">
-          <div class="fchip fchip-venue">
-            <button type="button" class="btn-venue-pick" @click="openVenueModal">
-              {{ selectedVenues.length ? venuePickLabel : 'Selecionar lojas…' }}
-            </button>
-          </div>
-        </div>
-        <div v-if="selectedVenues.length" class="venue-bar">
-          <div class="venue-bar-head">
-            <span class="venue-bar-label">{{ selectedVenues.length }} loja{{ selectedVenues.length > 1 ? 's' : '' }} selecionada{{ selectedVenues.length > 1 ? 's' : '' }}</span>
-            <div class="venue-bar-actions">
-              <button type="button" class="fchip-preset" @click="openVenueModal">+ Adicionar</button>
-              <button v-if="selectedVenues.length > 1" type="button" class="fchip-preset" @click="clearVenues">Limpar todas</button>
+      <div class="filter-panel-venues-zone">
+        <div class="filter-field filter-field-venues">
+          <div class="filter-field-label">Lojas</div>
+          <div class="filter-panel-row">
+            <div class="fchip fchip-venue">
+              <button type="button" class="btn-venue-pick" @click="openVenueModal">
+                {{ selectedVenues.length ? venuePickLabel : 'Selecionar lojas…' }}
+              </button>
             </div>
           </div>
-          <div class="venue-chips">
-            <span v-for="v in selectedVenues" :key="v.id" class="venue-chip">
-              <span :title="v.nome">{{ v.nome }}</span>
-              <button type="button" @click="removeVenue(v.id)" title="Remover">×</button>
-            </span>
+          <div v-if="selectedVenues.length" class="filter-venues-scroll">
+            <div class="venue-bar">
+              <div class="venue-bar-head">
+                <span class="venue-bar-label">{{ selectedVenues.length }} loja{{ selectedVenues.length > 1 ? 's' : '' }} selecionada{{ selectedVenues.length > 1 ? 's' : '' }}</span>
+                <div class="venue-bar-actions">
+                  <button type="button" class="fchip-preset" @click="openVenueModal">+ Adicionar</button>
+                  <button v-if="selectedVenues.length > 1" type="button" class="fchip-preset fchip-preset-danger" @click="clearVenues">Limpar todas</button>
+                </div>
+              </div>
+              <div class="venue-chips">
+                <span v-for="v in selectedVenues" :key="v.id" class="venue-chip">
+                  <span :title="v.nome">{{ v.nome }}</span>
+                  <button type="button" @click="removeVenue(v.id)" title="Remover">×</button>
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="filter-field">
-        <div class="filter-field-label">Período</div>
-        <div class="filter-period-btns">
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'hoje' }" :disabled="loading" @click="setPeriodoPreset('hoje')">Hoje</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'ontem' }" :disabled="loading" @click="setPeriodoPreset('ontem')">Ontem</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'semana' }" :disabled="loading" @click="setPeriodoPreset('semana')">Semana atual</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '15d' }" :disabled="loading" @click="setPeriodoPreset('15d')">15 dias</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes' }" :disabled="loading" @click="setPeriodoPreset('mes')">Mês atual</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes_ant' }" :disabled="loading" @click="setPeriodoPreset('mes_ant')">Mês anterior</button>
-          <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'custom' }" :disabled="loading" @click="setPeriodoPreset('custom')">Personalizado</button>
-        </div>
-        <div v-if="periodoPreset === 'custom'" class="filter-custom-dates">
-          <div class="fchip">
-            <label>Data início</label>
-            <input type="date" v-model="dataInicio" :max="dataFim || hoje" @change="onCustomDateChange" />
+      <div class="filter-panel-foot">
+        <div class="filter-field filter-field-period">
+          <div class="filter-field-label">Período</div>
+          <div class="filter-period-btns">
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'hoje' }" :disabled="loading" @click="setPeriodoPreset('hoje')">Hoje</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'ontem' }" :disabled="loading" @click="setPeriodoPreset('ontem')">Ontem</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'semana' }" :disabled="loading" @click="setPeriodoPreset('semana')">Semana atual</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === '15d' }" :disabled="loading" @click="setPeriodoPreset('15d')">15 dias</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes' }" :disabled="loading" @click="setPeriodoPreset('mes')">Mês atual</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'mes_ant' }" :disabled="loading" @click="setPeriodoPreset('mes_ant')">Mês anterior</button>
+            <button type="button" class="fchip-preset" :class="{ on: periodoPreset === 'custom' }" :disabled="loading" @click="setPeriodoPreset('custom')">Personalizado</button>
           </div>
-          <div class="fchip">
-            <label>Data final</label>
-            <input type="date" v-model="dataFim" :min="dataInicio" :max="hoje" @change="onCustomDateChange" />
+          <div v-if="periodoPreset === 'custom'" class="filter-custom-dates">
+            <div class="fchip">
+              <label>Data início</label>
+              <input type="date" v-model="dataInicio" :max="dataFim || hoje" @change="onCustomDateChange" />
+            </div>
+            <div class="fchip">
+              <label>Data final</label>
+              <input type="date" v-model="dataFim" :min="dataInicio" :max="hoje" @change="onCustomDateChange" />
+            </div>
           </div>
         </div>
-      </div>
-      <div class="filter-actions">
-        <button class="btn-apply" @click="applyFilters" :disabled="loading">{{ loading ? 'Carregando…' : 'Aplicar' }}</button>
+        <div class="filter-actions">
+          <button class="btn-apply" @click="applyFilters" :disabled="loading || !selectedVenues.length">{{ loading ? 'Carregando…' : 'Aplicar' }}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -567,6 +582,41 @@ canvas{max-height:230px!important}
   <div class="nitem" :class="{on:activeTab==='ranking'}" @click="go('ranking')"><span class="nico" v-html="navIcon('ranking')"></span>Ranking</div>
   <div class="nitem" :class="{on:activeTab==='canais'}" @click="go('canais')"><span class="nico" v-html="navIcon('canais')"></span>Canais Detalhados</div>
   <div class="nitem" :class="{on:activeTab==='contexto'}" @click="go('contexto')"><span class="nico" v-html="navIcon('contexto')"></span>Fatores Externos</div>
+  <div class="sidenav-spacer"></div>
+  <div class="sidenav-foot">
+    <div class="nsec">Aparência</div>
+    <div
+      class="nitem"
+      role="button"
+      tabindex="0"
+      @click="toggleTheme"
+      @keydown.enter.prevent="toggleTheme"
+      @keydown.space.prevent="toggleTheme"
+      :title="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+      :aria-label="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+    >
+      <span class="nico" v-html="themeIcon()" aria-hidden="true"></span>{{ theme === 'dark' ? 'Modo claro' : 'Modo escuro' }}
+    </div>
+    <a v-if="isAdmin && !impersonating" href="/admin" class="nitem nitem-link" @click="closeNav">
+      <span class="nico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z"/></svg>
+      </span>Admin
+    </a>
+    <div class="nsec">Conta</div>
+    <div
+      class="nitem nitem-logout"
+      role="button"
+      tabindex="0"
+      @click="logoutFromNav"
+      @keydown.enter.prevent="logoutFromNav"
+      @keydown.space.prevent="logoutFromNav"
+      title="Sair"
+    >
+      <span class="nico" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+      </span>{{ authUser }} · Sair
+    </div>
+  </div>
 </nav>
 
 <main class="content">
@@ -576,12 +626,12 @@ canvas{max-height:230px!important}
   <button @click="loadData">Tentar novamente</button>
 </div>
 
-<div v-if="!loading && !error && !selectedVenues.length" class="empty-banner">
+<div v-if="!loading && !error && !W" class="empty-banner">
   Selecione uma ou mais <strong>lojas</strong> para carregar o dashboard.
   <button type="button" class="fchip-preset" style="margin-left:8px" @click="openFiltersForVenues">Selecionar lojas</button>
 </div>
 
-<div v-if="!loading && !error && selectedVenues.length && semDados" class="empty-banner">
+<div v-if="!loading && !error && W && semDados" class="empty-banner">
   Nenhum dado no período <strong>{{ periodoLabel }}</strong> para as lojas selecionadas.
   Tente ampliar o intervalo (ex.: <button type="button" class="fchip-preset" @click="setPeriodoPreset('15d')">15 dias</button>)
   ou selecione outra loja.
@@ -1150,9 +1200,17 @@ createApp({
       theme: document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark',
       exportingPdf: false,
       CHS: {},
+      appliedSnapshot: null,
     };
   },
   computed: {
+    filtersDirty() {
+      if (!this.appliedSnapshot) return true;
+      const ids = this.selectedVenues.map((v) => v.id).sort().join(',');
+      return ids !== this.appliedSnapshot.venueIds
+        || this.dataInicio !== this.appliedSnapshot.inicio
+        || this.dataFim !== this.appliedSnapshot.fim;
+    },
     periodoSubtitulo() {
       const venue = this.venueNome ? ` · ${this.venueNome}` : '';
       return this.periodoLabel
@@ -1273,7 +1331,9 @@ createApp({
     }
     this.tick();
     setInterval(this.tick, 30000);
-    setInterval(() => { if (!this.loading && this.selectedVenues.length) this.loadData(); }, 300000);
+    setInterval(() => {
+      if (!this.loading && this.appliedSnapshot && !this.filtersDirty) this.loadData();
+    }, 300000);
     this._onNavKeydown = (e) => this.onNavKeydown(e);
     window.addEventListener('keydown', this._onNavKeydown);
     this.bootstrapVenuesFromSession(me);
@@ -1403,7 +1463,6 @@ createApp({
       } else {
         return;
       }
-      if (this.selectedVenues.length) this.loadData();
     },
 
     validateDates() {
@@ -1488,6 +1547,7 @@ createApp({
     },
 
     applyFilters() {
+      this.saveVenuesToStorage();
       this.loadData();
       this.filtersOpen = false;
     },
@@ -1573,25 +1633,16 @@ createApp({
         .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
       this.saveVenuesToStorage();
       this.closeVenueModal();
-      this.loadData();
     },
 
     removeVenue(id) {
       this.selectedVenues = this.selectedVenues.filter((v) => v.id !== id);
       this.saveVenuesToStorage();
-      if (this.selectedVenues.length) this.loadData();
-      else {
-        this.W = null;
-        this.error = null;
-      }
     },
 
     clearVenues() {
       this.selectedVenues = [];
       this.saveVenuesToStorage();
-      this.W = null;
-      this.destroyAllCharts();
-      this.error = null;
     },
 
     applyStatusFilter(arr, seatedArr, noshowArr) {
@@ -1690,6 +1741,11 @@ createApp({
       window.location.href = '/login';
     },
 
+    logoutFromNav() {
+      this.closeNav();
+      this.logout();
+    },
+
     chartTheme() {
       const light = this.theme === 'light';
       return {
@@ -1715,9 +1771,9 @@ createApp({
     },
 
     canExportTab(tab) {
-      if (!this.selectedVenues.length) return false;
+      if (!this.W) return false;
       if (tab === 'contexto') return !!this.CTX;
-      return !!this.W;
+      return true;
     },
 
     async waitForCharts(ms = 700) {
@@ -1947,6 +2003,8 @@ createApp({
       if (!this.validateDates()) return;
       if (!this.selectedVenues.length) {
         this.W = null;
+        this.CTX = null;
+        this.appliedSnapshot = null;
         this.destroyAllCharts();
         this.error = null;
         this.loading = false;
@@ -2006,6 +2064,11 @@ createApp({
         await this.$nextTick();
         this.render();
         await this.loadContext();
+        this.appliedSnapshot = {
+          venueIds: this.selectedVenues.map((v) => v.id).sort().join(','),
+          inicio: this.dataInicio,
+          fim: this.dataFim,
+        };
       } catch (e) {
         const status = e.response?.status;
         const msg = e.code === 'ECONNABORTED'
@@ -2013,11 +2076,14 @@ createApp({
           : (e.response?.data?.error || e.message || 'Falha ao carregar dados');
         if (status === 403) {
           this.selectedVenues = [];
+          this.appliedSnapshot = null;
           this.saveVenuesToStorage();
           this.filtersOpen = true;
         }
         this.error = msg;
         this.W = null;
+        this.CTX = null;
+        this.appliedSnapshot = null;
         this.destroyAllCharts();
         console.error(e);
       } finally {
@@ -2029,7 +2095,7 @@ createApp({
       this.destroyAllCharts();
       this.activeTab = tab;
       this.closeNav();
-      if (tab === 'contexto' && !this.CTX && this.selectedVenues.length) this.loadContext();
+      if (tab === 'contexto' && !this.CTX && this.W) this.loadContext();
       this.$nextTick(() => this.render());
     },
 
