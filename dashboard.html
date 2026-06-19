@@ -111,16 +111,42 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 /* SHELL */
 #app{display:flex;flex-direction:column;min-height:100vh}
 .shell{display:flex;flex:1;min-height:0;position:relative}
-body.nav-open{overflow:hidden}
+
+@media (min-width:901px){
+  html,body{height:100%;overflow:hidden}
+  body{min-height:0}
+  #app{height:100dvh;max-height:100dvh;min-height:0;overflow:hidden}
+  .header-wrap{flex-shrink:0;position:relative}
+  .shell{flex:1;min-height:0;overflow:hidden;align-items:stretch}
+  .sidenav{
+    min-height:0;
+    align-self:stretch;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    position:relative;
+    transform:none;
+    transition:width .25s ease,padding .25s ease,border-color .25s ease;
+    box-shadow:none;
+  }
+  .sidenav:not(.open){
+    width:0;
+    min-width:0;
+    padding-top:0;
+    padding-bottom:0;
+    border-right-color:transparent;
+    overflow:hidden;
+  }
+  .content{min-height:0;overflow-y:auto;overscroll-behavior:contain}
+}
 
 /* SIDENAV */
-.sidenav{width:210px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.sidenav{width:210px;flex-shrink:0;background:var(--bg1);border-right:1px solid var(--border);padding:20px 0;display:flex;flex-direction:column;gap:2px;overflow-y:auto;min-height:0}
 .sidenav-head{display:none;align-items:center;justify-content:space-between;padding:0 16px 12px;margin-bottom:4px;border-bottom:1px solid var(--border)}
 .sidenav-head-title{font-size:13px;font-weight:700;color:var(--text)}
 .sidenav-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;padding:4px}
 .sidenav-close:hover{color:var(--text)}
 .nav-backdrop{display:none}
-.btn-nav-toggle{display:none;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;background:transparent;border:none;border-radius:8px;color:var(--text);cursor:pointer;padding:0}
+.btn-nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;flex-shrink:0;background:transparent;border:none;border-radius:8px;color:var(--text);cursor:pointer;padding:0}
 .btn-nav-toggle:hover{color:var(--accent);background:var(--nitem-hover)}
 .btn-nav-toggle svg{width:20px;height:20px;display:block}
 .sidenav-spacer{flex:1;min-height:16px}
@@ -340,7 +366,7 @@ canvas{max-height:230px!important}
 .dbar-f{height:100%;border-radius:99px;background:var(--accent)}
 
 @media(max-width:900px){
-  .btn-nav-toggle{display:inline-flex}
+  body.nav-open{overflow:hidden}
   .nav-backdrop{display:block;position:fixed;inset:0;z-index:340;background:rgba(0,0,0,.45);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
   .nav-backdrop.open{opacity:1;visibility:visible;pointer-events:auto}
   .sidenav{position:fixed;top:0;left:0;bottom:0;z-index:350;width:min(280px,86vw);max-width:100%;padding:16px 0;transform:translateX(-105%);transition:transform .25s ease;box-shadow:var(--modal-shadow);border-right:1px solid var(--border)}
@@ -597,7 +623,7 @@ canvas{max-height:230px!important}
     >
       <span class="nico" v-html="themeIcon()" aria-hidden="true"></span>{{ theme === 'dark' ? 'Modo claro' : 'Modo escuro' }}
     </div>
-    <a v-if="isAdmin && !impersonating" href="/admin" class="nitem nitem-link" @click="closeNav">
+    <a v-if="isAdmin && !impersonating" href="/admin" class="nitem nitem-link" @click="closeNavIfMobile">
       <span class="nico" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z"/></svg>
       </span>Admin
@@ -1336,6 +1362,7 @@ createApp({
     }, 300000);
     this._onNavKeydown = (e) => this.onNavKeydown(e);
     window.addEventListener('keydown', this._onNavKeydown);
+    this.navOpen = window.matchMedia('(min-width: 901px)').matches;
     this.bootstrapVenuesFromSession(me);
     if (!this.selectedVenues.length) this.filtersOpen = true;
     if (this.selectedVenues.length) await this.loadData();
@@ -1357,9 +1384,17 @@ createApp({
   methods: {
     navIcon(name) { return NAV_ICONS[name] || ''; },
 
+    isMobileNav() {
+      return window.matchMedia('(max-width: 900px)').matches;
+    },
+
     toggleNav() {
       this.navOpen = !this.navOpen;
-      document.body.classList.toggle('nav-open', this.navOpen);
+      if (this.isMobileNav()) {
+        document.body.classList.toggle('nav-open', this.navOpen);
+      } else {
+        document.body.classList.remove('nav-open');
+      }
     },
 
     closeNav() {
@@ -1368,8 +1403,12 @@ createApp({
       document.body.classList.remove('nav-open');
     },
 
+    closeNavIfMobile() {
+      if (this.isMobileNav()) this.closeNav();
+    },
+
     onNavKeydown(e) {
-      if (e.key === 'Escape') this.closeNav();
+      if (e.key === 'Escape' && this.isMobileNav()) this.closeNav();
     },
     themeIcon() { return themeSvg(this.theme === 'dark'); },
     chartLabels() { return this.W?.labels || []; },
@@ -1742,7 +1781,7 @@ createApp({
     },
 
     logoutFromNav() {
-      this.closeNav();
+      this.closeNavIfMobile();
       this.logout();
     },
 
@@ -2094,7 +2133,7 @@ createApp({
     go(tab) {
       this.destroyAllCharts();
       this.activeTab = tab;
-      this.closeNav();
+      this.closeNavIfMobile();
       if (tab === 'contexto' && !this.CTX && this.W) this.loadContext();
       this.$nextTick(() => this.render());
     },
