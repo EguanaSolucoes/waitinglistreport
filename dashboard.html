@@ -295,6 +295,22 @@ canvas{max-height:230px!important}
 .tpanel.on{display:block}
 
 /* RANKING */
+.rk-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:20px;
+  align-items:start;
+}
+.rk-grid .slabel{margin:0}
+.rk-grid .rk-toolbar{margin:0;align-content:flex-start}
+.rk-grid .card{margin:0}
+.rk-res-head{grid-column:1;grid-row:1}
+.rk-fila-head{grid-column:2;grid-row:1}
+.rk-res-tools{grid-column:1;grid-row:2}
+.rk-fila-tools{grid-column:2;grid-row:2}
+.rk-res-card{grid-column:1;grid-row:3;align-self:stretch}
+.rk-fila-card{grid-column:2;grid-row:3;align-self:stretch}
 .rk-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
 .rk-toolbar-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-right:4px}
 .rk-pill{font-size:11px;font-weight:700;padding:6px 12px;border-radius:99px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer;transition:.15s}
@@ -438,7 +454,14 @@ canvas{max-height:230px!important}
   .page-title{font-size:18px}
   .page-sub{font-size:11px}
   .btn-export-pdf{width:100%;text-align:center}
-  .rk-toolbar{gap:6px;margin-bottom:12px}
+  .rk-grid{grid-template-columns:1fr;gap:12px}
+  .rk-res-head{grid-row:1;grid-column:1}
+  .rk-res-tools{grid-row:2;grid-column:1}
+  .rk-res-card{grid-row:3;grid-column:1;margin-bottom:8px}
+  .rk-fila-head{grid-row:4;grid-column:1}
+  .rk-fila-tools{grid-row:5;grid-column:1}
+  .rk-fila-card{grid-row:6;grid-column:1}
+  .rk-toolbar{gap:6px}
   .rk-pill{font-size:10px;padding:8px 10px}
   .card{padding:14px}
   .modal-backdrop{padding:12px;align-items:flex-end}
@@ -1067,28 +1090,30 @@ canvas{max-height:230px!important}
 <div id="tab-ranking" class="tpanel" :class="{on: activeTab==='ranking'}">
   <div class="page-header"><div><div class="page-title">Ranking de Lojas</div><div class="page-sub">{{ periodoSubtitulo }} · Melhores em reservas e fila · listagem completa</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('ranking')" :disabled="exportingPdf || !canExportTab('ranking')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
   <div class="kpi-block-period" v-if="periodoLabel" style="margin-bottom:14px"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
-  <div class="slabel"><div class="sl-text">Melhores em reservas</div><div class="sl-line"></div><div class="sl-tag" id="rk-res-count">—</div></div>
-  <div class="rk-toolbar">
-    <span class="rk-toolbar-lbl">Critério</span>
-    <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res'}" @click="setRankingResMetric('res')">Volume reservas</button>
-    <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res_pes'}" @click="setRankingResMetric('res_pes')">Volume pessoas</button>
-    <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_res'}" @click="setRankingResMetric('growth_res')">Crescimento reservas</button>
-    <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_pes'}" @click="setRankingResMetric('growth_pes')">Crescimento pessoas</button>
-  </div>
-  <div class="card gf" style="margin-bottom:20px">
-    <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-res-sub">—</span></div>
-    <div class="rlist" id="rk-res-list"></div>
-  </div>
-  <div class="slabel"><div class="sl-text">Melhores em filas</div><div class="sl-line"></div><div class="sl-tag" id="rk-fila-count">—</div></div>
-  <div class="rk-toolbar">
-    <span class="rk-toolbar-lbl">Critério</span>
-    <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila'}" @click="setRankingFilaMetric('fila')">Volume fila</button>
-    <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='growth_fila'}" @click="setRankingFilaMetric('growth_fila')">Crescimento fila</button>
-    <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='tempo'}" @click="setRankingFilaMetric('tempo')">Tempo médio de espera</button>
-  </div>
-  <div class="card gf">
-    <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-fila-sub">—</span></div>
-    <div class="rlist" id="rk-fila-list"></div>
+  <div class="rk-grid">
+    <div class="slabel rk-res-head"><div class="sl-text">Melhores em reservas</div><div class="sl-line"></div><div class="sl-tag" id="rk-res-count">—</div></div>
+    <div class="slabel rk-fila-head"><div class="sl-text">Melhores em filas</div><div class="sl-line"></div><div class="sl-tag" id="rk-fila-count">—</div></div>
+    <div class="rk-toolbar rk-res-tools">
+      <span class="rk-toolbar-lbl">Critério</span>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res'}" @click="setRankingResMetric('res')">Volume reservas</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res_pes'}" @click="setRankingResMetric('res_pes')">Volume pessoas</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_res'}" @click="setRankingResMetric('growth_res')">Crescimento reservas</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_pes'}" @click="setRankingResMetric('growth_pes')">Crescimento pessoas</button>
+    </div>
+    <div class="rk-toolbar rk-fila-tools">
+      <span class="rk-toolbar-lbl">Critério</span>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila'}" @click="setRankingFilaMetric('fila')">Volume fila</button>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='growth_fila'}" @click="setRankingFilaMetric('growth_fila')">Crescimento fila</button>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='tempo'}" @click="setRankingFilaMetric('tempo')">Tempo médio de espera</button>
+    </div>
+    <div class="card gf rk-res-card">
+      <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-res-sub">—</span></div>
+      <div class="rlist" id="rk-res-list"></div>
+    </div>
+    <div class="card gf rk-fila-card">
+      <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-fila-sub">—</span></div>
+      <div class="rlist" id="rk-fila-list"></div>
+    </div>
   </div>
 </div>
 
