@@ -461,12 +461,13 @@ body {
   margin-top: 4px;
 }
 .origem-leg-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   font-size: 11px;
   padding: 2px 0;
+  min-width: 0;
 }
 .origem-leg-name {
   display: flex;
@@ -474,7 +475,21 @@ body {
   gap: 8px;
   color: var(--text);
   font-weight: 500;
+  flex: 1;
   min-width: 0;
+  overflow: hidden;
+}
+.origem-leg-txt {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.origem-leg-stats {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 .origem-leg-name span {
   overflow: hidden;
@@ -603,6 +618,18 @@ body {
   gap: 24px;
   padding: 4px 8px 8px;
 }
+.g2 .origem-donut-stack {
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 0;
+}
+.g2 .origem-donut-block { padding: 14px 16px; }
+.g2 .origem-donut-panel { gap: 14px; }
+.g2 .origem-donut-chart-wrap {
+  width: 128px;
+  height: 128px;
+  margin: 0;
+}
 .origem-donut-block {
   display: flex;
   flex-direction: column;
@@ -670,14 +697,26 @@ body {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 4px 12px 4px 8px;
+  gap: 8px;
+  padding: 4px 8px 4px 4px;
 }
 .origem-leg-pct {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.25rem;
+  text-align: right;
+}
+.origem-leg-cnt {
   color: var(--text);
   font-weight: 700;
   font-size: 11px;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  min-width: 2.5rem;
+  text-align: right;
 }
 .wleg {
   display: flex;

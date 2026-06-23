@@ -308,7 +308,7 @@ function renderDonutLegend(elId, items, total) {
   }
   el.innerHTML = items.map(({ lbl, count, color }) => {
     const pct = Math.round((count / total) * 100);
-    return `<div class="origem-leg-row"><span class="origem-leg-name"><i class="origem-leg-dot" style="background:${color}"></i>${lbl}</span><span class="origem-leg-pct">${pct}%</span><span class="origem-leg-cnt">${S(count)}</span></div>`;
+    return `<div class="origem-leg-row"><span class="origem-leg-name"><i class="origem-leg-dot" style="background:${color}"></i><span class="origem-leg-txt">${lbl}</span></span><span class="origem-leg-stats"><span class="origem-leg-pct">${pct}%</span><span class="origem-leg-cnt">${S(count)}</span></span></div>`;
   }).join('');
 }
 
