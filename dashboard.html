@@ -188,6 +188,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .pdf-export-root .gf{width:100%}
 .pdf-export-root .kgrid{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(160px,1fr))!important}
 .pdf-export-root .kgrid-geral{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.pdf-export-root .vg-hero{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+.pdf-export-root .vg-fluxo-donuts,.pdf-export-root .vg-resumo-grid{grid-template-columns:1fr!important}
 .pdf-export-root .kpi-block,.pdf-export-root .card{overflow:visible!important}
 .pdf-export-root .origem-donut-stack{grid-template-columns:1fr!important;gap:14px!important;padding:0!important}
 .pdf-export-root .origem-donut-block{padding:12px 14px!important}
@@ -231,6 +233,51 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .kpi-desc,.chart-desc{margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:10px;line-height:1.45;color:var(--muted)}
 .card > .chart-desc{margin-top:12px}
 .kpi-block-chart > .chart-desc{margin-top:10px}
+
+/* VISÃO GERAL — layout executivo */
+.vg-hero{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.vg-hero-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px 18px;position:relative;overflow:hidden;min-width:0}
+.vg-hero-top{position:absolute;top:0;left:0;right:0;height:3px}
+.vg-hero-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:12px}
+.vg-hero-dual{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.vg-hero-num{display:block;font-size:26px;font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text)}
+.vg-hero-lbl{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:4px}
+.vg-hero-main{font-size:24px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
+.vg-hero-sep{opacity:.45;font-weight:600;margin:0 2px}
+.vg-hero-unit{font-size:11px;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:.4px}
+.vg-hero-sub{font-size:13px;font-weight:700;color:var(--muted);margin-top:6px}
+.vg-hero-pills{display:flex;flex-wrap:wrap;gap:6px}
+.vg-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;border:1px solid var(--border);color:var(--muted);background:var(--bg2)}
+.vg-pill-ok{border-color:rgba(34,211,165,.35);color:var(--green);background:rgba(34,211,165,.08)}
+.vg-pill-warn{border-color:rgba(255,77,109,.35);color:var(--red);background:rgba(255,77,109,.08)}
+.vg-fluxo-donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.vg-donut-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.vg-donut-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
+.vg-donut-sub{font-size:11px;color:var(--muted);margin-bottom:12px}
+.vg-donut-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:nowrap}
+.vg-donut-chart{position:relative;width:min(148px,32vw);height:min(148px,32vw);flex-shrink:0}
+.vg-donut-chart canvas{max-height:none!important;width:100%!important;height:100%!important}
+.vg-donut-leg{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.vg-donut-leg-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;font-size:12px}
+.vg-donut-leg-name{display:flex;align-items:center;gap:6px;min-width:0;color:var(--text);font-weight:600}
+.vg-donut-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.vg-donut-pct{font-weight:800;color:var(--text)}
+.vg-donut-cnt{color:var(--muted);font-size:11px;text-align:right}
+.vg-resumo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.vg-resumo-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.vg-resumo-hd{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.vg-resumo-main{font-size:22px;font-weight:900;letter-spacing:-.8px;line-height:1.2}
+.vg-resumo-list{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted);flex:1}
+.vg-resumo-list li{display:flex;align-items:center;gap:6px}
+.vg-resumo-list strong{color:var(--text);font-weight:700}
+.vg-resumo-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.vg-tab-link{align-self:flex-start;background:transparent;border:none;padding:0;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;text-align:left}
+.vg-tab-link:hover{text-decoration:underline}
+.vg-info{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:14px 18px;font-size:12px;line-height:1.55;color:var(--muted);margin-bottom:20px}
+.vg-info strong{color:var(--text)}
+.vg-perfil-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+.vg-perfil-pct{font-size:22px;font-weight:900;color:var(--text);line-height:1}
+.vg-perfil-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:2px}
 
 /* SECTION LABEL */
 .slabel{display:flex;align-items:center;gap:10px;margin-bottom:14px}
@@ -338,6 +385,40 @@ canvas{max-height:230px!important}
 .rbw{width:56px;height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;flex-shrink:0}
 .rbf{height:100%;border-radius:99px;background:var(--accent)}
 .rk-empty{color:var(--muted);font-size:12px;padding:12px 8px;text-align:center}
+.rk-board{display:flex;flex-direction:column;gap:14px}
+.rk-tabs-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.rk-tab-group{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.rk-tab-group-lbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;color:var(--muted);margin-bottom:8px}
+.rk-view-toggle{display:flex;gap:8px;flex-wrap:wrap}
+.rk-view-btn{font-size:11px;font-weight:700;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg2);color:var(--muted);cursor:pointer}
+.rk-view-btn.on{background:rgba(255,107,43,.12);border-color:rgba(255,107,43,.35);color:var(--accent)}
+.rk-table-wrap{overflow:auto;border-radius:var(--r)}
+.rk-table{width:100%;border-collapse:separate;border-spacing:0;min-width:980px}
+.rk-table thead th{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;color:var(--muted);text-align:left;padding:10px 10px 8px;background:var(--bg2);border-bottom:1px solid var(--border);white-space:nowrap}
+.rk-table thead th.rk-th-group{text-align:center;color:var(--text);font-size:10px;letter-spacing:.55px}
+.rk-table thead tr.rk-subhead th{border-top:none;padding-top:0;font-size:8px;font-weight:700;color:var(--muted2)}
+.rk-table tbody td{padding:12px 10px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg1)}
+.rk-table tbody tr:hover td{background:var(--bg2)}
+.rk-table tbody tr:last-child td{border-bottom:none}
+.rk-td-pos{font-size:13px;font-weight:900;color:var(--muted);width:36px;text-align:center}
+.rk-td-pos.gd{color:#F5A623}.rk-td-pos.sv{color:#A0AEC0}.rk-td-pos.br{color:#CD7F32}
+.rk-store{display:flex;align-items:center;gap:8px;min-width:160px;max-width:220px}
+.rk-store-dot{width:28px;height:28px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--accent)}
+.rk-store-name{font-size:12px;font-weight:700;line-height:1.25}
+.rk-metric{min-width:78px}
+.rk-metric-cur{font-size:13px;font-weight:800;line-height:1.2;color:var(--text)}
+.rk-metric-ant{font-size:9px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.35px}
+.rk-metric-delta{display:inline-flex;margin-top:4px;font-size:9px;font-weight:700;padding:2px 6px;border-radius:99px}
+.rk-metric-delta.up{background:rgba(34,211,165,.12);color:var(--green)}
+.rk-metric-delta.dn{background:rgba(255,77,109,.12);color:var(--red)}
+.rk-metric-delta.nu{background:rgba(123,132,152,.1);color:var(--muted)}
+.rk-th-sort{cursor:pointer;user-select:none}
+.rk-th-sort.on{color:var(--accent)}
+.rk-legend{display:flex;flex-wrap:wrap;gap:12px 18px;font-size:11px;color:var(--muted);padding:4px 2px}
+.rk-legend-item{display:flex;align-items:center;gap:6px}
+.rk-legend-swatch{width:10px;height:10px;border-radius:3px}
+.rk-chart-host{padding:8px 4px 4px}
+.rk-chart-host canvas{max-height:320px!important}
 
 /* HEATMAP HORÁRIO */
 .hora-heatmap-host{width:100%;min-height:0;padding:4px 0 8px}
@@ -449,6 +530,8 @@ canvas{max-height:230px!important}
   .g2,.g3{grid-template-columns:1fr}
   .kgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kgrid-geral{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vg-hero{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .vg-fluxo-donuts,.vg-resumo-grid{grid-template-columns:1fr}
   .kpi{padding:14px 12px}
   .kpi-num{font-size:22px}
   .page-header{flex-direction:column;align-items:stretch;margin-bottom:16px}
@@ -462,8 +545,8 @@ canvas{max-height:230px!important}
   .rk-fila-head{grid-row:4;grid-column:1}
   .rk-fila-tools{grid-row:5;grid-column:1}
   .rk-fila-card{grid-row:6;grid-column:1}
-  .rk-toolbar{gap:6px}
-  .rk-pill{font-size:10px;padding:8px 10px}
+  .rk-tabs-row{grid-template-columns:1fr}
+  .rk-table{min-width:720px}
   .card{padding:14px}
   .modal-backdrop{padding:12px;align-items:flex-end}
   .modal-box{max-height:88vh;border-bottom-left-radius:0;border-bottom-right-radius:0}
@@ -741,44 +824,43 @@ canvas{max-height:230px!important}
     <div><div class="page-title">Visão Geral</div><div class="page-sub">{{ periodoSubtitulo }}</div></div>
     <button type="button" class="btn-export-pdf" @click="exportPdf('geral')" :disabled="exportingPdf || !canExportTab('geral')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button>
   </div>
-  <div class="kpi-block">
-    <div class="slabel"><div class="sl-text">Reserva</div><div class="sl-line"></div></div>
-    <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
-    <div class="kgrid kgrid-geral" id="kpi-geral-res"></div>
+  <div class="vg-hero" id="vg-hero-kpis"></div>
+  <div class="slabel"><div class="sl-text">Fluxo por fonte</div><div class="sl-line"></div><div class="sl-tag">Composição do período</div></div>
+  <div class="vg-fluxo-donuts">
+    <div class="vg-donut-card">
+      <div class="vg-donut-hd">Mesas / grupos</div>
+      <div class="vg-donut-sub" id="vg-fluxo-grupos-sub">—</div>
+      <div class="vg-donut-panel">
+        <div class="vg-donut-chart"><canvas id="ch-vg-fluxo-grupos"></canvas></div>
+        <div class="vg-donut-leg" id="vg-fluxo-grupos-leg"></div>
+      </div>
+    </div>
+    <div class="vg-donut-card">
+      <div class="vg-donut-hd">Pessoas</div>
+      <div class="vg-donut-sub" id="vg-fluxo-pessoas-sub">—</div>
+      <div class="vg-donut-panel">
+        <div class="vg-donut-chart"><canvas id="ch-vg-fluxo-pessoas"></canvas></div>
+        <div class="vg-donut-leg" id="vg-fluxo-pessoas-leg"></div>
+      </div>
+    </div>
   </div>
-  <div class="kpi-block">
-    <div class="slabel"><div class="sl-text">Fila de espera</div><div class="sl-line"></div></div>
-    <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
-    <div class="kgrid kgrid-geral" id="kpi-geral-fila"></div>
-  </div>
-  <div class="kpi-block">
-    <div class="slabel"><div class="sl-text">Fluxo total do período</div><div class="sl-line"></div><div class="sl-tag">Atendido + em aberto + passantes</div></div>
-    <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div>
-    <div class="kgrid kgrid-geral" id="kpi-fluxo-total"></div>
-  </div>
-  <div class="slabel"><div class="sl-text">Passantes · entrada direta</div><div class="sl-line"></div><div class="sl-tag">Sem fila digital</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Grupos e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-wi-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Grupos atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Grupos ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
-      <canvas id="ch-wi-g"></canvas>
+      <div class="ch"><div><div class="ct">Perfil de clientes</div><div class="cs">1ª visita vs recorrente · reservas e fila consolidados</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+      <div class="vg-donut-panel" style="padding:4px 0">
+        <div class="vg-donut-chart" style="position:relative"><canvas id="ch-vg-perfil"></canvas><div id="vg-perfil-center" class="vg-perfil-center"></div></div>
+        <div class="vg-donut-leg" id="vg-perfil-leg"></div>
+      </div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Horário (média)</div><div class="cs">Horário de Brasília · data de criação do registro</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
-      <div id="ch-wi-hora" class="hora-heatmap-host"></div>
+      <div class="ch"><div><div class="ct">Tendência do período</div><div class="cs">Mesas / grupos · filtrado vs comparado</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-vg-tendencia">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+      <canvas id="ch-vg-tendencia"></canvas>
     </div>
   </div>
-  <div class="slabel"><div class="sl-text">Perfil de clientes · resumo</div><div class="sl-line"></div><div class="sl-tag">1ª visita vs recorrente · consolidado</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Reservas · Totais do período</div><div class="cs">1ª visita vs recorrente · % e absolutos</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <canvas id="ch-geral-cliente-res-tot"></canvas>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Fila · Totais do período</div><div class="cs">1ª visita vs recorrente · % e absolutos</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <canvas id="ch-geral-cliente-fila-tot"></canvas>
-    </div>
-  </div>
+  <div class="slabel"><div class="sl-text">Resumo por fonte</div><div class="sl-line"></div><div class="sl-tag">Detalhamento rápido</div></div>
+  <div class="vg-resumo-grid" id="vg-resumo-fonte"></div>
+  <div class="vg-info"><strong>Fluxo total</strong> considera Reservas (atendidas + em aberto) + Fila de Espera (atendidas + em aberto) + Passantes (entrada direta). Exclui não comparecimento e cancelamentos.</div>
 </div>
 
 <!-- FILA -->
@@ -933,9 +1015,19 @@ canvas{max-height:230px!important}
       </div>
     </div>
   </div>
+  <div class="slabel"><div class="sl-text">Passantes · entrada direta</div><div class="sl-line"></div><div class="sl-tag">Sem reserva prévia</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Grupos e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-wi-g">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Grupos atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Grupos ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
+      <canvas id="ch-wi-g"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Passantes por Horário (média)</div><div class="cs">Horário de Brasília · data de criação do registro</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+      <div id="ch-wi-hora" class="hora-heatmap-host"></div>
+    </div>
+  </div>
 </div>
-
-<!-- VISÃO MENSAL -->
 <div id="tab-mensal" class="tpanel" :class="{on: activeTab==='mensal'}">
   <div class="page-header"><div><div class="page-title">Visão Mensal</div><div class="page-sub">{{ periodoSubtitulo }} · Resumo executivo</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('mensal')" :disabled="exportingPdf || !canExportTab('mensal')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
   <div class="kpi-block-period" v-if="periodoLabel" style="margin-bottom:14px"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
@@ -1007,38 +1099,53 @@ canvas{max-height:230px!important}
 
 <!-- RANKING -->
 <div id="tab-ranking" class="tpanel" :class="{on: activeTab==='ranking'}">
-  <div class="page-header"><div><div class="page-title">Ranking de Lojas</div><div class="page-sub">{{ periodoSubtitulo }} · Melhores em reservas e fila · listagem completa</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('ranking')" :disabled="exportingPdf || !canExportTab('ranking')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
+  <div class="page-header"><div><div class="page-title">Ranking de Lojas</div><div class="page-sub">Comparativo de desempenho entre lojas no período selecionado.</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('ranking')" :disabled="exportingPdf || !canExportTab('ranking')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
   <div class="kpi-block-period" v-if="periodoLabel" style="margin-bottom:14px"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
-  <div class="rk-grid">
-    <div class="slabel rk-res-head"><div class="sl-text">Melhores em reservas</div><div class="sl-line"></div><div class="sl-tag" id="rk-res-count">—</div></div>
-    <div class="slabel rk-fila-head"><div class="sl-text">Melhores em filas</div><div class="sl-line"></div><div class="sl-tag" id="rk-fila-count">—</div></div>
-    <div class="rk-toolbar rk-res-tools">
-      <span class="rk-toolbar-lbl">Critério</span>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res'}" @click="setRankingResMetric('res')">Volume reservas</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res_pes'}" @click="setRankingResMetric('res_pes')">Volume pessoas</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_res'}" @click="setRankingResMetric('growth_res')">Crescimento reservas</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_pes'}" @click="setRankingResMetric('growth_pes')">Crescimento pessoas</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='taxa_ocupacao'}" @click="setRankingResMetric('taxa_ocupacao')">Taxa ocupação %</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='taxa_noshow_res'}" @click="setRankingResMetric('taxa_noshow_res')">Taxa não compareceu %</button>
-      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='pct_recorrente'}" @click="setRankingResMetric('pct_recorrente')">Clientes recorrentes %</button>
+  <div class="rk-board">
+    <div class="rk-tabs-row">
+      <div class="rk-tab-group">
+        <div class="rk-tab-group-lbl">Reservas</div>
+        <div class="rk-toolbar" style="margin:0">
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='res'}" @click="setRankingSort('res')">Volume reservas</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='res_pes'}" @click="setRankingSort('res_pes')">Volume pessoas</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='growth_res'}" @click="setRankingSort('growth_res')">Crescimento reservas</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='taxa_ocupacao'}" @click="setRankingSort('taxa_ocupacao')">Taxa de ocupação</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='taxa_noshow_res'}" @click="setRankingSort('taxa_noshow_res')">Taxa de não comparecimento</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='pct_recorrente'}" @click="setRankingSort('pct_recorrente')">Clientes recorrentes</button>
+        </div>
+      </div>
+      <div class="rk-tab-group">
+        <div class="rk-tab-group-lbl">Fila de espera</div>
+        <div class="rk-toolbar" style="margin:0">
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='fila'}" @click="setRankingSort('fila')">Volume fila</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='fila_pes'}" @click="setRankingSort('fila_pes')">Volume pessoas</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='growth_fila'}" @click="setRankingSort('growth_fila')">Crescimento fila</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='tempo'}" @click="setRankingSort('tempo')">Tempo médio de espera</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='taxa_atendimento_fila'}" @click="setRankingSort('taxa_atendimento_fila')">Taxa de atendimento</button>
+          <button type="button" class="rk-pill" :class="{on: rankingSortKey==='taxa_noshow_fila'}" @click="setRankingSort('taxa_noshow_fila')">Taxa de não comparecimento</button>
+        </div>
+      </div>
     </div>
-    <div class="rk-toolbar rk-fila-tools">
-      <span class="rk-toolbar-lbl">Critério</span>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila'}" @click="setRankingFilaMetric('fila')">Volume fila</button>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila_pes'}" @click="setRankingFilaMetric('fila_pes')">Volume pessoas</button>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='growth_fila'}" @click="setRankingFilaMetric('growth_fila')">Crescimento fila</button>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='tempo'}" @click="setRankingFilaMetric('tempo')">Tempo médio de espera</button>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='taxa_atendimento'}" @click="setRankingFilaMetric('taxa_atendimento')">Taxa atendimento %</button>
-      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='taxa_noshow_fila'}" @click="setRankingFilaMetric('taxa_noshow_fila')">Taxa não compareceu %</button>
+    <div class="rk-view-toggle">
+      <button type="button" class="rk-view-btn" :class="{on: rankingView==='list'}" @click="setRankingView('list')">Visão por lista</button>
+      <button type="button" class="rk-view-btn" :class="{on: rankingView==='chart'}" @click="setRankingView('chart')">Visão por gráfico</button>
     </div>
-    <div class="card gf rk-res-card">
-      <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-res-sub">—</span></div>
-      <div class="rlist" id="rk-res-list"></div>
+    <div class="card gf" id="rk-panel-list">
+      <div class="rk-table-wrap">
+        <table class="rk-table" id="rk-unified-table"></table>
+      </div>
     </div>
-    <div class="card gf rk-fila-card">
-      <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-fila-sub">—</span></div>
-      <div class="rlist" id="rk-fila-list"></div>
+    <div class="card gf rk-chart-host" id="rk-panel-chart" style="display:none">
+      <div class="ch"><div><div class="ct" id="rk-chart-title">Ranking</div><div class="cs" id="rk-chart-sub">—</div></div></div>
+      <canvas id="ch-rk-metric"></canvas>
     </div>
+    <div class="rk-legend">
+      <span class="rk-legend-item"><span class="rk-legend-swatch" style="background:var(--green)"></span>Aumento / melhora</span>
+      <span class="rk-legend-item"><span class="rk-legend-swatch" style="background:var(--red)"></span>Redução / piora</span>
+      <span class="rk-legend-item"><span class="rk-legend-swatch" style="background:var(--muted)"></span>Sem alteração</span>
+      <span class="rk-legend-item">p.p. = pontos percentuais</span>
+    </div>
+    <div class="vg-info rk-info"><strong>Tempo médio de espera:</strong> considera apenas filas atendidas no período. Não inclui não comparecimento e cancelamentos.</div>
   </div>
 </div>
 
@@ -1326,7 +1433,10 @@ const CTX_KPI_DESC = {
 const CHART_DESC = {
   'ch-futuro-dia': 'Reservas em aberto (nova, confirmada ou pendente) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
   'ch-re-futuro-dia': 'Reservas em aberto (nova, confirmada ou pendente) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
-  'ch-geral-cliente-res': 'Reservas por dia separadas entre clientes de 1ª visita e recorrentes no período filtrado.',
+  'ch-vg-fluxo-grupos': 'Participação de reservas, fila e passantes no total de mesas/grupos do fluxo efetivo do período.',
+  'ch-vg-fluxo-pessoas': 'Participação de reservas, fila e passantes no total de pessoas do fluxo efetivo do período.',
+  'ch-vg-perfil': 'Perfil consolidado de clientes (1ª visita vs recorrente) somando reservas e fila de espera.',
+  'ch-vg-tendencia': 'Evolução diária do fluxo efetivo (mesas/grupos), comparando período filtrado e anterior.',
   'ch-re-cliente-dia': 'Reservas por dia separadas entre clientes de 1ª visita e recorrentes no período filtrado.',
   'ch-geral-cliente-fila': 'Entradas na fila por dia entre clientes de 1ª visita e recorrentes.',
   'ch-fi-cliente-dia': 'Entradas na fila por dia entre clientes de 1ª visita e recorrentes.',
@@ -1397,8 +1507,8 @@ createApp({
       ORIGEM_DETALHE: { reservas: [], fila: [] },
       CANAL: { labels: [], w: [], t: [], g: [], c: [] },
       activeTab: 'geral',
-      rankingResMetric: 'growth_res',
-      rankingFilaMetric: 'growth_fila',
+      rankingSortKey: 'res',
+      rankingView: 'list',
       loading: true,
       error: null,
       footerTs: '',
@@ -2485,8 +2595,8 @@ createApp({
       this.$nextTick(() => this.render());
     },
 
-    setRankingResMetric(metric) {
-      this.rankingResMetric = metric;
+    setRankingSort(metric) {
+      this.rankingSortKey = metric;
       if (this.activeTab === 'ranking') {
         this.$nextTick(() => {
           try { this.rRanking(); } catch (err) { console.error('[ranking]', err); }
@@ -2494,13 +2604,22 @@ createApp({
       }
     },
 
-    setRankingFilaMetric(metric) {
-      this.rankingFilaMetric = metric;
+    setRankingView(view) {
+      this.rankingView = view;
       if (this.activeTab === 'ranking') {
         this.$nextTick(() => {
           try { this.rRanking(); } catch (err) { console.error('[ranking]', err); }
         });
       }
+    },
+
+    setRankingResMetric(metric) {
+      this.setRankingSort(metric);
+    },
+
+    setRankingFilaMetric(metric) {
+      const map = { taxa_atendimento: 'taxa_atendimento_fila' };
+      this.setRankingSort(map[metric] || metric);
     },
 
     rankingUnits() {
@@ -2541,13 +2660,201 @@ createApp({
         growth_res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de reservas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_pes: { key: 'res_pes', prev: 'res_pes_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de pessoas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'growth', label: 'crescimento da fila vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
-        taxa_ocupacao: { key: 'taxa_ocupacao', mode: 'rate', label: 'taxa de ocupação (sentado ÷ fluxo)', best: 'Maior ocupação', worst: 'Menor ocupação', higherBetter: true },
-        taxa_noshow_res: { key: 'taxa_noshow_res', mode: 'rate', label: 'taxa de não comparecimento em reservas', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
+        taxa_ocupacao: { key: 'taxa_ocupacao', prev: 'taxa_ocupacao_p', mode: 'rate', label: 'taxa de ocupação (sentado ÷ fluxo)', best: 'Maior ocupação', worst: 'Menor ocupação', higherBetter: true },
+        taxa_noshow_res: { key: 'taxa_noshow_res', prev: 'taxa_noshow_res_p', mode: 'rate', label: 'taxa de não comparecimento em reservas', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
         pct_recorrente: { key: 'pct_recorrente', mode: 'rate', label: '% de clientes recorrentes nas reservas', best: 'Mais recorrentes', worst: 'Menos recorrentes', higherBetter: true },
         taxa_atendimento: { key: 'taxa_atendimento_fila', mode: 'rate', label: 'taxa de atendimento na fila', best: 'Maior atendimento', worst: 'Menor atendimento', higherBetter: true },
-        taxa_noshow_fila: { key: 'taxa_noshow_fila', mode: 'rate', label: 'taxa de não comparecimento na fila', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
+        taxa_atendimento_fila: { key: 'taxa_atendimento_fila', prev: 'taxa_atendimento_fila_p', mode: 'rate', label: 'taxa de atendimento na fila', best: 'Maior atendimento', worst: 'Menor atendimento', higherBetter: true },
+        taxa_noshow_fila: { key: 'taxa_noshow_fila', prev: 'taxa_noshow_fila_p', mode: 'rate', label: 'taxa de não comparecimento na fila', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
+        tempo: { key: 'tempo', prev: 'tempo_p', mode: 'tempo', label: 'tempo médio de espera', best: 'Menor tempo', worst: 'Maior tempo', higherBetter: false },
       };
       return map[metric] || map.growth_res;
+    },
+
+    rankingTableColumns() {
+      return [
+        { key: 'fila', label: 'Volume fila', group: 'fila', type: 'volume', cur: 'fila', prev: 'fila_p', higherBetter: true },
+        { key: 'tempo', label: 'Tempo médio', group: 'fila', type: 'tempo', cur: 'tempo', prev: 'tempo_p', higherBetter: false },
+        { key: 'taxa_atendimento_fila', label: 'Taxa atendimento', group: 'fila', type: 'rate', cur: 'taxa_atendimento_fila', prev: 'taxa_atendimento_fila_p', higherBetter: true },
+        { key: 'taxa_noshow_fila', label: 'Taxa não comp.', group: 'fila', type: 'rate', cur: 'taxa_noshow_fila', prev: 'taxa_noshow_fila_p', higherBetter: false },
+        { key: 'res', label: 'Volume reservas', group: 'res', type: 'volume', cur: 'res', prev: 'res_p', higherBetter: true },
+        { key: 'taxa_ocupacao', label: 'Taxa ocupação', group: 'res', type: 'rate', cur: 'taxa_ocupacao', prev: 'taxa_ocupacao_p', higherBetter: true },
+        { key: 'taxa_noshow_res', label: 'Taxa não comp.', group: 'res', type: 'rate', cur: 'taxa_noshow_res', prev: 'taxa_noshow_res_p', higherBetter: false },
+        { key: 'pct_recorrente', label: 'Recorrentes', group: 'res', type: 'rate', cur: 'pct_recorrente', prev: null, higherBetter: true },
+      ];
+    },
+
+    rkMetricValue(u, col) {
+      return u[col.cur] || 0;
+    },
+
+    rkMetricPrev(u, col) {
+      if (!col.prev) return null;
+      return u[col.prev] || 0;
+    },
+
+    rkMetricDeltaHtml(cur, prev, col) {
+      const { type, higherBetter } = col;
+      if (type === 'rate') {
+        if (col.prev == null) return '<span class="rk-metric-delta nu">—</span>';
+        const diff = cur - prev;
+        if (cur === 0 && prev === 0) return '<span class="rk-metric-delta nu">—</span>';
+        const improved = higherBetter ? diff >= 0 : diff <= 0;
+        const flat = Math.abs(diff) < 0.05;
+        const cls = flat ? 'nu' : (improved ? 'up' : 'dn');
+        const arrow = flat ? '—' : (diff > 0 ? '↑' : '▼');
+        const txt = flat ? 'sem alteração' : `${arrow} ${fmtDec(Math.abs(diff), 1)} p.p.`;
+        return `<span class="rk-metric-delta ${cls}">${txt}</span>`;
+      }
+      if (type === 'tempo') {
+        if (!prev && !cur) return '<span class="rk-metric-delta nu">—</span>';
+        const dv = this.rankDelta(cur, prev);
+        if (dv == null) return '<span class="rk-metric-delta nu">—</span>';
+        const improved = dv <= 0;
+        const flat = Math.abs(dv) < 0.05;
+        const cls = flat ? 'nu' : (improved ? 'up' : 'dn');
+        const arrow = flat ? '—' : (dv > 0 ? '▲' : '▼');
+        const txt = flat ? 'sem alteração' : `${arrow}${this.deltaPct(Math.abs(dv))}`;
+        return `<span class="rk-metric-delta ${cls}">${txt}</span>`;
+      }
+      const dv = this.rankDelta(cur, prev);
+      if (dv == null) return '<span class="rk-metric-delta nu">—</span>';
+      const improved = higherBetter ? dv >= 0 : dv <= 0;
+      const flat = Math.abs(dv) < 0.05;
+      const cls = flat ? 'nu' : (improved ? 'up' : 'dn');
+      const arrow = flat ? '—' : (dv > 0 ? '▲' : '▼');
+      const txt = flat ? 'sem alteração' : `${arrow}${this.deltaPct(Math.abs(dv))}`;
+      return `<span class="rk-metric-delta ${cls}">${txt}</span>`;
+    },
+
+    rkMetricCell(u, col) {
+      const cur = this.rkMetricValue(u, col);
+      const prev = col.prev != null ? this.rkMetricPrev(u, col) : null;
+      let curFmt;
+      let antFmt;
+      if (col.type === 'rate') {
+        const hasData = cur > 0 || prev > 0 || (col.key === 'pct_recorrente' && ((u.recorrente || 0) + (u.primeira || 0) > 0));
+        curFmt = hasData ? `${fmtDec(cur, 1)}%` : '—';
+        antFmt = prev != null && (prev > 0 || cur > 0) ? `${fmtDec(prev, 1)}%` : '—';
+      } else if (col.type === 'tempo') {
+        curFmt = cur > 0 ? `${this.S(Math.round(cur))} min` : '—';
+        antFmt = prev > 0 ? `${this.S(Math.round(prev))} min` : '—';
+      } else {
+        curFmt = cur > 0 ? this.S(cur) : '—';
+        antFmt = prev != null ? this.S(prev) : '—';
+      }
+      return `<div class="rk-metric"><div class="rk-metric-cur">${curFmt}</div><div class="rk-metric-ant">ANT. ${antFmt}</div>${this.rkMetricDeltaHtml(cur, prev ?? 0, col)}</div>`;
+    },
+
+    rankingSortUnits(units, sortKey) {
+      if (sortKey === 'tempo') {
+        return [...units].sort((a, b) => {
+          const ta = a.tempo || 0;
+          const tb = b.tempo || 0;
+          if (!ta && !tb) return 0;
+          if (!ta) return 1;
+          if (!tb) return -1;
+          return ta - tb;
+        });
+      }
+      const cfg = this.rankingMetricConfig(sortKey);
+      const list = [...units];
+      if (cfg.mode === 'growth') {
+        return list.sort((a, b) => {
+          const da = this.rankDelta(a[cfg.key] || 0, a[cfg.prev] || 0) ?? -Infinity;
+          const db = this.rankDelta(b[cfg.key] || 0, b[cfg.prev] || 0) ?? -Infinity;
+          return db - da;
+        });
+      }
+      if (cfg.mode === 'rate') {
+        const hb = cfg.higherBetter !== false;
+        return list.sort((a, b) => {
+          const va = a[cfg.key] || 0;
+          const vb = b[cfg.key] || 0;
+          return hb ? vb - va : va - vb;
+        });
+      }
+      return list.sort((a, b) => (b[cfg.key] || 0) - (a[cfg.key] || 0));
+    },
+
+    renderRankingTable(units) {
+      const table = document.getElementById('rk-unified-table');
+      if (!table) return;
+      const cols = this.rankingTableColumns();
+      const sorted = this.rankingSortUnits(units, this.rankingSortKey);
+      const posCls = ['gd', 'sv', 'br', ''];
+      const updated = this.footerTs || '—';
+      const head = `<thead>
+        <tr>
+          <th rowspan="2">Posição</th>
+          <th rowspan="2">Loja</th>
+          <th class="rk-th-group" colspan="4">Fila de espera</th>
+          <th class="rk-th-group" colspan="4">Reservas</th>
+          <th rowspan="2">Última atualização</th>
+        </tr>
+        <tr class="rk-subhead">
+          ${cols.filter((c) => c.group === 'fila').map((c) => `<th class="rk-th-sort${this.rankingSortKey === c.key ? ' on' : ''}">${c.label}</th>`).join('')}
+          ${cols.filter((c) => c.group === 'res').map((c) => `<th class="rk-th-sort${this.rankingSortKey === c.key ? ' on' : ''}">${c.label}</th>`).join('')}
+        </tr>
+      </thead>`;
+      if (!sorted.length) {
+        table.innerHTML = `${head}<tbody><tr><td colspan="11" class="rk-empty">Nenhuma loja ativa no período.</td></tr></tbody>`;
+        return;
+      }
+      const body = sorted.map((u, i) => {
+        const initial = (u.nome || '?').trim().charAt(0).toUpperCase();
+        const cells = cols.map((c) => `<td>${this.rkMetricCell(u, c)}</td>`).join('');
+        return `<tr>
+          <td class="rk-td-pos ${posCls[i] || ''}">${i + 1}</td>
+          <td><div class="rk-store"><span class="rk-store-dot">${this.escapeHtml(initial)}</span><span class="rk-store-name" title="${this.escapeHtml(u.nome)}">${this.escapeHtml(u.nome)}</span></div></td>
+          ${cells}
+          <td style="font-size:11px;color:var(--muted);white-space:nowrap">${updated}</td>
+        </tr>`;
+      }).join('');
+      table.innerHTML = `${head}<tbody>${body}</tbody>`;
+    },
+
+    renderRankingChart(units) {
+      const sortKey = this.rankingSortKey;
+      const cfg = this.rankingMetricConfig(sortKey === 'tempo' ? 'tempo' : sortKey);
+      const titleEl = document.getElementById('rk-chart-title');
+      const subEl = document.getElementById('rk-chart-sub');
+      if (titleEl) titleEl.textContent = cfg.label ? cfg.label.charAt(0).toUpperCase() + cfg.label.slice(1) : 'Ranking';
+      if (subEl) subEl.textContent = `${cfg.best || 'Maior valor'} · período filtrado`;
+      const sorted = this.rankingSortUnits(units, sortKey).filter((u) => (sortKey === 'tempo' ? u.tempo > 0 : (u[cfg.key] || 0) > 0)).slice(0, 12);
+      if (!sorted.length) {
+        this.destroyChart('ch-rk-metric');
+        return;
+      }
+      const valueKey = sortKey === 'tempo' ? 'tempo' : cfg.key;
+      const labelFmt = sortKey === 'tempo'
+        ? (v) => `${this.S(Math.round(v))} min`
+        : (cfg.mode === 'rate' ? (v) => `${fmtDec(v, 1)}%` : (v) => this.S(v));
+      this.mk('ch-rk-metric', {
+        type: 'bar',
+        data: {
+          labels: sorted.map((u) => u.nome),
+          datasets: [{
+            label: cfg.label,
+            data: sorted.map((u) => u[valueKey] || 0),
+            backgroundColor: `${CHART_COL.filtrado}CC`,
+            borderRadius: 4,
+          }],
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { ...this.darkTooltip(), callbacks: { label: (ctx) => ` ${labelFmt(ctx.raw)}` } },
+          },
+          scales: {
+            x: { ticks: { color: this.chartTheme().tick, font: { size: 10 } }, grid: { color: this.chartTheme().grid } },
+            y: { ticks: { color: this.chartTheme().tick, font: { size: 10 } }, grid: { display: false } },
+          },
+        },
+      });
     },
 
     rankRow(u, i, cfg, maxVal, totalVal) {
@@ -3405,7 +3712,8 @@ createApp({
         const o = outcomes[def.key];
         const desc = kind === 'fila' ? def.descFila : def.descReserva;
         const pctRes = total > 0 ? (o.res / total) * 100 : null;
-        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'reservas / pessoas', '', desc, pctRes);
+        const pctPes = totalPes > 0 ? (o.pes / totalPes) * 100 : null;
+        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'reservas / pessoas', '', desc, pctRes, pctPes);
       }
       if (passante) {
         html += this.kpiRp('Passantes/pessoas', passante.res, passante.pes, passante.resPrv, passante.pesPrv, KPI_COL.passante, 'entrada direta', '', KPI_EXTRA_DESC.passante);
@@ -3413,13 +3721,14 @@ createApp({
       this.setHtml(elId, html);
     },
 
-    kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '', extraHtml = '', desc = '', pctRes = null) {
+    kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '', extraHtml = '', desc = '', pctRes = null, pctPes = null) {
       const d = this.dp(res, resPrv);
       const up = d >= 0;
       const ds = resPrv ? (up ? '▲' : '▼') + this.deltaPct(d) + ' vs período ant. (res.)' : '—';
       const subLine = sub || 'reservas / pessoas';
       const resPart = pctRes != null ? `${this.S(res)} <span class="kpi-pct">(${this.pct(pctRes)})</span>` : this.S(res);
-      const numHtml = `${resPart} / ${this.S(pes)} <span style="font-size:11px;font-weight:600;opacity:.75">pess.</span>`;
+      const pesPart = pctPes != null ? `${this.S(pes)} <span class="kpi-pct">(${this.pct(pctPes)})</span>` : this.S(pes);
+      const numHtml = `${resPart} / ${pesPart} <span style="font-size:11px;font-weight:600;opacity:.75">pess.</span>`;
       return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col};font-size:1.35rem;line-height:1.2">${numHtml}</div><div class="kdelta ${resPrv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div><div class="ksub">${subLine}</div>${extraHtml}${this.kpiDescHtml(desc)}</div>`;
     },
 
@@ -3521,8 +3830,10 @@ createApp({
       const tWP = this.A(d.walkinPessoas), pWP = this.A(d.walkinPessoas_p);
       if (!((fut.abertas || 0) > 0 || tW > 0)) return;
       const futPeriodo = fut.label || 'próximos 30 dias';
+      const futPctRes = (fut.total || 0) > 0 ? ((fut.abertas || 0) / fut.total) * 100 : null;
+      const futPctPes = (fut.pessoasTotal || 0) > 0 ? ((fut.abertasPessoas || 0) / fut.pessoasTotal) * 100 : null;
       this.setHtml(kpiId,
-        this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, 'Reservas futuras em aberto', '', KPI_EXTRA_DESC.futuroAberto) +
+        this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, 'Reservas futuras em aberto', '', KPI_EXTRA_DESC.futuroAberto, futPctRes, futPctPes) +
         this.kpiRp('Passantes/pessoas', tW, tWP, pW, pWP, KPI_COL.passante, 'entrada direta · período filtrado', '', KPI_EXTRA_DESC.passante));
     },
 
@@ -3706,30 +4017,231 @@ createApp({
       });
     },
 
-    renderFluxoTotal(elId) {
-      const ft = this.W?.totais?.fluxoTotal;
-      if (!ft) {
-        this.setHtml(elId, '');
+    calcVisaoGeralData() {
+      const d = this.W;
+      const rk = this.calcReservaKpis(d);
+      const fk = this.calcFilaKpis(d);
+      const ft = d.totais?.fluxoTotal || {};
+      const tW = this.A(d.walkin);
+      const tWP = this.A(d.walkinPessoas);
+      const totalGrupos = (ft.reservas || 0) + (ft.fila || 0) + (ft.passantes || 0);
+      const totalPes = ft.totalPessoas || 0;
+      const resFluxoPes = ft.reservasPessoas || 0;
+      const filaFluxoPes = ft.filaPessoas || 0;
+      return {
+        rk, fk, ft, tW, tWP, totalGrupos, totalPes,
+        res: {
+          abertoPes: rk.tAP,
+          sentadoPes: rk.tSP,
+          fluxoPes: resFluxoPes,
+          noshowRes: rk.tN,
+          noshowPes: rk.tNP,
+          totalRes: rk.tR,
+          pctAberto: resFluxoPes > 0 ? (rk.tAP / resFluxoPes) * 100 : 0,
+          pctSentado: resFluxoPes > 0 ? (rk.tSP / resFluxoPes) * 100 : 0,
+          pctNoshowTotal: rk.tR > 0 ? (rk.tN / rk.tR) * 100 : 0,
+        },
+        fila: {
+          abertoPes: fk.outcomes.aberto.pes,
+          sentadoPes: fk.outcomes.sentado.pes,
+          fluxoPes: filaFluxoPes,
+          pctAberto: filaFluxoPes > 0 ? (fk.outcomes.aberto.pes / filaFluxoPes) * 100 : 0,
+          pctSentado: filaFluxoPes > 0 ? (fk.outcomes.sentado.pes / filaFluxoPes) * 100 : 0,
+        },
+      };
+    },
+
+    vgHeroFluxoCard(grupos, pessoas) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:#6366F1"></div><div class="vg-hero-title">Fluxo total</div><div class="vg-hero-dual"><div><span class="vg-hero-num">${this.S(grupos)}</span><span class="vg-hero-lbl">mesas / grupos</span></div><div><span class="vg-hero-num">${this.S(pessoas)}</span><span class="vg-hero-lbl">pessoas</span></div></div></div>`;
+    },
+
+    vgHeroRatioCard(title, color, aberto, total, pctAberto, pctSentado) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:${color}"></div><div class="vg-hero-title">${title}</div><div class="vg-hero-main" style="color:${color}">${this.S(aberto)} <span class="vg-hero-sep">/</span> ${this.S(total)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill" style="border-color:${color}55;color:${color}">${this.pct(pctAberto)} em aberto</span><span class="vg-pill vg-pill-ok">${this.pct(pctSentado)} sentadas</span></div></div>`;
+    },
+
+    vgHeroNoshowCard(noshowRes, noshowPes, pctTotal) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-noshow)"></div><div class="vg-hero-title">Não compareceu</div><div class="vg-hero-main" style="color:var(--chart-noshow)">${this.S(noshowRes)} <span class="vg-hero-sep">/</span> ${this.S(noshowPes)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill vg-pill-warn">${this.pct(pctTotal)} do total de reservas</span></div></div>`;
+    },
+
+    vgHeroPassanteCard(grupos, pessoas) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-passante)"></div><div class="vg-hero-title">Passantes</div><div class="vg-hero-main" style="color:var(--chart-passante)">${this.S(pessoas)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(grupos)} mesas / grupos</div></div>`;
+    },
+
+    renderVgHeroKpis() {
+      const v = this.calcVisaoGeralData();
+      const html =
+        this.vgHeroFluxoCard(v.totalGrupos, v.totalPes) +
+        this.vgHeroRatioCard('Reservas', CHART_COL.filtrado, v.res.abertoPes, v.res.fluxoPes, v.res.pctAberto, v.res.pctSentado) +
+        this.vgHeroRatioCard('Fila de espera', CHART_COL.comparado, v.fila.abertoPes, v.fila.fluxoPes, v.fila.pctAberto, v.fila.pctSentado) +
+        this.vgHeroNoshowCard(v.res.noshowRes, v.res.noshowPes, v.res.pctNoshowTotal) +
+        this.vgHeroPassanteCard(v.tW, v.tWP);
+      this.setHtml('vg-hero-kpis', html);
+    },
+
+    vgDonutLegend(elId, items, total) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (!total) {
+        el.innerHTML = '<div style="color:var(--muted);font-size:12px">Sem dados no período.</div>';
         return;
       }
-      const colFluxo = '#6366F1';
+      el.innerHTML = items.map(({ lbl, count, color }) => {
+        const pct = Math.round((count / total) * 100);
+        return `<div class="vg-donut-leg-row"><span class="vg-donut-leg-name"><i class="vg-donut-dot" style="background:${color}"></i>${lbl}</span><span class="vg-donut-pct">${pct}%</span><span class="vg-donut-cnt">${this.S(count)}</span></div>`;
+      }).join('');
+    },
+
+    mkVgDonut(canvasId, legendId, subId, items, totalLabel) {
+      const total = items.reduce((s, x) => s + x.count, 0);
+      const subEl = document.getElementById(subId);
+      if (subEl) subEl.textContent = total ? `Total ${this.S(total)}` : 'Sem dados no período';
+      this.vgDonutLegend(legendId, items, total);
+      if (!total) {
+        this.destroyChart(canvasId);
+        return;
+      }
+      this.mk(canvasId, {
+        type: 'doughnut',
+        data: {
+          labels: items.map((x) => x.lbl),
+          datasets: [{
+            data: items.map((x) => x.count),
+            backgroundColor: items.map((x) => x.color + 'DD'),
+            borderColor: 'transparent',
+            hoverBackgroundColor: items.map((x) => x.color),
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '68%',
+          animation: false,
+          plugins: { legend: { display: false }, tooltip: { ...this.darkTooltip(), callbacks: { label: (ctx) => ` ${ctx.label}: ${this.S(ctx.raw)} (${Math.round((ctx.raw / total) * 100)}%)` } } },
+        },
+      });
+    },
+
+    renderVgFluxoDonuts() {
+      const v = this.calcVisaoGeralData();
+      const ft = v.ft;
+      const gruposItems = [
+        { lbl: 'Reservas', count: ft.reservas || 0, color: CHART_COL.filtrado },
+        { lbl: 'Fila de espera', count: ft.fila || 0, color: CHART_COL.comparado },
+        { lbl: 'Passantes', count: ft.passantes || 0, color: CHART_COL.passante },
+      ];
+      const pessoasItems = [
+        { lbl: 'Reservas', count: ft.reservasPessoas || 0, color: CHART_COL.filtrado },
+        { lbl: 'Fila de espera', count: ft.filaPessoas || 0, color: CHART_COL.comparado },
+        { lbl: 'Passantes', count: ft.passantesPessoas || 0, color: CHART_COL.passante },
+      ];
+      this.mkVgDonut('ch-vg-fluxo-grupos', 'vg-fluxo-grupos-leg', 'vg-fluxo-grupos-sub', gruposItems);
+      this.mkVgDonut('ch-vg-fluxo-pessoas', 'vg-fluxo-pessoas-leg', 'vg-fluxo-pessoas-sub', pessoasItems);
+    },
+
+    renderVgPerfilDonut() {
+      const d = this.W;
+      const cr = d.clienteRes || {};
+      const cf = d.clienteFila || {};
+      const primeira = this.A(cr.primeiraPes) + this.A(cf.primeiraPes);
+      const recorrente = this.A(cr.recorrentePes) + this.A(cf.recorrentePes);
+      const total = primeira + recorrente;
+      const pctRec = total > 0 ? (recorrente / total) * 100 : 0;
+      const center = document.getElementById('vg-perfil-center');
+      if (center) {
+        center.innerHTML = total
+          ? `<div class="vg-perfil-pct">${Math.round(pctRec)}%</div><div class="vg-perfil-lbl">Recorrentes</div>`
+          : '';
+      }
+      const items = [
+        { lbl: 'Recorrentes', count: recorrente, color: CHART_COL.recorrente },
+        { lbl: '1ª visita', count: primeira, color: CHART_COL.primeira },
+      ];
+      this.vgDonutLegend('vg-perfil-leg', items, total);
+      if (!total) {
+        this.destroyChart('ch-vg-perfil');
+        return;
+      }
+      this.mk('ch-vg-perfil', {
+        type: 'doughnut',
+        data: {
+          labels: items.map((x) => x.lbl),
+          datasets: [{
+            data: items.map((x) => x.count),
+            backgroundColor: items.map((x) => x.color + 'DD'),
+            borderColor: 'transparent',
+            hoverBackgroundColor: items.map((x) => x.color),
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '72%',
+          animation: false,
+          plugins: { legend: { display: false }, tooltip: { ...this.darkTooltip(), callbacks: { label: (ctx) => ` ${ctx.label}: ${this.S(ctx.raw)} pess. (${Math.round((ctx.raw / total) * 100)}%)` } } },
+        },
+      });
+    },
+
+    dailyFluxoGrupos(d) {
+      const dc = this.dayCount();
+      const sr = d.sr || Array(dc).fill(0);
+      const ar = d.ar || Array(dc).fill(0);
+      const fila = d.fila || Array(dc).fill(0);
+      const nf = d.nf || Array(dc).fill(0);
+      const sf = d.sf || Array(dc).fill(0);
+      const wi = d.walkin || Array(dc).fill(0);
+      return Array.from({ length: dc }, (_, i) => (sr[i] || 0) + (ar[i] || 0) + Math.max(0, (fila[i] || 0) - (nf[i] || 0)) + (wi[i] || 0));
+    },
+
+    renderVgTendencia() {
+      const d = this.W;
+      const LBL = this.chartLabels();
+      const cur = this.dailyFluxoGrupos(d);
+      const prev = this.dailyFluxoGrupos({
+        sr: d.sr_p, ar: d.ar_p, fila: d.fil_p, nf: d.nf_p, sf: d.sf_p, walkin: d.walkin_p,
+      });
+      const prevAligned = this.alignPrevSeries(cur, prev);
+      const tCur = this.A(cur);
+      const tPrev = this.A(prevAligned);
+      this.tag('t-vg-tendencia', tCur, tPrev);
+      this.mk('ch-vg-tendencia', {
+        showValueLabels: false,
+        type: 'line',
+        data: {
+          labels: LBL,
+          datasets: [
+            this.dsAtual('Fluxo período', cur, true),
+            this.dsAnterior('Fluxo anterior', prevAligned),
+          ],
+        },
+        options: this.dayCompareOptions('Mesas / grupos', d.periodoAnterior?.labels || []),
+      });
+    },
+
+    vgResumoItem(dotColor, label, value, pct) {
+      return `<li><i class="vg-resumo-dot" style="background:${dotColor}"></i><strong>${this.S(value)}</strong> (${this.pct(pct)}) ${label}</li>`;
+    },
+
+    renderVgResumoFonte() {
+      const v = this.calcVisaoGeralData();
+      const res = v.res;
+      const fila = v.fila;
       const html =
-        this.kpiRp('Reservas (fluxo)', ft.reservas, ft.reservasPessoas, 0, 0, KPI_COL.sentado, 'Atendidas + em aberto', '', 'Reservas efetivas no período: atendidas mais em aberto. Exclui não comparecimento.') +
-        this.kpiRp('Fila (fluxo)', ft.fila, ft.filaPessoas, 0, 0, KPI_COL.filtrado, 'Atendidas + em aberto', '', 'Fila efetiva: atendidas mais aguardando. Exclui não comparecimento e cancelamentos.') +
-        this.kpiRp('Passantes', ft.passantes, ft.passantesPessoas, 0, 0, KPI_COL.passante, 'Todos os grupos ativos', '', KPI_EXTRA_DESC.passante) +
-        this.kpi('Total pessoas (fluxo)', ft.totalPessoas, 0, colFluxo, 'Soma reservas + fila + passantes', KPI_EXTRA_DESC.fluxoTotal);
-      this.setHtml(elId, html);
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.filtrado}">Reservas</div><div class="vg-resumo-main" style="color:${CHART_COL.filtrado}">${this.S(res.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(res.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', res.abertoPes, res.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', res.sentadoPes, res.pctSentado)}<li><i class="vg-resumo-dot" style="background:var(--chart-noshow)"></i><strong>${this.S(res.noshowRes)}</strong> não compareceu (${this.pct(res.pctNoshowTotal)} do total de reservas)</li></ul><button type="button" class="vg-tab-link" data-tab="reservas">Ver detalhes na aba Reservas →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.comparado}">Fila de espera</div><div class="vg-resumo-main" style="color:${CHART_COL.comparado}">${this.S(fila.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(fila.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', fila.abertoPes, fila.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', fila.sentadoPes, fila.pctSentado)}</ul><button type="button" class="vg-tab-link" data-tab="fila">Ver detalhes na aba Fila de Espera →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.passante}">Passantes</div><div class="vg-resumo-main" style="color:${CHART_COL.passante}">${this.S(v.tWP)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(v.tW)} mesas / grupos</div><p style="font-size:12px;color:var(--muted);line-height:1.5;flex:1">Clientes que entraram sem reserva prévia (entrada direta). Exclui registros excluídos no Tagme Manager.</p><button type="button" class="vg-tab-link" data-tab="reservas">Ver gráficos de passantes →</button></div>`;
+      this.setHtml('vg-resumo-fonte', html);
+      document.querySelectorAll('#vg-resumo-fonte .vg-tab-link').forEach((el) => {
+        el.onclick = () => this.go(el.dataset.tab);
+      });
     },
 
     rGeral() {
-      const d = this.W;
-      this.renderReservaKpiBlock('kpi-geral-res', { withFuturo: false });
-      this.renderFilaKpiBlock('kpi-geral-fila');
-      this.renderFluxoTotal('kpi-fluxo-total');
-      this.renderWalkinPorDia('ch-wi-g', 't-wi-g');
-      this.renderWalkinHeatmap('ch-wi-hora');
-      this.renderClienteRes([], ['ch-geral-cliente-res-tot']);
-      this.renderClienteFila([], ['ch-geral-cliente-fila-tot']);
+      this.renderVgHeroKpis();
+      this.renderVgFluxoDonuts();
+      this.renderVgPerfilDonut();
+      this.renderVgTendencia();
+      this.renderVgResumoFonte();
     },
 
     rFila() {
@@ -3783,6 +4295,8 @@ createApp({
       this.mk('ch-re-ocorr', { showValueLabels: true, type: 'line', data: { labels: LBL, datasets: [this.dsAtual('Reservas', d.reservas, true), this.dsPesAtual('Pessoas', d.pessoas, true)] }, options: this.bO('Quantidade') });
       this.renderClienteRes(['ch-re-cliente-dia'], ['ch-re-cliente-tot']);
       this.renderOrigemDonutGroups(['re']);
+      this.renderWalkinPorDia('ch-wi-g', 't-wi-g');
+      this.renderWalkinHeatmap('ch-wi-hora');
     },
 
     rMensal() {
@@ -3818,23 +4332,17 @@ createApp({
 
     rRanking() {
       const units = this.rankingUnits();
-      const resCfg = this.rankingMetricConfig(this.rankingResMetric);
-      const resSub = document.getElementById('rk-res-sub');
-      const filaSub = document.getElementById('rk-fila-sub');
-      const resCount = document.getElementById('rk-res-count');
-      const filaCount = document.getElementById('rk-fila-count');
-      if (resSub) resSub.textContent = `${resCfg.best} · ${resCfg.label}`;
-      const resN = this.buildRankingList('rk-res-list', units, resCfg, 'best');
-      if (resCount) resCount.textContent = `${fmtInt(resN)} loja${resN === 1 ? '' : 's'} ativa${resN === 1 ? '' : 's'}`;
-      if (this.rankingFilaMetric === 'tempo') {
-        if (filaSub) filaSub.textContent = 'Menor tempo médio de espera · sentados no período';
-        const filaN = this.buildTempoRanking('rk-fila-list', units, 'best');
-        if (filaCount) filaCount.textContent = `${fmtInt(filaN)} loja${filaN === 1 ? '' : 's'} ativa${filaN === 1 ? '' : 's'}`;
+      const listPanel = document.getElementById('rk-panel-list');
+      const chartPanel = document.getElementById('rk-panel-chart');
+      if (this.rankingView === 'chart') {
+        if (listPanel) listPanel.style.display = 'none';
+        if (chartPanel) chartPanel.style.display = '';
+        this.renderRankingChart(units);
       } else {
-        const filaCfg = this.rankingMetricConfig(this.rankingFilaMetric);
-        if (filaSub) filaSub.textContent = `${filaCfg.best} · ${filaCfg.label}`;
-        const filaN = this.buildRankingList('rk-fila-list', units, filaCfg, 'best');
-        if (filaCount) filaCount.textContent = `${fmtInt(filaN)} loja${filaN === 1 ? '' : 's'} ativa${filaN === 1 ? '' : 's'}`;
+        if (listPanel) listPanel.style.display = '';
+        if (chartPanel) chartPanel.style.display = 'none';
+        this.destroyChart('ch-rk-metric');
+        this.renderRankingTable(units);
       }
     },
 
