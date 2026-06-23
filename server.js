@@ -79,11 +79,11 @@ app.get('/auth/keycloak/login', async (req, res) => {
   }
 });
 
-app.get('/auth/keycloak/callback', async (req, res) => {
+async function handleKeycloakCallback(req, res) {
   try {
     const oidcState = getOidcState(req);
     clearOidcState(res);
-    if (!oidcState?.state || !oidcState?.codeVerifier) {
+    if (!oidcState?.state) {
       return res.redirect('/login?error=Sessão+SSO+expirada.+Tente+novamente.');
     }
 
@@ -100,11 +100,14 @@ app.get('/auth/keycloak/callback', async (req, res) => {
     });
     res.redirect('/?sso=1');
   } catch (err) {
-    console.error('Erro /auth/keycloak/callback:', err);
+    console.error('Erro callback Keycloak:', err);
     const msg = err.message || 'Falha na autenticação SSO';
     res.redirect(`/login?error=${encodeURIComponent(msg)}`);
   }
-});
+}
+
+app.get('/auth/keycloak', handleKeycloakCallback);
+app.get('/auth/keycloak/callback', handleKeycloakCallback);
 
 app.post('/api/login', (req, res) => {
   if (!LEGACY_AUTH_ENABLED) {

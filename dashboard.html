@@ -222,6 +222,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .kpi-eye{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:5px}
 .eye-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .kpi-num{font-size:30px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:6px}
+.kpi-pct{font-size:15px;font-weight:700;opacity:.88}
 .kdelta{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px}
 .kdelta.up{background:rgba(34,211,165,.12);color:var(--green)}
 .kdelta.dn{background:rgba(255,77,109,.12);color:var(--red)}
@@ -744,108 +745,38 @@ canvas{max-height:230px!important}
     <div class="slabel"><div class="sl-text">Reserva</div><div class="sl-line"></div></div>
     <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
     <div class="kgrid kgrid-geral" id="kpi-geral-res"></div>
-    <div v-if="hasBlocoFuturo || hasFuturoChart" class="kpi-block-futuro">
-      <div v-if="hasBlocoFuturo" class="kgrid" id="kpi-geral-futuro"></div>
-      <div v-if="hasFuturoChart" class="kpi-block-chart">
-        <div class="ch"><div><div class="ct">Em aberto por Dia · Futuro</div><div class="cs">{{ futuroChartSubtitulo }}</div></div><span class="ctag" id="t-futuro-dia">—</span></div>
-        <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Reservas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
-        <canvas id="ch-futuro-dia"></canvas>
-      </div>
-    </div>
   </div>
   <div class="kpi-block">
     <div class="slabel"><div class="sl-text">Fila de espera</div><div class="sl-line"></div></div>
     <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
     <div class="kgrid kgrid-geral" id="kpi-geral-fila"></div>
   </div>
-  <div class="slabel"><div class="sl-text">Perfil de clientes</div><div class="sl-line"></div><div class="sl-tag">1ª visita na unidade vs cliente recorrente</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Clientes nas Reservas</div><div class="cs">Reservas por dia · 1ª visita vs recorrente</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-primeira)"></div>1ª visita</div><div class="wli"><div class="wls" style="background:var(--chart-recorrente)"></div>Recorrente</div></div>
-      <canvas id="ch-geral-cliente-res"></canvas>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Clientes na Fila</div><div class="cs">Reservas por dia · 1ª visita vs recorrente</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-primeira)"></div>1ª visita</div><div class="wli"><div class="wls" style="background:var(--chart-recorrente)"></div>Recorrente</div></div>
-      <canvas id="ch-geral-cliente-fila"></canvas>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Reservas · Totais do período</div><div class="cs">Comparativo 1ª visita vs recorrente</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <canvas id="ch-geral-cliente-res-tot"></canvas>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Fila · Totais do período</div><div class="cs">Comparativo 1ª visita vs recorrente</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <canvas id="ch-geral-cliente-fila-tot"></canvas>
-    </div>
-  </div>
-  <div class="slabel"><div class="sl-text">Tendência no período</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Reservas por Dia</div><div class="cs">{{ periodoDiaCs }}</div></div><span class="ctag" id="t-res-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
-      <canvas id="ch-res-g"></canvas>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Fila de Espera por Dia</div><div class="cs">{{ periodoDiaCs }}</div></div><span class="ctag" id="t-fila-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
-      <canvas id="ch-fila-g"></canvas>
-    </div>
-  </div>
-  <div class="slabel"><div class="sl-text">Tempo de espera na fila</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
-  <div class="card gf">
-    <div class="ch"><div><div class="ct">Tempo Médio de Espera</div><div class="cs">Minutos · média ponderada por sentados · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-tempo-g">—</span></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-meta)"></div>Meta 20min</div></div>
-    <canvas id="ch-geral-tempo"></canvas>
-  </div>
-  <div class="slabel"><div class="sl-text">Distribuição por horário</div><div class="sl-line"></div><div class="sl-tag">Mapa de calor · média por dia da semana</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Reservas por Horário (média)</div><div class="cs">Horário de Brasília · reservationTime</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
-      <div id="ch-geral-res-hora" class="hora-heatmap-host"></div>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Fila de Espera por Horário (média)</div><div class="cs">Horário de Brasília · created_at</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
-      <div id="ch-geral-fila-hora" class="hora-heatmap-host"></div>
-    </div>
+  <div class="kpi-block">
+    <div class="slabel"><div class="sl-text">Fluxo total do período</div><div class="sl-line"></div><div class="sl-tag">Atendido + em aberto + passantes</div></div>
+    <div class="kpi-block-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div>
+    <div class="kgrid kgrid-geral" id="kpi-fluxo-total"></div>
   </div>
   <div class="slabel"><div class="sl-text">Passantes · entrada direta</div><div class="sl-line"></div><div class="sl-tag">Sem fila digital</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Reservas e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-wi-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Reservas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
+      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Grupos e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-wi-g">—</span></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Grupos atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Grupos ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
       <canvas id="ch-wi-g"></canvas>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Horário (média)</div><div class="cs">Horário de Brasília · created_at</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+      <div class="ch"><div><div class="ct">Passantes por Horário (média)</div><div class="cs">Horário de Brasília · data de criação do registro</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
       <div id="ch-wi-hora" class="hora-heatmap-host"></div>
     </div>
   </div>
-  <div class="card gf">
-    <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Canal · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-    <div class="origem-donut-stack">
-      <div class="origem-donut-block">
-        <div class="origem-donut-hd">Filtrado<span v-if="periodoLabel"> · {{ periodoLabel }}</span></div>
-        <div class="origem-donut-panel">
-          <div class="origem-donut-chart-wrap">
-            <canvas id="ch-origem-g"></canvas>
-            <div class="origem-donut-center" id="origem-g-center"></div>
-          </div>
-          <div class="origem-donut-legend" id="origem-g-legend"></div>
-        </div>
-      </div>
-      <div class="origem-donut-block">
-        <div class="origem-donut-hd">Comparado<span v-if="periodoAnteriorLabel"> · {{ periodoAnteriorLabel }}</span></div>
-        <div class="origem-donut-panel">
-          <div class="origem-donut-chart-wrap">
-            <canvas id="ch-origem-g-prev"></canvas>
-            <div class="origem-donut-center" id="origem-g-prev-center"></div>
-          </div>
-          <div class="origem-donut-legend" id="origem-g-prev-legend"></div>
-        </div>
-      </div>
+  <div class="slabel"><div class="sl-text">Perfil de clientes · resumo</div><div class="sl-line"></div><div class="sl-tag">1ª visita vs recorrente · consolidado</div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Reservas · Totais do período</div><div class="cs">1ª visita vs recorrente · % e absolutos</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <canvas id="ch-geral-cliente-res-tot"></canvas>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Fila · Totais do período</div><div class="cs">1ª visita vs recorrente · % e absolutos</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <canvas id="ch-geral-cliente-fila-tot"></canvas>
     </div>
   </div>
 </div>
@@ -864,11 +795,11 @@ canvas{max-height:230px!important}
     <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
     <canvas id="ch-fi-dia"></canvas>
   </div>
-  <div class="slabel"><div class="sl-text">Status semanal</div><div class="sl-line"></div><div class="sl-tag">Sentado vs No-Show</div></div>
+  <div class="slabel"><div class="sl-text">Status semanal</div><div class="sl-line"></div><div class="sl-tag">Atendido vs não compareceu</div></div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Sentados × No-Show (Fila)</div><div class="cs">Por dia · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-sentado)"></div>Sentado atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Sentado ant.</div><div class="wli"><div class="wls" style="background:var(--chart-noshow)"></div>No-Show atual</div></div>
+      <div class="ch"><div><div class="ct">Atendidos × Não compareceu (Fila)</div><div class="cs">Por dia · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-sentado)"></div>Atendido atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Atendido ant.</div><div class="wli"><div class="wls" style="background:var(--chart-noshow)"></div>Não compareceu atual</div></div>
       <canvas id="ch-fi-status"></canvas>
     </div>
     <div class="card">
@@ -887,7 +818,7 @@ canvas{max-height:230px!important}
     <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas</div></div>
     <canvas id="ch-fi-ocorr"></canvas>
   </div>
-  <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Sentado vs No-show por mês</div></div>
+  <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Atendido vs não compareceu por mês</div></div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Solicitações por Status na Fila (Reserva)</div><div class="cs">Modelo CIATC · por mês</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
     <canvas id="ch-fi-mes-status"></canvas>
@@ -930,12 +861,12 @@ canvas{max-height:230px!important}
   </div>
   <div class="g2">
     <div class="card">
-      <div class="ch"><div><div class="ct">Status da Reserva</div><div class="cs">Sentado + No-show + Em aberto = Total · por dia</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-sentado)"></div>Sentado</div><div class="wli"><div class="wls" style="background:var(--chart-noshow)"></div>No-Show</div><div class="wli"><div class="wls" style="background:var(--chart-aberto)"></div>Em aberto</div></div>
+      <div class="ch"><div><div class="ct">Status da Reserva</div><div class="cs">Atendido + não compareceu + em aberto = total · por dia</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-sentado)"></div>Atendido</div><div class="wli"><div class="wls" style="background:var(--chart-noshow)"></div>Não compareceu</div><div class="wli"><div class="wls" style="background:var(--chart-aberto)"></div>Em aberto</div></div>
       <canvas id="ch-re-status"></canvas>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Taxa de No-Show (%)</div><div class="cs">Sobre concluídas (sentado + no-show) · meta &lt; 15%</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-noshow">—</span></div>
+      <div class="ch"><div><div class="ct">Taxa de não comparecimento (%)</div><div class="cs">Sobre concluídas (atendido + não compareceu) · meta &lt; 15%</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-noshow">—</span></div>
       <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-noshow)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-aberto)"></div>Meta 15%</div></div>
       <canvas id="ch-re-noshow"></canvas>
     </div>
@@ -953,7 +884,7 @@ canvas{max-height:230px!important}
   </div>
   <div class="slabel"><div class="sl-text">Distribuição por horário</div><div class="sl-line"></div><div class="sl-tag">Mapa de calor · média por dia da semana</div></div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Reservas por Horário (média)</div><div class="cs">Horário agendado · reservationTime · Brasília</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+    <div class="ch"><div><div class="ct">Reservas por Horário (média)</div><div class="cs">Horário agendado da reserva · Brasília</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
     <div id="ch-re-hora" class="hora-heatmap-host"></div>
   </div>
   <div class="slabel"><div class="sl-text">Perfil de clientes</div><div class="sl-line"></div><div class="sl-tag">1ª visita na unidade vs recorrente · por customer</div></div>
@@ -970,24 +901,12 @@ canvas{max-height:230px!important}
   </div>
   <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Status por mês</div></div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Solicitações por Status da Reserva (Reserva)</div><div class="cs">Sentado · No-show · Em aberto (New, Confirmed, Pending)</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+    <div class="ch"><div><div class="ct">Solicitações por Status da Reserva (Reserva)</div><div class="cs">Atendido · não compareceu · em aberto (nova, confirmada ou pendente)</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
     <canvas id="ch-re-mes-status"></canvas>
   </div>
   <div class="card gf" style="margin-top:14px">
     <div class="ch"><div><div class="ct">Ocorrências da Reserva</div><div class="cs">Reservas vs Pessoas · por dia</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
     <canvas id="ch-re-ocorr"></canvas>
-  </div>
-  <div class="slabel"><div class="sl-text">Passantes · entrada direta</div><div class="sl-line"></div><div class="sl-tag">Sem fila digital</div></div>
-  <div class="g2">
-    <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Reservas e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-re-wi-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas</div></div>
-      <canvas id="ch-re-wi-g"></canvas>
-    </div>
-    <div class="card">
-      <div class="ch"><div><div class="ct">Passantes por Horário (média)</div><div class="cs">Horário de Brasília · created_at</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
-      <div id="ch-re-wi-hora" class="hora-heatmap-host"></div>
-    </div>
   </div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Canal · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
@@ -1036,7 +955,7 @@ canvas{max-height:230px!important}
     <canvas id="ch-mes-tempo"></canvas>
   </div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Reservas por Mês por Origem</div><div class="cs">Widget · Manual · Google · Parceiros</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+    <div class="ch"><div><div class="ct">Reservas por Mês por Origem</div><div class="cs">Widget online · manual/telefone · Google · parceiros</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
     <canvas id="ch-mes-res-origem"></canvas>
   </div>
 </div>
@@ -1081,7 +1000,7 @@ canvas{max-height:230px!important}
     </div>
   </div>
   <div class="card gf">
-    <div class="ch"><div><div class="ct">Fila por Origem</div><div class="cs">Waitlist · Widget · Google</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+    <div class="ch"><div><div class="ct">Fila por Origem</div><div class="cs">Fila nativa · widget online · Google</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
     <canvas id="ch-origem-fila"></canvas>
   </div>
 </div>
@@ -1099,12 +1018,18 @@ canvas{max-height:230px!important}
       <button type="button" class="rk-pill" :class="{on: rankingResMetric==='res_pes'}" @click="setRankingResMetric('res_pes')">Volume pessoas</button>
       <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_res'}" @click="setRankingResMetric('growth_res')">Crescimento reservas</button>
       <button type="button" class="rk-pill" :class="{on: rankingResMetric==='growth_pes'}" @click="setRankingResMetric('growth_pes')">Crescimento pessoas</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='taxa_ocupacao'}" @click="setRankingResMetric('taxa_ocupacao')">Taxa ocupação %</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='taxa_noshow_res'}" @click="setRankingResMetric('taxa_noshow_res')">Taxa não compareceu %</button>
+      <button type="button" class="rk-pill" :class="{on: rankingResMetric==='pct_recorrente'}" @click="setRankingResMetric('pct_recorrente')">Clientes recorrentes %</button>
     </div>
     <div class="rk-toolbar rk-fila-tools">
       <span class="rk-toolbar-lbl">Critério</span>
       <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila'}" @click="setRankingFilaMetric('fila')">Volume fila</button>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='fila_pes'}" @click="setRankingFilaMetric('fila_pes')">Volume pessoas</button>
       <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='growth_fila'}" @click="setRankingFilaMetric('growth_fila')">Crescimento fila</button>
       <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='tempo'}" @click="setRankingFilaMetric('tempo')">Tempo médio de espera</button>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='taxa_atendimento'}" @click="setRankingFilaMetric('taxa_atendimento')">Taxa atendimento %</button>
+      <button type="button" class="rk-pill" :class="{on: rankingFilaMetric==='taxa_noshow_fila'}" @click="setRankingFilaMetric('taxa_noshow_fila')">Taxa não compareceu %</button>
     </div>
     <div class="card gf rk-res-card">
       <div class="rk-section-hd"><span class="rk-badge best">Ranking</span><span class="cs" id="rk-res-sub">—</span></div>
@@ -1364,33 +1289,34 @@ const GERAL_KPI_OUTCOMES = [
   {
     lbl: 'Em aberto/pessoas',
     key: 'aberto',
-    descReserva: 'Reservas com status New, Confirmed ou Pending — ainda não sentou nem foi cancelada.',
-    descFila: 'Entradas na fila ainda aguardando mesa, sem sentar ou desistir no período.',
+    descReserva: 'Reservas em aberto (novas e confirmadas) que ainda não foram atendidas ou canceladas.',
+    descFila: 'Entradas na fila ainda aguardando mesa, sem ter sido atendidas ou desistido.',
   },
   {
-    lbl: 'No-Show/pessoas',
+    lbl: 'Não compareceu/pessoas',
     key: 'noshow',
-    descReserva: 'Reservas canceladas (status Canceled), contabilizadas como no-show.',
-    descFila: 'Entradas na fila canceladas antes de sentar (desistência / no-show).',
+    descReserva: 'Reservas canceladas (situação cancelada), contabilizadas como não comparecimento.',
+    descFila: 'Entradas na fila canceladas antes de sentar (desistência ou não comparecimento).',
   },
   {
     lbl: 'Sentados/pessoas',
     key: 'sentado',
-    descReserva: 'Reservas concluídas com o cliente sentado (status Seated).',
+    descReserva: 'Reservas concluídas com o cliente atendido e sentado à mesa.',
     descFila: 'Entradas na fila atendidas — cliente foi sentado na mesa.',
   },
 ];
 const KPI_TOTAL_DESC = {
-  reserva: 'Total de solicitações de reserva no período filtrado (em aberto + no-show + sentadas).',
-  fila: 'Total de entradas na fila de espera no período filtrado (aguardando + no-show + sentadas).',
+  reserva: 'Total de solicitações de reserva no período filtrado (em aberto + não compareceu + sentadas).',
+  fila: 'Total de entradas na fila de espera no período filtrado (aguardando + não compareceu + sentadas).',
 };
 const KPI_EXTRA_DESC = {
-  futuroAberto: 'Reservas em aberto para datas futuras (New, Confirmed, Pending) — fora do período filtrado.',
-  passante: 'Clientes que entraram sem reserva prévia (walk-in) no período filtrado.',
-  conversao: 'Percentual de reservas que viraram sentado: sentados ÷ total de reservas no período.',
+  futuroAberto: 'Reservas em aberto para datas futuras — ainda não atendidas nem canceladas.',
+  passante: 'Clientes que entraram sem reserva prévia (entrada direta) no período filtrado. Exclui registros excluídos no Tagme Manager.',
+  conversao: 'Percentual de reservas que viraram atendimento: sentados ÷ total de reservas no período.',
+  fluxoTotal: 'Volume efetivo movimentado: reservas e fila (sentado + em aberto) + passantes. Exclui não comparecimento e cancelamentos.',
 };
 const CTX_KPI_DESC = {
-  media: 'Média diária de reservas e pessoas em todo o período filtrado (baseline de comparação).',
+  media: 'Média diária de reservas e pessoas em todo o período filtrado (média de referência para comparação).',
   normal: 'Média nos dias sem feriado, data comemorativa, evento ou chuva forte em nenhuma loja.',
   feriado_comemorativo: 'Média nos dias com feriado nacional ou data comemorativa (ex.: Corpus Christi, Dia dos Namorados).',
   chuva: 'Média nos dias em que ao menos uma loja teve chuva forte; lista detalha loja e volume (mm).',
@@ -1398,8 +1324,8 @@ const CTX_KPI_DESC = {
 };
 /** Descrição explicativa abaixo de cada gráfico (chave = id do canvas ou host do heatmap). */
 const CHART_DESC = {
-  'ch-futuro-dia': 'Reservas em aberto (New, Confirmed, Pending) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
-  'ch-re-futuro-dia': 'Reservas em aberto (New, Confirmed, Pending) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
+  'ch-futuro-dia': 'Reservas em aberto (nova, confirmada ou pendente) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
+  'ch-re-futuro-dia': 'Reservas em aberto (nova, confirmada ou pendente) dia a dia no período futuro, comparado ao mesmo intervalo no passado.',
   'ch-geral-cliente-res': 'Reservas por dia separadas entre clientes de 1ª visita e recorrentes no período filtrado.',
   'ch-re-cliente-dia': 'Reservas por dia separadas entre clientes de 1ª visita e recorrentes no período filtrado.',
   'ch-geral-cliente-fila': 'Entradas na fila por dia entre clientes de 1ª visita e recorrentes.',
@@ -1411,34 +1337,34 @@ const CHART_DESC = {
   'ch-res-g': 'Quantidade diária de reservas e pessoas no período filtrado, comparada ao período anterior (mesma posição no calendário).',
   'ch-re-dia': 'Quantidade diária de reservas e pessoas no período filtrado, comparada ao período anterior (mesma posição no calendário).',
   'ch-re-pessoas': 'Mesma série diária de reservas e pessoas, destacando o tamanho médio das mesas ao longo do período.',
-  'ch-fila-g': 'Entradas na fila de espera por dia (reservas e pessoas), comparando período filtrado e anterior.',
-  'ch-fi-dia': 'Entradas na fila de espera por dia (reservas e pessoas), comparando período filtrado e anterior.',
-  'ch-fi-ocorr': 'Série diária de reservas e pessoas na fila — útil para ver volume e tamanho de grupo juntos.',
+  'ch-fila-g': 'Entradas na fila de espera por dia (grupos e pessoas), comparando período filtrado e anterior.',
+  'ch-fi-dia': 'Entradas na fila de espera por dia (grupos e pessoas), comparando período filtrado e anterior.',
+  'ch-fi-ocorr': 'Série diária de grupos e pessoas na fila — útil para ver volume e tamanho de grupo juntos.',
   'ch-re-ocorr': 'Série diária de reservas e pessoas — volume de solicitações e quantidade de pessoas por dia.',
   'ch-geral-tempo': 'Tempo médio de espera na fila (minutos) até sentar, ponderado pelos atendimentos do dia; linha tracejada = meta de 20 min.',
   'ch-fi-tempo': 'Tempo médio de espera na fila (minutos) por dia até o cliente sentar; comparado ao período anterior.',
   'ch-mes-tempo': 'Tempo médio mensal de espera na fila até sentar, com meta de referência de 20 minutos.',
   'ch-geral-res-hora': 'Média de reservas por combinação dia-da-semana × hora (11h–22h), usando o horário agendado da reserva.',
   'ch-re-hora': 'Média de reservas por combinação dia-da-semana × hora (11h–22h), usando o horário agendado da reserva.',
-  'ch-geral-fila-hora': 'Média de entradas na fila por dia da semana e hora, com base no horário de criação (created_at).',
-  'ch-fi-hora': 'Média de entradas na fila por dia da semana e hora, com base no horário de criação (created_at).',
-  'ch-wi-g': 'Passantes (walk-in) por dia — entradas sem reserva prévia, comparando período filtrado e anterior.',
-  'ch-re-wi-g': 'Passantes (walk-in) por dia — entradas sem reserva prévia, comparando período filtrado e anterior.',
+  'ch-geral-fila-hora': 'Média de entradas na fila por dia da semana e hora, com base na data e hora de criação do registro.',
+  'ch-fi-hora': 'Média de entradas na fila por dia da semana e hora, com base na data e hora de criação do registro.',
+  'ch-wi-g': 'Passantes (entrada direta) por dia — clientes sem reserva prévia, comparando período filtrado e anterior.',
+  'ch-re-wi-g': 'Passantes (entrada direta) por dia — clientes sem reserva prévia, comparando período filtrado e anterior.',
   'ch-wi-hora': 'Média de passantes por dia da semana e hora de criação do registro.',
   'ch-re-wi-hora': 'Média de passantes por dia da semana e hora de criação do registro.',
-  'ch-origem-g': 'Participação de cada canal de origem (Widget, Manual, Google, Parceiros) no total de reservas — período filtrado vs comparado.',
+  'ch-origem-g': 'Participação de cada canal de origem (widget, manual, Google, parceiros) no total de reservas — período filtrado vs comparado.',
   'ch-origem-re': 'Participação de cada canal de origem no total de reservas — período filtrado vs comparado.',
   'ch-origem-ca': 'Participação de cada canal de origem no total de reservas — período filtrado vs comparado.',
-  'ch-fi-status': 'Distribuição diária na fila entre sentados, no-show e em aberto (barras) com pessoas em linha.',
-  'ch-re-status': 'Composição diária das reservas: sentadas, no-show e em aberto, empilhadas por dia.',
-  'ch-re-noshow': 'Percentual de no-show sobre reservas concluídas (sentado + no-show) por dia; meta operacional abaixo de 15%.',
+  'ch-fi-status': 'Distribuição diária na fila entre atendidos, não compareceu e em aberto (barras) com pessoas em linha.',
+  'ch-re-status': 'Composição diária das reservas: atendidas, não compareceu e em aberto, empilhadas por dia.',
+  'ch-re-noshow': 'Percentual de não comparecimento sobre reservas concluídas (atendidas + não compareceu) por dia; meta operacional abaixo de 15%.',
   'ch-re-canal': 'Distribuição percentual de origem das reservas por loja/unidade no período (modelo de canais).',
-  'ch-fi-mes-status': 'Volume mensal na fila por status (sentado, no-show) e pessoas atendidas.',
-  'ch-re-mes-status': 'Volume mensal de reservas por status (sentado, no-show, em aberto) e pessoas.',
+  'ch-fi-mes-status': 'Volume mensal na fila por situação (atendido, não compareceu) e pessoas atendidas.',
+  'ch-re-mes-status': 'Volume mensal de reservas por situação (atendida, não compareceu, em aberto) e pessoas.',
   'ch-mes-res': 'Total mensal de reservas e pessoas, comparando cada mês do período filtrado com o anterior.',
   'ch-mes-fila': 'Total mensal de entradas na fila e pessoas, comparando período filtrado e anterior.',
-  'ch-mes-res-origem': 'Reservas mensais empilhadas por canal de origem (Widget, Manual, Google, Parceiros).',
-  'ch-origem-fila': 'Distribuição percentual da origem das entradas na fila (Waitlist, Widget, Google) — filtrado vs anterior.',
+  'ch-mes-res-origem': 'Reservas mensais empilhadas por canal de origem (widget, manual, Google, parceiros).',
+  'ch-origem-fila': 'Distribuição percentual da origem das entradas na fila (fila nativa, widget, Google) — filtrado vs anterior.',
   'ch-ctx-groups': 'Média de reservas e pessoas por tipo de dia (normal, comemorativo, chuva, evento etc.) frente à média geral do período.',
   'ch-ctx-daily': 'Série diária de reservas com destaque em dias de feriado, evento ou chuva forte por loja; tracejado = média do período.',
 };
@@ -1568,7 +1494,7 @@ createApp({
     },
     futuroChartSubtitulo() {
       const fut = this.W?.resFuturo;
-      if (!fut?.labels?.length) return 'New, Confirmed, Pending · reservas e pessoas em aberto';
+      if (!fut?.labels?.length) return 'Nova, confirmada ou pendente · reservas e pessoas em aberto';
       const n = fut.labels.length;
       const filtrado = fut.label || '—';
       const comparado = fut.periodoAnterior?.label || '—';
@@ -2610,30 +2536,51 @@ createApp({
       const map = {
         res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'volume', label: 'volume de reservas', best: 'Maior volume', worst: 'Menor volume' },
         res_pes: { key: 'res_pes', prev: 'res_pes_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'volume', label: 'volume de pessoas nas reservas', best: 'Mais pessoas', worst: 'Menos pessoas' },
-        fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'volume', label: 'volume na fila (reservas)', best: 'Maior fila', worst: 'Menor fila' },
+        fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'volume', label: 'volume na fila', best: 'Maior fila', worst: 'Menor fila' },
+        fila_pes: { key: 'fila_pes', prev: 'fila_pes_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'volume', label: 'volume de pessoas na fila', best: 'Mais pessoas', worst: 'Menos pessoas' },
         growth_res: { key: 'res', prev: 'res_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de reservas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_pes: { key: 'res_pes', prev: 'res_pes_p', pes: 'res_pes', pesPrev: 'res_pes_p', mode: 'growth', label: 'crescimento de pessoas vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
         growth_fila: { key: 'fila', prev: 'fila_p', pes: 'fila_pes', pesPrev: 'fila_pes_p', mode: 'growth', label: 'crescimento da fila vs período anterior', best: 'Maior alta', worst: 'Maior queda' },
+        taxa_ocupacao: { key: 'taxa_ocupacao', mode: 'rate', label: 'taxa de ocupação (sentado ÷ fluxo)', best: 'Maior ocupação', worst: 'Menor ocupação', higherBetter: true },
+        taxa_noshow_res: { key: 'taxa_noshow_res', mode: 'rate', label: 'taxa de não comparecimento em reservas', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
+        pct_recorrente: { key: 'pct_recorrente', mode: 'rate', label: '% de clientes recorrentes nas reservas', best: 'Mais recorrentes', worst: 'Menos recorrentes', higherBetter: true },
+        taxa_atendimento: { key: 'taxa_atendimento_fila', mode: 'rate', label: 'taxa de atendimento na fila', best: 'Maior atendimento', worst: 'Menor atendimento', higherBetter: true },
+        taxa_noshow_fila: { key: 'taxa_noshow_fila', mode: 'rate', label: 'taxa de não comparecimento na fila', best: 'Menor não comparecimento', worst: 'Maior não comparecimento', higherBetter: false },
       };
       return map[metric] || map.growth_res;
     },
 
     rankRow(u, i, cfg, maxVal, totalVal) {
       const pc = ['gd', 'sv', 'br', ''];
+      const isRate = cfg.mode === 'rate';
       const val = u[cfg.key] || 0;
       const prev = u[cfg.prev] || 0;
-      const mesas = cfg.key === 'fila' ? (u.fila || 0) : (u.res || 0);
-      const pessoas = cfg.key === 'fila' ? (u.fila_pes || 0) : (u.res_pes || 0);
-      const dv = this.rankDelta(val, prev);
+      const mesas = cfg.key === 'fila' || cfg.key === 'fila_pes' || cfg.key === 'taxa_atendimento_fila' || cfg.key === 'taxa_noshow_fila'
+        ? (u.fila || 0) : (u.res || 0);
+      const pessoas = cfg.key === 'fila' || cfg.key === 'fila_pes' ? (u.fila_pes || 0) : (u.res_pes || 0);
+      const dv = isRate ? null : this.rankDelta(val, prev);
       const up = dv == null ? null : dv >= 0;
       const pb = maxVal ? Math.round(val / maxVal * 100) : 0;
-      const share = totalVal ? fmtDec((val / totalVal) * 100, 1) : '0,0';
-      const meta = [u.grupo, `${share}% do total`].filter(Boolean).join(' · ');
+      const share = !isRate && totalVal ? fmtDec((val / totalVal) * 100, 1) : '0,0';
+      const meta = [u.grupo, !isRate && totalVal ? `${share}% do total` : null].filter(Boolean).join(' · ');
       const deltaHtml = dv == null
         ? '<span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span>'
         : `<span class="rdelta" style="background:${up ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${up ? '#22D3A5' : '#FF4D6D'}">${up ? '▲' : '▼'}${this.deltaPct(dv)}</span>`;
-      const subLine = cfg.mode === 'growth' ? `ant. ${this.S(prev)}` : 'res. / pess.';
-      return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${this.rp(mesas, pessoas)}</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%"></div></div></div>`;
+      let mainVal;
+      let subLine;
+      if (isRate) {
+        mainVal = `${fmtDec(val, 1)}%`;
+        if (cfg.key === 'taxa_ocupacao') subLine = `${this.S(u.res_sr || 0)} sent. / ${this.S(u.fluxo_res || 0)} fluxo`;
+        else if (cfg.key === 'taxa_noshow_res') subLine = `${this.S(u.res_nr || 0)} não comp. / ${this.S((u.res_sr || 0) + (u.res_nr || 0))} concl.`;
+        else if (cfg.key === 'pct_recorrente') subLine = `${this.S(u.recorrente || 0)} rec. / ${this.S((u.primeira || 0) + (u.recorrente || 0))} clientes`;
+        else if (cfg.key === 'taxa_atendimento_fila') subLine = `${this.S(u.fila_sf || 0)} atend. / ${this.S(u.fila || 0)} fila`;
+        else if (cfg.key === 'taxa_noshow_fila') subLine = `${this.S(u.fila_nf || 0)} não comp. / ${this.S(u.fila || 0)} fila`;
+        else subLine = 'indicador %';
+      } else {
+        mainVal = this.rp(mesas, pessoas);
+        subLine = cfg.mode === 'growth' ? `ant. ${this.S(prev)}` : 'res. / pess.';
+      }
+      return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${mainVal}</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%"></div></div></div>`;
     },
 
     buildRankingList(elId, units, cfg, direction = 'best', limit = null) {
@@ -2656,8 +2603,17 @@ createApp({
           return direction === 'best' ? db - da : da - db;
         });
         sorted = withDelta.map((x) => x.u);
+      } else if (cfg.mode === 'rate') {
+        const higherBetter = cfg.higherBetter !== false;
+        sorted = [...list].sort((a, b) => {
+          const va = a[cfg.key] || 0;
+          const vb = b[cfg.key] || 0;
+          return direction === 'best'
+            ? (higherBetter ? vb - va : va - vb)
+            : (higherBetter ? va - vb : vb - va);
+        });
       } else {
-        sorted = list.sort((a, b) => (
+        sorted = [...list].sort((a, b) => (
           direction === 'best'
             ? (b[cfg.key] || 0) - (a[cfg.key] || 0)
             : (a[cfg.key] || 0) - (b[cfg.key] || 0)
@@ -2896,12 +2852,12 @@ createApp({
         + 'No período filtrado, soma-se o total da combinação dia+hora e divide-se pela quantidade de vezes que aquele dia da semana aparece no intervalo '
         + '(ex.: 4 sábados no período e 48 reservas aos sábados às 19h → média 12). A cor indica a intensidade relativa ao maior valor do mapa.';
       if (kind === 'res') {
-        return base + ' Reservas: horário agendado (<code>reservationDay</code> + <code>resHour</code>).';
+        return base + ' Reservas: horário agendado da reserva.';
       }
       if (kind === 'walkin') {
-        return base + ' Passantes: horário de criação (<code>created_at</code>).';
+        return base + ' Passantes: data e hora de criação do registro.';
       }
-      return base + ' Fila: horário de criação (<code>created_at</code>).';
+      return base + ' Fila: data e hora de criação do registro.';
     },
 
     renderHoraHeatmap(containerId, matrix, kind = 'fila') {
@@ -2944,6 +2900,17 @@ createApp({
       return map[lbl] || CHART_COL.meta;
     },
 
+    origemDisplayLabel(lbl) {
+      const map = {
+        Waitlist: 'Fila nativa',
+        Widget: 'Widget online',
+        Manual: 'Manual/telefone',
+        Google: 'Google',
+        Parceiros: 'Parceiros',
+      };
+      return map[lbl] || lbl;
+    },
+
     origemDonutItems(counts) {
       const labels = this.ORIGEM.labels || [];
       return labels
@@ -2970,7 +2937,7 @@ createApp({
       }
       el.innerHTML = items.map(({ lbl, count, color }) => {
         const pct = Math.round((count / total) * 100);
-        return `<div class="origem-leg-row"><span class="origem-leg-name"><i class="origem-leg-dot" style="background:${color}"></i>${lbl}</span><span class="origem-leg-pct">${pct}%</span><span class="origem-leg-cnt">${this.S(count)}</span></div>`;
+        return `<div class="origem-leg-row"><span class="origem-leg-name"><i class="origem-leg-dot" style="background:${color}"></i>${this.origemDisplayLabel(lbl)}</span><span class="origem-leg-pct">${pct}%</span><span class="origem-leg-cnt">${this.S(count)}</span></div>`;
       }).join('');
     },
 
@@ -2986,7 +2953,7 @@ createApp({
       this.mk(canvasId, {
         type: 'doughnut',
         data: {
-          labels: items.map((x) => x.lbl),
+          labels: items.map((x) => this.origemDisplayLabel(x.lbl)),
           datasets: [{
             data: items.map((x) => x.count),
             backgroundColor: items.map((x) => x.color + 'DD'),
@@ -3437,7 +3404,8 @@ createApp({
       for (const def of GERAL_KPI_OUTCOMES) {
         const o = outcomes[def.key];
         const desc = kind === 'fila' ? def.descFila : def.descReserva;
-        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'reservas / pessoas', '', desc);
+        const pctRes = total > 0 ? (o.res / total) * 100 : null;
+        html += this.kpiRp(def.lbl, o.res, o.pes, o.resPrv, o.pesPrv, KPI_COL[def.key], o.sub || 'reservas / pessoas', '', desc, pctRes);
       }
       if (passante) {
         html += this.kpiRp('Passantes/pessoas', passante.res, passante.pes, passante.resPrv, passante.pesPrv, KPI_COL.passante, 'entrada direta', '', KPI_EXTRA_DESC.passante);
@@ -3445,12 +3413,14 @@ createApp({
       this.setHtml(elId, html);
     },
 
-    kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '', extraHtml = '', desc = '') {
+    kpiRp(lbl, res, pes, resPrv, pesPrv, col, sub = '', extraHtml = '', desc = '', pctRes = null) {
       const d = this.dp(res, resPrv);
       const up = d >= 0;
       const ds = resPrv ? (up ? '▲' : '▼') + this.deltaPct(d) + ' vs período ant. (res.)' : '—';
       const subLine = sub || 'reservas / pessoas';
-      return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col};font-size:1.35rem;line-height:1.2">${this.rp(res, pes)}</div><div class="kdelta ${resPrv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div><div class="ksub">${subLine}</div>${extraHtml}${this.kpiDescHtml(desc)}</div>`;
+      const resPart = pctRes != null ? `${this.S(res)} <span class="kpi-pct">(${this.pct(pctRes)})</span>` : this.S(res);
+      const numHtml = `${resPart} / ${this.S(pes)} <span style="font-size:11px;font-weight:600;opacity:.75">pess.</span>`;
+      return `<div class="kpi"><div class="kpi-top" style="background:${col}"></div><div class="kpi-eye"><div class="eye-dot" style="background:${col}"></div>${lbl}</div><div class="kpi-num" style="color:${col};font-size:1.35rem;line-height:1.2">${numHtml}</div><div class="kdelta ${resPrv ? (up ? 'up' : 'dn') : 'nu'}">${ds}</div><div class="ksub">${subLine}</div>${extraHtml}${this.kpiDescHtml(desc)}</div>`;
     },
 
     tag(el, val, prv, inv = false) {
@@ -3482,11 +3452,11 @@ createApp({
       const tNP = this.A(d.nr_pes), pNP = this.A(d.nr_pes_p);
       const tA = this.A(d.ar), pA = this.A(d.ar_p);
       const tAP = this.A(d.ar_pes), pAP = this.A(d.ar_pes_p);
-      const resStatusSub = tR ? this.rpSub(tA + tN + tS, tAP + tNP + tSP, 'em aberto + no-show + sentado') : 'reservas / pessoas';
+      const resStatusSub = tR ? this.rpSub(tA + tN + tS, tAP + tNP + tSP, 'em aberto + não compareceu + atendido') : 'reservas / pessoas';
       return {
         tR, pR, tP, pP, tS, pS, tSP, pSP, tN, pN, tNP, pNP, tA, pA, tAP, pAP, resStatusSub,
         outcomes: {
-          aberto: { res: tA, pes: tAP, resPrv: pA, pesPrv: pAP, sub: 'New, Confirmed, Pending' },
+          aberto: { res: tA, pes: tAP, resPrv: pA, pesPrv: pAP, sub: 'Ainda não atendidas nem canceladas' },
           noshow: { res: tN, pes: tNP, resPrv: pN, pesPrv: pNP },
           sentado: { res: tS, pes: tSP, resPrv: pS, pesPrv: pSP },
         },
@@ -3504,7 +3474,7 @@ createApp({
       const tFOP = Math.max(0, tFP - tSFP - tNFP);
       const pFO = Math.max(0, pF - pSF - pNF);
       const pFOP = Math.max(0, pFP - pSFP - pNFP);
-      const filaStatusSub = tF ? this.rpSub(tFO + tNF + tSF, tFOP + tNFP + tSFP, 'em aberto + no-show + sentado') : 'reservas / pessoas';
+      const filaStatusSub = tF ? this.rpSub(tFO + tNF + tSF, tFOP + tNFP + tSFP, 'em aberto + não compareceu + atendido') : 'reservas / pessoas';
       return {
         tF, pF, tFP, pFP, tSF, pSF, tSFP, pSFP, tNF, pNF, tNFP, pNFP, filaStatusSub,
         outcomes: {
@@ -3552,7 +3522,7 @@ createApp({
       if (!((fut.abertas || 0) > 0 || tW > 0)) return;
       const futPeriodo = fut.label || 'próximos 30 dias';
       this.setHtml(kpiId,
-        this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, `New, Confirmed, Pending · ${futPeriodo}`, '', KPI_EXTRA_DESC.futuroAberto) +
+        this.kpiRp('Em aberto/pessoas Futuro', fut.abertas || 0, fut.abertasPessoas || 0, 0, 0, KPI_COL.aberto, 'Reservas futuras em aberto', '', KPI_EXTRA_DESC.futuroAberto) +
         this.kpiRp('Passantes/pessoas', tW, tWP, pW, pWP, KPI_COL.passante, 'entrada direta · período filtrado', '', KPI_EXTRA_DESC.passante));
     },
 
@@ -3736,25 +3706,30 @@ createApp({
       });
     },
 
+    renderFluxoTotal(elId) {
+      const ft = this.W?.totais?.fluxoTotal;
+      if (!ft) {
+        this.setHtml(elId, '');
+        return;
+      }
+      const colFluxo = '#6366F1';
+      const html =
+        this.kpiRp('Reservas (fluxo)', ft.reservas, ft.reservasPessoas, 0, 0, KPI_COL.sentado, 'Atendidas + em aberto', '', 'Reservas efetivas no período: atendidas mais em aberto. Exclui não comparecimento.') +
+        this.kpiRp('Fila (fluxo)', ft.fila, ft.filaPessoas, 0, 0, KPI_COL.filtrado, 'Atendidas + em aberto', '', 'Fila efetiva: atendidas mais aguardando. Exclui não comparecimento e cancelamentos.') +
+        this.kpiRp('Passantes', ft.passantes, ft.passantesPessoas, 0, 0, KPI_COL.passante, 'Todos os grupos ativos', '', KPI_EXTRA_DESC.passante) +
+        this.kpi('Total pessoas (fluxo)', ft.totalPessoas, 0, colFluxo, 'Soma reservas + fila + passantes', KPI_EXTRA_DESC.fluxoTotal);
+      this.setHtml(elId, html);
+    },
+
     rGeral() {
       const d = this.W;
-      this.renderReservaKpiBlock('kpi-geral-res', {
-        withFuturo: true,
-        futuroKpiId: 'kpi-geral-futuro',
-        futuroChartId: 'ch-futuro-dia',
-        futuroTagId: 't-futuro-dia',
-      });
+      this.renderReservaKpiBlock('kpi-geral-res', { withFuturo: false });
       this.renderFilaKpiBlock('kpi-geral-fila');
-      this.renderReservasPorDia('ch-res-g', 't-res-g');
-      this.renderFilaPorDia('ch-fila-g', 't-fila-g');
-      this.renderReservaHeatmap('ch-geral-res-hora');
-      this.renderFilaHeatmap('ch-geral-fila-hora');
+      this.renderFluxoTotal('kpi-fluxo-total');
       this.renderWalkinPorDia('ch-wi-g', 't-wi-g');
       this.renderWalkinHeatmap('ch-wi-hora');
-      this.renderOrigemDonutGroups(['g']);
-      this.renderClienteRes(['ch-geral-cliente-res'], ['ch-geral-cliente-res-tot']);
-      this.renderClienteFila(['ch-geral-cliente-fila'], ['ch-geral-cliente-fila-tot']);
-      this.renderTempoFilaCharts([{ id: 'ch-geral-tempo', tagId: 't-tempo-g', showValueLabels: true }]);
+      this.renderClienteRes([], ['ch-geral-cliente-res-tot']);
+      this.renderClienteFila([], ['ch-geral-cliente-fila-tot']);
     },
 
     rFila() {
@@ -3768,10 +3743,10 @@ createApp({
       const nf = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (this.statusFiltro === 'noshow' ? d.nf : d.nf);
       const sfPes = d.filaPessoasSentadas || Array(dc).fill(0);
       const nfPes = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (d.nf_pes || Array(dc).fill(0));
-      this.mk('ch-fi-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Sentado (reservas)', sf, 'sentado'), { ...this.dsAnterior('Sentado ant.', d.sf_p), type: 'line' }, this.barStatus('No-Show (reservas)', nf, 'noshow'), { ...this.dsPesAtual('Pessoas sentadas', sfPes, true), type: 'line' }, { ...this.dsPesAnterior('Pessoas no-show', nfPes), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mk('ch-fi-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Atendido (fila)', sf, 'sentado'), { ...this.dsAnterior('Atendido ant.', d.sf_p), type: 'line' }, this.barStatus('Não compareceu (fila)', nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', sfPes, true), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', nfPes), type: 'line' }] }, options: this.bO('Quantidade') });
       this.renderTempoFilaCharts([{ id: 'ch-fi-tempo', tagId: 't-tempo', showValueLabels: true }]);
       this.renderFilaHeatmap('ch-fi-hora');
-      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Sentado (reservas)', d.fila_mes_sf, 'sentado'), this.barStatus('No-show (reservas)', d.fila_mes_nf, 'noshow'), { ...this.dsPesAtual('Pessoas sentadas', d.fila_mes_sf_pes || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas no-show', d.fila_mes_nf_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Atendido (fila)', d.fila_mes_sf, 'sentado'), this.barStatus('Não compareceu (fila)', d.fila_mes_nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', d.fila_mes_sf_pes || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', d.fila_mes_nf_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.renderClienteFila(['ch-fi-cliente-dia'], ['ch-fi-cliente-tot']);
     },
 
@@ -3800,16 +3775,14 @@ createApp({
       const srPes = d.sr_pes || Array(dc).fill(0);
       const nrPes = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (d.nr_pes || Array(dc).fill(0));
       const abPes = this.statusFiltro === 'seated' || this.statusFiltro === 'noshow' ? Array(dc).fill(0) : (d.ar_pes || Array(dc).fill(0));
-      this.mk('ch-re-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Sentado (reservas)', sr, 'sentado'), this.barStatus('No-Show (reservas)', nr, 'noshow'), this.barStatus('Em aberto (reservas)', ab, 'aberto'), { ...this.dsPesAtual('Pessoas sentadas', srPes), type: 'line' }, { ...this.dsPesAnterior('Pessoas no-show', nrPes), type: 'line' }, { ...this.lds('Pessoas em aberto', abPes, CHART_COL.aberto, true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Atendido (reservas)', sr, 'sentado'), this.barStatus('Não compareceu (reservas)', nr, 'noshow'), this.barStatus('Em aberto (reservas)', ab, 'aberto'), { ...this.dsPesAtual('Pessoas atendidas', srPes), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', nrPes), type: 'line' }, { ...this.lds('Pessoas em aberto', abPes, CHART_COL.aberto, true), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.mk('ch-re-noshow', { showValueLabels: true, type: 'line', data: { labels: LBL, datasets: [this.lds('Concluídas (%)', d.nsr_conc, CHART_COL.noshow, false, true), this.dsAnterior('Anterior (%)', d.nsr_conc_p), this.lds('Meta 15%', meta15, CHART_COL.aberto, true)] }, options: this.bO('%') });
       this.mk('ch-re-canal', { type: 'bar', data: { labels: this.CANAL.labels, datasets: [this.barCanal('Widget', this.CANAL.w, 'widget'), this.barCanal('Manual', this.CANAL.t, 'manual'), this.barCanal('Google', this.CANAL.g, 'google'), this.barCanal('Canais', this.CANAL.c, 'canais')] }, options: { ...this.bO('%'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.renderReservaHeatmap(['ch-re-hora']);
-      this.mk('ch-re-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Sentado (reservas)', d.res_mes_sr, 'sentado'), this.barStatus('No-show (reservas)', d.res_mes_nr, 'noshow'), this.barStatus('Em aberto (reservas)', d.res_mes_ar || [], 'aberto'), { ...this.dsPesAtual('Pessoas sentadas', d.res_mes_sr_pes || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas no-show', d.res_mes_nr_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-re-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Atendido (reservas)', d.res_mes_sr, 'sentado'), this.barStatus('Não compareceu (reservas)', d.res_mes_nr, 'noshow'), this.barStatus('Em aberto (reservas)', d.res_mes_ar || [], 'aberto'), { ...this.dsPesAtual('Pessoas atendidas', d.res_mes_sr_pes || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', d.res_mes_nr_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), scales: { ...this.bO().scales, x: { ...this.bO().scales.x, stacked: true }, y: { ...this.bO().scales.y, stacked: true } }, plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.mk('ch-re-ocorr', { showValueLabels: true, type: 'line', data: { labels: LBL, datasets: [this.dsAtual('Reservas', d.reservas, true), this.dsPesAtual('Pessoas', d.pessoas, true)] }, options: this.bO('Quantidade') });
       this.renderClienteRes(['ch-re-cliente-dia'], ['ch-re-cliente-tot']);
       this.renderOrigemDonutGroups(['re']);
-      this.renderWalkinPorDia('ch-re-wi-g', 't-re-wi-g');
-      this.renderWalkinHeatmap('ch-re-wi-hora');
     },
 
     rMensal() {
@@ -3840,7 +3813,7 @@ createApp({
       this.detailTable('tbl-origem-res', det.reservas);
       this.detailTable('tbl-origem-fila', det.fila);
       this.renderOrigemDonutGroups(['ca']);
-      this.mk('ch-origem-fila', { type: 'bar', data: { labels: this.ORIGEM_FILA.labels, datasets: [this.barAtual('Período (%)', this.ORIGEM_FILA.a), this.barAnterior('Anterior (%)', this.ORIGEM_FILA.p)] }, options: { ...this.bO('%'), plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-origem-fila', { type: 'bar', data: { labels: this.ORIGEM_FILA.labels.map((l) => this.origemDisplayLabel(l)), datasets: [this.barAtual('Período (%)', this.ORIGEM_FILA.a), this.barAnterior('Anterior (%)', this.ORIGEM_FILA.p)] }, options: { ...this.bO('%'), plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
     },
 
     rRanking() {
