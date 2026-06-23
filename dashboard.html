@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.2/dist/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
 <style>
-:root{--chart-filtrado:#FF6B2B;--chart-comparado:#4F8EF7;--chart-pessoas-filtrado:#22D3A5;--chart-pessoas-comparado:#7B8498;--chart-passante:#8B5CF6;--chart-sentado:#22D3A5;--chart-noshow:#FF0000;--chart-aberto:#F5A623;--chart-meta:#7B8498;--chart-primeira:#22D3A5;--chart-recorrente:#4F8EF7;--chart-widget:#EC4899;--chart-manual:#F5A623;--chart-google:#22D3A5;--chart-parceiros:#1A1A1A}
+:root{--chart-reserva:#FF6B2B;--chart-fila:#22D3A5;--chart-filtrado:#FF6B2B;--chart-comparado:#7B8498;--chart-pessoas-filtrado:#FF9F6B;--chart-pessoas-fila:#5EEAD4;--chart-pessoas-comparado:#7B8498;--chart-passante:#06B6D4;--chart-sentado:#4F8EF7;--chart-noshow:#FF0000;--chart-aberto:#F5A623;--chart-meta:#7B8498;--chart-primeira:#6366F1;--chart-recorrente:#A78BFA;--chart-widget:#EC4899;--chart-manual:#F5A623;--chart-google:#16A34A;--chart-parceiros:#1A1A1A;--chart-comemorativo:#C084FC;--chart-evento:#F5A623;--chart-chuva:#FF4D6D;--chart-calor:#F97316;--chart-frio:#38BDF8;--chart-normal:#4F8EF7}
 [v-cloak]{display:none}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--text);min-height:100vh;font-size:14px;-webkit-font-smoothing:antialiased}
@@ -254,7 +254,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .vg-hero-sub{font-size:13px;font-weight:700;color:var(--muted);margin-top:6px}
 .vg-hero-pills{display:flex;flex-wrap:wrap;gap:6px}
 .vg-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:99px;border:1px solid var(--border);color:var(--muted);background:var(--bg2)}
-.vg-pill-ok{border-color:rgba(34,211,165,.35);color:var(--green);background:rgba(34,211,165,.08)}
+.vg-pill-ok{border-color:rgba(79,142,247,.35);color:var(--chart-sentado);background:rgba(79,142,247,.08)}
 .vg-pill-warn{border-color:rgba(255,77,109,.35);color:var(--red);background:rgba(255,77,109,.08)}
 .vg-fluxo-donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}
 .vg-donut-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column}
@@ -771,7 +771,7 @@ canvas{max-height:230px!important}
   <div class="nitem" :class="{on:activeTab==='fila'}" @click="go('fila')"><span class="nico" v-html="navIcon('fila')"></span>Fila de Espera<span class="nbadge" v-if="hasFilaAlert">!</span></div>
   <div class="nitem" :class="{on:activeTab==='mensal'}" @click="go('mensal')"><span class="nico" v-html="navIcon('mensal')"></span>Visão Mensal</div>
   <div class="nitem" :class="{on:activeTab==='ranking'}" @click="go('ranking')"><span class="nico" v-html="navIcon('ranking')"></span>Ranking</div>
-  <div class="nitem" :class="{on:activeTab==='canais'}" @click="go('canais')"><span class="nico" v-html="navIcon('canais')"></span>Canais Detalhados</div>
+  <div class="nitem" :class="{on:activeTab==='canais'}" @click="go('canais')"><span class="nico" v-html="navIcon('canais')"></span>Origens detalhado</div>
   <div class="nitem" :class="{on:activeTab==='contexto'}" @click="go('contexto')"><span class="nico" v-html="navIcon('contexto')"></span>Fatores Externos</div>
   <div class="sidenav-spacer"></div>
   <div class="sidenav-foot">
@@ -867,7 +867,7 @@ canvas{max-height:230px!important}
     </div>
     <div class="card">
       <div class="ch"><div><div class="ct">Tendência do período</div><div class="cs">Mesas / grupos · filtrado vs comparado</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-vg-tendencia">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-reserva)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
       <canvas id="ch-vg-tendencia"></canvas>
       <div class="chart-desc" data-card="vg-tendencia"></div>
     </div>
@@ -888,7 +888,7 @@ canvas{max-height:230px!important}
   <div class="slabel"><div class="sl-text">Tendência no período</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Fila de Espera por Dia</div><div class="cs">{{ periodoDiaCs }}</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-fi-dia">—</span></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-fila)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
     <canvas id="ch-fi-dia"></canvas>
   </div>
   <div class="slabel"><div class="sl-text">Status semanal</div><div class="sl-line"></div><div class="sl-tag">Atendido vs não compareceu</div></div>
@@ -900,7 +900,7 @@ canvas{max-height:230px!important}
     </div>
     <div class="card">
       <div class="ch"><div><div class="ct">Tempo Médio de Espera</div><div class="cs">Minutos · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-tempo">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-meta)"></div>Meta 20min</div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-fila)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-meta)"></div>Meta 20min</div></div>
       <canvas id="ch-fi-tempo"></canvas>
     </div>
   </div>
@@ -911,7 +911,7 @@ canvas{max-height:230px!important}
   </div>
   <div class="card gf" style="margin-top:14px">
     <div class="ch"><div><div class="ct">Reservas vs Pessoas na Fila</div><div class="cs">{{ periodoDiaCs }}</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas</div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-fila)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-fila)"></div>Pessoas</div></div>
     <canvas id="ch-fi-ocorr"></canvas>
   </div>
   <div class="slabel"><div class="sl-text">Visão mensal</div><div class="sl-line"></div><div class="sl-tag">Atendido vs não compareceu por mês</div></div>
@@ -944,7 +944,7 @@ canvas{max-height:230px!important}
       <div v-if="hasBlocoFuturo" class="kgrid" id="kpi-res-futuro"></div>
       <div v-if="hasFuturoChart" class="kpi-block-chart">
         <div class="ch"><div><div class="ct">Em aberto por Dia · Futuro</div><div class="cs">{{ futuroChartSubtitulo }}</div></div><span class="ctag" id="t-re-futuro-dia">—</span></div>
-        <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Reservas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
+        <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-reserva)"></div>Reservas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Reservas ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas em aberto</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
         <canvas id="ch-re-futuro-dia"></canvas>
       </div>
     </div>
@@ -952,7 +952,7 @@ canvas{max-height:230px!important}
   <div class="slabel"><div class="sl-text">Tendência no período</div><div class="sl-line"></div><div class="sl-tag">{{ periodoTag }}</div></div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Reservas por Dia</div><div class="cs">{{ periodoDiaCs }}</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-re-dia">—</span></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-reserva)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
     <canvas id="ch-re-dia"></canvas>
   </div>
   <div class="g2">
@@ -970,7 +970,7 @@ canvas{max-height:230px!important}
   <div class="g2">
     <div class="card">
       <div class="ch"><div><div class="ct">Pessoas vs Reservas por Dia</div><div class="cs">{{ periodoDiaCs }}</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas</div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-reserva)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas</div></div>
       <canvas id="ch-re-pessoas"></canvas>
     </div>
     <div class="card">
@@ -1033,7 +1033,7 @@ canvas{max-height:230px!important}
   <div class="g2">
     <div class="card">
       <div class="ch"><div><div class="ct">Passantes por Dia</div><div class="cs">Grupos e pessoas · atual vs anterior</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-wi-g">—</span></div>
-      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Grupos atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Grupos ant.</div><div class="wli"><div class="wls" style="background:var(--chart-pessoas-filtrado)"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-passante)"></div>Grupos atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Grupos ant.</div><div class="wli"><div class="wls" style="background:var(--chart-passante);opacity:.65"></div>Pessoas atual</div><div class="wli"><div class="wld" style="border-color:var(--chart-pessoas-comparado);opacity:.85"></div>Pessoas ant.</div></div>
       <canvas id="ch-wi-g"></canvas>
     </div>
     <div class="card">
@@ -1057,7 +1057,7 @@ canvas{max-height:230px!important}
   </div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Tempo Médio de Espera na Fila</div><div class="cs">Minutos por mês · atual vs anterior · meta 20min</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-meta)"></div>Meta 20min</div></div>
+    <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-fila)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div><div class="wli"><div class="wls" style="background:var(--chart-meta)"></div>Meta 20min</div></div>
     <canvas id="ch-mes-tempo"></canvas>
   </div>
   <div class="card gf">
@@ -1066,48 +1066,86 @@ canvas{max-height:230px!important}
   </div>
 </div>
 
-<!-- CANAIS DETALHADOS -->
+<!-- ORIGENS DETALHADO -->
 <div id="tab-canais" class="tpanel" :class="{on: activeTab==='canais'}">
-  <div class="page-header"><div><div class="page-title">Canais Detalhados</div><div class="page-sub">{{ periodoSubtitulo }} · Origem exata de cada programa ou parceiro</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('canais')" :disabled="exportingPdf || !canExportTab('canais')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
+  <div class="page-header"><div><div class="page-title">Origens detalhado</div><div class="page-sub">{{ periodoSubtitulo }} · Origem exata de cada programa ou parceiro</div></div><button type="button" class="btn-export-pdf" @click="exportPdf('canais')" :disabled="exportingPdf || !canExportTab('canais')">{{ exportingPdf ? 'Gerando PDF…' : 'Exportar PDF' }}</button></div>
   <div class="kpi-block-period" v-if="periodoLabel" style="margin-bottom:14px"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div>
-  <div class="card gf" style="margin-bottom:20px">
-    <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Canal · atual vs anterior</div></div></div>
-    <div class="origem-donut-stack">
-      <div class="origem-donut-block">
-        <div class="origem-donut-hd">Filtrado<span v-if="periodoLabel"> · {{ periodoLabel }}</span></div>
-        <div class="origem-donut-panel">
-          <div class="origem-donut-chart-wrap">
-            <canvas id="ch-origem-ca"></canvas>
-            <div class="origem-donut-center" id="origem-ca-center"></div>
+  <div class="slabel"><div class="sl-text">Composição por origem</div><div class="sl-line"></div><div class="sl-tag">Reservas e fila</div></div>
+  <div class="g2" style="margin-bottom:20px">
+    <div class="card gf">
+      <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Widget · manual · Google · parceiros</div></div></div>
+      <div class="origem-donut-stack">
+        <div class="origem-donut-block">
+          <div class="origem-donut-hd">Filtrado<span v-if="periodoLabel"> · {{ periodoLabel }}</span></div>
+          <div class="origem-donut-panel">
+            <div class="origem-donut-chart-wrap">
+              <canvas id="ch-origem-ca"></canvas>
+              <div class="origem-donut-center" id="origem-ca-center"></div>
+            </div>
+            <div class="origem-donut-legend" id="origem-ca-legend"></div>
           </div>
-          <div class="origem-donut-legend" id="origem-ca-legend"></div>
+        </div>
+        <div class="origem-donut-block">
+          <div class="origem-donut-hd">Comparado<span v-if="periodoAnteriorLabel"> · {{ periodoAnteriorLabel }}</span></div>
+          <div class="origem-donut-panel">
+            <div class="origem-donut-chart-wrap">
+              <canvas id="ch-origem-ca-prev"></canvas>
+              <div class="origem-donut-center" id="origem-ca-prev-center"></div>
+            </div>
+            <div class="origem-donut-legend" id="origem-ca-prev-legend"></div>
+          </div>
         </div>
       </div>
-      <div class="origem-donut-block">
-        <div class="origem-donut-hd">Comparado<span v-if="periodoAnteriorLabel"> · {{ periodoAnteriorLabel }}</span></div>
-        <div class="origem-donut-panel">
-          <div class="origem-donut-chart-wrap">
-            <canvas id="ch-origem-ca-prev"></canvas>
-            <div class="origem-donut-center" id="origem-ca-prev-center"></div>
+    </div>
+    <div class="card gf">
+      <div class="ch"><div><div class="ct">Origem da Fila de Espera</div><div class="cs">Fila nativa · widget online · Google</div></div></div>
+      <div class="origem-donut-stack">
+        <div class="origem-donut-block">
+          <div class="origem-donut-hd">Filtrado<span v-if="periodoLabel"> · {{ periodoLabel }}</span></div>
+          <div class="origem-donut-panel">
+            <div class="origem-donut-chart-wrap">
+              <canvas id="ch-origem-ca-fila"></canvas>
+              <div class="origem-donut-center" id="origem-ca-fila-center"></div>
+            </div>
+            <div class="origem-donut-legend" id="origem-ca-fila-legend"></div>
           </div>
-          <div class="origem-donut-legend" id="origem-ca-prev-legend"></div>
+        </div>
+        <div class="origem-donut-block">
+          <div class="origem-donut-hd">Comparado<span v-if="periodoAnteriorLabel"> · {{ periodoAnteriorLabel }}</span></div>
+          <div class="origem-donut-panel">
+            <div class="origem-donut-chart-wrap">
+              <canvas id="ch-origem-ca-fila-prev"></canvas>
+              <div class="origem-donut-center" id="origem-ca-fila-prev-center"></div>
+            </div>
+            <div class="origem-donut-legend" id="origem-ca-fila-prev-legend"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="g2">
+  <div class="slabel"><div class="sl-text">Origens detalhadas</div><div class="sl-line"></div><div class="sl-tag">Top parceiros e programas</div></div>
+  <div class="g2" style="margin-bottom:20px">
     <div class="card">
-      <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Top canais no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+      <div class="ch"><div><div class="ct">Reservas · detalhamento</div><div class="cs">Top origens no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
       <div id="tbl-origem-res"></div>
     </div>
     <div class="card">
-      <div class="ch"><div><div class="ct">Origem da Fila de Espera</div><div class="cs">Top canais no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
+      <div class="ch"><div><div class="ct">Fila de espera · detalhamento</div><div class="cs">Top origens no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
       <div id="tbl-origem-fila"></div>
     </div>
   </div>
-  <div class="card gf">
-    <div class="ch"><div><div class="ct">Fila por Origem</div><div class="cs">Fila nativa · widget online · Google</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
-    <canvas id="ch-origem-fila"></canvas>
+  <div class="slabel"><div class="sl-text">Comparativo por origem</div><div class="sl-line"></div><div class="sl-tag">Filtrado vs comparado</div></div>
+  <div class="g2">
+    <div class="card gf">
+      <div class="ch"><div><div class="ct">Reservas por origem</div><div class="cs">Participação percentual no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-reserva)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+      <canvas id="ch-origem-res-bar"></canvas>
+    </div>
+    <div class="card gf">
+      <div class="ch"><div><div class="ct">Fila por origem</div><div class="cs">Participação percentual no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div></div>
+      <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-fila)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
+      <canvas id="ch-origem-fila"></canvas>
+    </div>
   </div>
 </div>
 
@@ -1181,12 +1219,12 @@ canvas{max-height:230px!important}
     <div class="ch"><div><div class="ct">Dias normais vs dias comemorativos</div><div class="cs" id="ctx-geo">—</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
     <canvas id="ch-ctx-groups"></canvas>
   </div>
-  <div class="slabel"><div class="sl-text">Série diária com destaques</div><div class="sl-line"></div><div class="sl-tag">Roxo = feriado/comemorativo · Laranja = evento · Azul = chuva</div></div>
+  <div class="slabel"><div class="sl-text">Série diária com destaques</div><div class="sl-line"></div><div class="sl-tag">Roxo = feriado · Laranja = evento · Vermelho = chuva · Laranja escuro = calor · Azul claro = frio</div></div>
   <div class="card gf">
     <div class="ch"><div><div class="ct">Reservas e pessoas por dia · contexto</div><div class="cs">Linha tracejada = média de reservas no período</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
     <canvas id="ch-ctx-daily"></canvas>
   </div>
-  <div class="slabel"><div class="sl-text">Dias com maior impacto</div><div class="sl-line"></div><div class="sl-tag">Feriados · eventos · chuva</div></div>
+  <div class="slabel"><div class="sl-text">Dias com maior impacto</div><div class="sl-line"></div><div class="sl-tag">Feriados · eventos · chuva · calor · frio</div></div>
   <div class="card ctx-hl">
     <div class="card-period" style="padding:12px 16px 0" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div>
     <div id="ctx-highlights"></div>
@@ -1331,7 +1369,7 @@ function heatColorChannel(t, lo, hi) {
   return Math.round(lo + (hi - lo) * v);
 }
 
-function heatColor(t) {
+function heatColorOrange(t) {
   if (t <= 0) return '#FFF8F0';
   if (t < 0.35) {
     const p = t / 0.35;
@@ -1343,6 +1381,46 @@ function heatColor(t) {
   }
   const p = (t - 0.7) / 0.3;
   return `rgb(${heatColorChannel(p, 255, 122)},${heatColorChannel(p, 107, 12)},${heatColorChannel(p, 43, 12)})`;
+}
+
+function heatColorGreen(t) {
+  if (t <= 0) return '#F0FDF9';
+  if (t < 0.35) {
+    const p = t / 0.35;
+    return `rgb(${heatColorChannel(p, 240, 34)},${heatColorChannel(p, 253, 211)},${heatColorChannel(p, 249, 165)})`;
+  }
+  if (t < 0.7) {
+    const p = (t - 0.35) / 0.35;
+    return `rgb(${heatColorChannel(p, 94, 34)},${heatColorChannel(p, 211, 165)},${heatColorChannel(p, 129, 102)})`;
+  }
+  const p = (t - 0.7) / 0.3;
+  return `rgb(${heatColorChannel(p, 13, 5)},${heatColorChannel(p, 150, 105)},${heatColorChannel(p, 97, 82)})`;
+}
+
+function heatColorCyan(t) {
+  if (t <= 0) return '#F0FDFF';
+  if (t < 0.35) {
+    const p = t / 0.35;
+    return `rgb(${heatColorChannel(p, 224, 6)},${heatColorChannel(p, 247, 182)},${heatColorChannel(p, 254, 212)})`;
+  }
+  if (t < 0.7) {
+    const p = (t - 0.35) / 0.35;
+    return `rgb(${heatColorChannel(p, 6, 14)},${heatColorChannel(p, 182, 165)},${heatColorChannel(p, 212, 233)})`;
+  }
+  const p = (t - 0.7) / 0.3;
+  return `rgb(${heatColorChannel(p, 8, 14)},${heatColorChannel(p, 116, 116)},${heatColorChannel(p, 163, 163)})`;
+}
+
+function heatColor(t, kind = 'reserva') {
+  if (kind === 'fila') return heatColorGreen(t);
+  if (kind === 'walkin') return heatColorCyan(t);
+  return heatColorOrange(t);
+}
+
+function heatLegendGradient(kind = 'reserva') {
+  if (kind === 'fila') return 'linear-gradient(90deg,#F0FDF9 0%,#5EEAD4 35%,#22D3A5 70%,#059669 100%)';
+  if (kind === 'walkin') return 'linear-gradient(90deg,#F0FDFF 0%,#67E8F9 35%,#06B6D4 70%,#0E7490 100%)';
+  return 'linear-gradient(90deg,#FFF8F0 0%,#FFD699 25%,#FF6B2B 60%,#7A0C0C 100%)';
 }
 
 function emptyHeatmapMatrix() {
@@ -1376,35 +1454,70 @@ function ultimoDiaMes(ano, mes) {
 
 const VENUE_STORAGE_KEY = 'impettus_bi_venues_v1';
 
-const KPI_COL = {
-  total: '#FF6B2B',
+const CHART_PALETTE = {
+  reserva: '#FF6B2B',
+  fila: '#22D3A5',
+  passante: '#06B6D4',
+  sentado: '#4F8EF7',
   aberto: '#F5A623',
   noshow: '#FF0000',
-  sentado: '#22D3A5',
-  passante: '#8B5CF6',
-};
-/** Cores padronizadas dos gráficos: filtrado vs comparado em todo o dashboard. */
-const CHART_COL = {
-  filtrado: '#FF6B2B',
-  comparado: '#4F8EF7',
-  pessoasFiltrado: '#22D3A5',
-  pessoasComparado: '#7B8498',
-  passante: '#8B5CF6',
+  comparado: '#7B8498',
   meta: '#7B8498',
-  sentado: KPI_COL.sentado,
-  noshow: KPI_COL.noshow,
-  aberto: KPI_COL.aberto,
-  primeiraVisita: '#22D3A5',
-  recorrente: '#4F8EF7',
+  pessoasReserva: '#FF9F6B',
+  pessoasFila: '#5EEAD4',
+  primeiraVisita: '#6366F1',
+  recorrente: '#A78BFA',
   widget: '#EC4899',
   manual: '#F5A623',
-  google: '#22D3A5',
+  google: '#16A34A',
   parceiros: '#1A1A1A',
-  canais: '#1A1A1A',
+  comemorativo: '#C084FC',
   evento: '#F5A623',
-  comemorativo: '#A78BFA',
-  chuva: '#4F8EF7',
+  chuva: '#FF4D6D',
+  calor: '#F97316',
+  frio: '#38BDF8',
   normal: '#4F8EF7',
+  filaWidget: '#16A34A',
+  filaGoogle: '#4ADE80',
+};
+
+const KPI_COL = {
+  total: CHART_PALETTE.reserva,
+  reserva: CHART_PALETTE.reserva,
+  fila: CHART_PALETTE.fila,
+  aberto: CHART_PALETTE.aberto,
+  noshow: CHART_PALETTE.noshow,
+  sentado: CHART_PALETTE.sentado,
+  passante: CHART_PALETTE.passante,
+};
+
+/** Cores padronizadas dos gráficos — jornada, status, cliente e período. */
+const CHART_COL = {
+  reserva: CHART_PALETTE.reserva,
+  fila: CHART_PALETTE.fila,
+  filtrado: CHART_PALETTE.reserva,
+  comparado: CHART_PALETTE.comparado,
+  pessoasFiltrado: CHART_PALETTE.pessoasReserva,
+  pessoasFila: CHART_PALETTE.pessoasFila,
+  pessoasComparado: CHART_PALETTE.comparado,
+  passante: CHART_PALETTE.passante,
+  meta: CHART_PALETTE.meta,
+  sentado: CHART_PALETTE.sentado,
+  noshow: CHART_PALETTE.noshow,
+  aberto: CHART_PALETTE.aberto,
+  primeiraVisita: CHART_PALETTE.primeiraVisita,
+  recorrente: CHART_PALETTE.recorrente,
+  widget: CHART_PALETTE.widget,
+  manual: CHART_PALETTE.manual,
+  google: CHART_PALETTE.google,
+  parceiros: CHART_PALETTE.parceiros,
+  canais: CHART_PALETTE.parceiros,
+  evento: CHART_PALETTE.evento,
+  comemorativo: CHART_PALETTE.comemorativo,
+  chuva: CHART_PALETTE.chuva,
+  calor: CHART_PALETTE.calor,
+  frio: CHART_PALETTE.frio,
+  normal: CHART_PALETTE.normal,
 };
 const GERAL_KPI_OUTCOMES = [
   {
@@ -1451,9 +1564,11 @@ const VG_RESUMO_DESC = {
 };
 const CTX_KPI_DESC = {
   media: 'Média diária de reservas e pessoas em todo o período filtrado (média de referência para comparação).',
-  normal: 'Média nos dias sem feriado, data comemorativa, evento ou chuva forte em nenhuma loja.',
+  normal: 'Média nos dias sem feriado, data comemorativa, evento, chuva forte, calor ou frio intenso em nenhuma loja.',
   feriado_comemorativo: 'Média nos dias com feriado nacional ou data comemorativa (ex.: Corpus Christi, Dia dos Namorados).',
   chuva: 'Média nos dias em que ao menos uma loja teve chuva forte; lista detalha loja e volume (mm).',
+  calor: 'Média nos dias em que ao menos uma loja teve temperatura máxima muito alta; lista detalha loja e °C.',
+  frio: 'Média nos dias em que ao menos uma loja teve temperatura máxima muito baixa; lista detalha loja e °C.',
   evento: 'Média nos dias com eventos do catálogo (ex.: jogos da Copa) que podem impactar o movimento.',
 };
 /** Descrição explicativa abaixo de cada gráfico (chave = id do canvas ou host do heatmap). */
@@ -1491,7 +1606,9 @@ const CHART_DESC = {
   'ch-re-wi-hora': 'Média de passantes por dia da semana e hora de criação do registro.',
   'ch-origem-g': 'Participação de cada canal de origem (widget, manual, Google, parceiros) no total de reservas — período filtrado vs comparado.',
   'ch-origem-re': 'Participação de cada canal de origem no total de reservas — período filtrado vs comparado.',
-  'ch-origem-ca': 'Participação de cada canal de origem no total de reservas — período filtrado vs comparado.',
+  'ch-origem-ca': 'Participação de cada origem no total de reservas — período filtrado vs comparado.',
+  'ch-origem-ca-fila': 'Participação de cada origem no total da fila de espera — período filtrado vs comparado.',
+  'ch-origem-res-bar': 'Distribuição percentual das origens de reservas (widget, manual, Google, parceiros) no período.',
   'ch-fi-status': 'Distribuição diária na fila entre atendidos, não compareceu e em aberto (barras) com pessoas em linha.',
   'ch-re-status': 'Composição diária das reservas: atendidas, não compareceu e em aberto, empilhadas por dia.',
   'ch-re-noshow': 'Percentual de não comparecimento sobre reservas concluídas (atendidas + não compareceu) por dia; meta operacional abaixo de 15%.',
@@ -2105,7 +2222,7 @@ createApp({
         return;
       }
       const max = Math.max(...rows.map((r) => r.count), 1);
-      node.innerHTML = `<table class="dtable"><thead><tr><th>Canal / Parceiro</th><th>Reservas / Pessoas</th><th>%</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r.label}<div class="dbar"><div class="dbar-f" style="width:${Math.round(r.count / max * 100)}%"></div></div></td><td>${this.rp(r.count, r.pessoas || 0)}</td><td>${r.pct}%</td></tr>`).join('')}</tbody></table>`;
+      node.innerHTML = `<table class="dtable"><thead><tr><th>Origem / Parceiro</th><th>Reservas / Pessoas</th><th>%</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${r.label}<div class="dbar"><div class="dbar-f" style="width:${Math.round(r.count / max * 100)}%"></div></div></td><td>${this.rp(r.count, r.pessoas || 0)}</td><td>${r.pct}%</td></tr>`).join('')}</tbody></table>`;
     },
 
     async loadContext() {
@@ -2149,6 +2266,8 @@ createApp({
         feriado_comemorativo: 'Feriados e datas comemorativas',
         evento: 'Eventos (esporte/cultura)',
         chuva: `Chuva forte (≥${fmtDec(this.CTX?.sources?.rainThresholdMm || 10, 1)} mm)`,
+        calor: `Calor intenso (≥${fmtDec(this.CTX?.sources?.hotTempThresholdC || 32, 1)}°C)`,
+        frio: `Frio intenso (≤${fmtDec(this.CTX?.sources?.coldTempThresholdC || 15, 1)}°C máx.)`,
         fim_semana: 'Fim de semana',
         especial: 'Qualquer dia comemorativo',
       }[key] || key;
@@ -2156,13 +2275,15 @@ createApp({
 
     ctxFilterDays(days, groupKey) {
       const pred = {
-        normal: (d) => !d.isSpecial && !d.isWeekend && !d.weather?.isRainy,
+        normal: (d) => !d.isSpecial && !d.isWeekend && !d.weather?.isRainy && !d.weather?.isVeryHot && !d.weather?.isVeryCold,
         especial: (d) => d.isSpecial,
         feriado_comemorativo: (d) => d.tags.some((t) => t.type === 'feriado' || t.type === 'comemorativo'),
         comemorativo: (d) => d.tags.some((t) => t.type === 'comemorativo'),
         feriado: (d) => d.tags.some((t) => t.type === 'feriado'),
         evento: (d) => d.tags.some((t) => t.type === 'evento'),
         chuva: (d) => d.weather?.isRainy,
+        calor: (d) => d.weather?.isVeryHot,
+        frio: (d) => d.weather?.isVeryCold,
         fim_semana: (d) => d.isWeekend,
       };
       const fn = pred[groupKey];
@@ -2179,9 +2300,19 @@ createApp({
           return `${v.venueName}: ${msg} · ${fmtDec(v.weather.precipMm, 1)} mm`;
         }).join(' · ');
       }
+      if (groupKey === 'calor') {
+        const hot = (day.venueWeather || []).filter((v) => v.weather?.isVeryHot);
+        if (!hot.length) return 'Sem calor intenso nas lojas';
+        return hot.map((v) => `${v.venueName}: ${fmtDec(v.weather.tempMaxC, 1)}°C`).join(' · ');
+      }
+      if (groupKey === 'frio') {
+        const cold = (day.venueWeather || []).filter((v) => v.weather?.isVeryCold);
+        if (!cold.length) return 'Sem frio intenso nas lojas';
+        return cold.map((v) => `${v.venueName}: ${fmtDec(v.weather.tempMaxC, 1)}°C máx.`).join(' · ');
+      }
       if (groupKey === 'normal') {
         if (day.isWeekend) return 'Fim de semana';
-        return 'Sem feriado, evento ou chuva forte';
+        return 'Sem feriado, evento, chuva forte, calor ou frio intenso';
       }
       if (groupKey === 'evento') {
         return day.tags.filter((t) => t.type === 'evento').map((t) => t.name).join(' · ') || '—';
@@ -2218,6 +2349,24 @@ createApp({
       return rows.length ? `<div class="ctx-kpi-days">${rows.join('')}</div>` : '';
     },
 
+    ctxKpiTempDaysHtml(days, kind) {
+      const pred = kind === 'calor'
+        ? (v) => v.weather?.isVeryHot
+        : (v) => v.weather?.isVeryCold;
+      const msg = kind === 'calor' ? 'calor intenso' : 'frio intenso';
+      const rows = [];
+      for (const day of [...days].sort((a, b) => a.ymd.localeCompare(b.ymd))) {
+        for (const v of (day.venueWeather || []).filter(pred)) {
+          rows.push(
+            `<div class="ctx-kpi-day ctx-kpi-day-bad"><strong>${this.escapeHtml(day.label)}</strong>`
+            + ` · <span class="ctx-kpi-day-venue"><strong>${this.escapeHtml(v.venueName)}</strong></span>`
+            + ` <span class="ctx-kpi-day-fact">· ${msg} · ${fmtDec(v.weather.tempMaxC, 1)}°C</span></div>`,
+          );
+        }
+      }
+      return rows.length ? `<div class="ctx-kpi-days">${rows.join('')}</div>` : '';
+    },
+
     ctxKpiDaysHtml(days, groupKey) {
       const subset = this.ctxFilterDays(days, groupKey);
       if (!subset.length) return '';
@@ -2238,7 +2387,11 @@ createApp({
         ? ''
         : (groupKey === 'chuva'
           ? this.ctxKpiChuvaDaysHtml(days)
-          : (groupKey ? this.ctxKpiDaysHtml(days, groupKey) : ''));
+          : (groupKey === 'calor'
+            ? this.ctxKpiTempDaysHtml(days, 'calor')
+            : (groupKey === 'frio'
+              ? this.ctxKpiTempDaysHtml(days, 'frio')
+              : (groupKey ? this.ctxKpiDaysHtml(days, groupKey) : ''))));
       return this.kpiRp(lbl, res, pes, resPrv, pesPrv, col, subLine, extra, CTX_KPI_DESC[groupKey] || CTX_KPI_DESC.media);
     },
 
@@ -2857,14 +3010,25 @@ createApp({
       const labelFmt = sortKey === 'tempo'
         ? (v) => `${this.S(Math.round(v))} min`
         : (cfg.mode === 'rate' ? (v) => `${fmtDec(v, 1)}%` : (v) => this.S(v));
+      const isFila = ['fila', 'fila_pes', 'growth_fila', 'tempo', 'taxa_atendimento_fila', 'taxa_noshow_fila'].includes(sortKey);
+      const barColor = sortKey === 'pct_recorrente'
+        ? CHART_COL.recorrente
+        : isFila
+          ? CHART_COL.fila
+          : CHART_COL.reserva;
       this.mk('ch-rk-metric', {
+        showValueLabels: true,
+        valueLabelOpts: {
+          formatFn: (v) => labelFmt(v),
+          horizontal: true,
+        },
         type: 'bar',
         data: {
           labels: sorted.map((u) => u.nome),
           datasets: [{
             label: cfg.label,
             data: sorted.map((u) => u[valueKey] || 0),
-            backgroundColor: `${CHART_COL.filtrado}CC`,
+            backgroundColor: `${barColor}CC`,
             borderRadius: 4,
           }],
         },
@@ -2974,7 +3138,7 @@ createApp({
         ? '<span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span>'
         : `<span class="rdelta" style="background:${improved ? 'rgba(34,211,165,.12)' : 'rgba(255,77,109,.12)'};color:${improved ? '#22D3A5' : '#FF4D6D'}">${improved ? '▼' : '▲'}${this.deltaPct(Math.abs(dv))}</span>`;
       const subLine = prev ? `ant. ${this.S(prev)} min` : 'sem período anterior';
-      return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${this.S(tempo)} min</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%;background:#A78BFA"></div></div></div>`;
+      return `<div class="rrow rrow-fine"><div class="rpos ${pc[i] || ''}">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${meta}</div></div><div class="rvals"><div class="rval">${this.S(tempo)} min</div><div class="rsub">${subLine}</div></div>${deltaHtml}<div class="rbw"><div class="rbf" style="width:${pb}%;background:${CHART_COL.fila}"></div></div></div>`;
     },
 
     buildTempoRanking(elId, units, direction = 'best', limit = null) {
@@ -2999,7 +3163,7 @@ createApp({
       }
       node.innerHTML = ranked.map((u, i) => {
         if ((u.tempo || 0) > 0 && (u.tempo_sf || 0) > 0) return this.rankTempoRow(u, i, maxVal);
-        return `<div class="rrow rrow-fine"><div class="rpos">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${u.grupo || '—'}</div></div><div class="rvals"><div class="rval">—</div><div class="rsub">sem sentados no período</div></div><span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span><div class="rbw"><div class="rbf" style="width:0;background:#A78BFA"></div></div></div>`;
+        return `<div class="rrow rrow-fine"><div class="rpos">${i + 1}</div><div class="rmain"><div class="rname" title="${u.nome}">${u.nome}</div><div class="rmeta">${u.grupo || '—'}</div></div><div class="rvals"><div class="rval">—</div><div class="rsub">sem sentados no período</div></div><span class="rdelta" style="background:rgba(123,132,152,.12);color:var(--muted)">—</span><div class="rbw"><div class="rbf" style="width:0;background:${CHART_COL.fila}"></div></div></div>`;
       }).join('');
       return ranked.length;
     },
@@ -3020,7 +3184,7 @@ createApp({
         data: {
           labels: LBL,
           datasets: [
-            this.dsAtual('Filtrado', tempo, true),
+            this.dsAtual('Filtrado', tempo, true, 'fila'),
             this.dsAnterior('Comparado', tempoPrev),
             this.dsMeta('Meta 20min', meta),
           ],
@@ -3136,16 +3300,22 @@ createApp({
       return { label: lbl, data: arr, backgroundColor: col + 'CC', borderRadius: 5, borderSkipped: false, hoverBackgroundColor: col };
     },
 
-    dsAtual(lbl, data, fill = false) {
-      return this.lds(lbl, data, CHART_COL.filtrado, false, fill);
+    dsAtual(lbl, data, fill = false, jornada = 'reserva') {
+      const col = jornada === 'fila' ? CHART_COL.fila : CHART_COL.reserva;
+      return this.lds(lbl, data, col, false, fill);
     },
 
     dsAnterior(lbl, data) {
       return this.lds(lbl, data, CHART_COL.comparado, true);
     },
 
-    dsPesAtual(lbl, data, fill = false) {
-      return this.lds(lbl, data, CHART_COL.pessoasFiltrado, false, fill);
+    dsPesAtual(lbl, data, fill = false, jornada = 'reserva') {
+      const col = jornada === 'fila'
+        ? CHART_COL.pessoasFila
+        : jornada === 'passante'
+          ? CHART_COL.passante
+          : CHART_COL.pessoasFiltrado;
+      return this.lds(lbl, data, col, false, fill);
     },
 
     dsPesAnterior(lbl, data) {
@@ -3164,8 +3334,9 @@ createApp({
       return this.lds(lbl, data, CHART_COL.meta, true);
     },
 
-    barAtual(lbl, data) {
-      return this.bds(lbl, data, CHART_COL.filtrado);
+    barAtual(lbl, data, jornada = 'reserva') {
+      const col = jornada === 'fila' ? CHART_COL.fila : CHART_COL.reserva;
+      return this.bds(lbl, data, col);
     },
 
     barAnterior(lbl, data) {
@@ -3173,11 +3344,11 @@ createApp({
     },
 
     barStatus(lbl, data, statusKey) {
-      return this.bds(lbl, data, CHART_COL[statusKey] || CHART_COL.filtrado);
+      return this.bds(lbl, data, CHART_COL[statusKey] || CHART_COL.reserva);
     },
 
     barCanal(lbl, data, canalKey) {
-      return this.bds(lbl, data, CHART_COL[canalKey] || CHART_COL.filtrado);
+      return this.bds(lbl, data, CHART_COL[canalKey] || CHART_COL.reserva);
     },
 
     horaHeatmapFootnote(kind = 'fila') {
@@ -3217,11 +3388,11 @@ createApp({
           const t = max > 0 ? v / max : 0;
           const tip = `${HEATMAP_DOW[d]} ${h}h · média ${fmtInt(v)}`;
           const valClass = t >= 0.55 ? 'hh-cell-val on-dark' : 'hh-cell-val on-light';
-          rows += `<div class="hh-cell" style="background:${heatColor(t)}" data-tip="${tip}" aria-label="${tip}"><span class="${valClass}">${fmtInt(v)}</span></div>`;
+          rows += `<div class="hh-cell" style="background:${heatColor(t, kind)}" data-tip="${tip}" aria-label="${tip}"><span class="${valClass}">${fmtInt(v)}</span></div>`;
         }
         rows += '</div>';
       }
-      el.innerHTML = `<div class="hora-heatmap"><div class="hh-table">${rows}</div><div class="hh-legend"><span class="hh-leg-lbl">Baixo</span><div class="hh-leg-bar"></div><span class="hh-leg-lbl">Alto</span></div><div class="hh-footnote">${this.horaHeatmapFootnote(kind)}</div></div>`;
+      el.innerHTML = `<div class="hora-heatmap"><div class="hh-table">${rows}</div><div class="hh-legend"><span class="hh-leg-lbl">Baixo</span><div class="hh-leg-bar" style="background:${heatLegendGradient(kind)}"></div><span class="hh-leg-lbl">Alto</span></div><div class="hh-footnote">${this.horaHeatmapFootnote(kind)}</div></div>`;
     },
 
     origemDonutColor(lbl) {
@@ -3256,10 +3427,10 @@ createApp({
         .sort((a, b) => b.count - a.count);
     },
 
-    renderOrigemDonutCenter(elId, total) {
+    renderOrigemDonutCenter(elId, total, unitLabel = 'reservas') {
       const el = document.getElementById(elId);
       if (!el) return;
-      el.innerHTML = `<div class="origem-donut-total">${this.S(total)}</div><div class="origem-donut-lbl">reservas</div>`;
+      el.innerHTML = `<div class="origem-donut-total">${this.S(total)}</div><div class="origem-donut-lbl">${unitLabel}</div>`;
     },
 
     renderOrigemDonutLegend(elId, items, total) {
@@ -3278,7 +3449,7 @@ createApp({
     mkOrigemDonut(canvasId, centerId, legendId, counts) {
       const items = this.origemDonutItems(counts || {});
       const total = items.reduce((s, x) => s + x.count, 0);
-      this.renderOrigemDonutCenter(centerId, total);
+      this.renderOrigemDonutCenter(centerId, total, 'reservas');
       this.renderOrigemDonutLegend(legendId, items, total);
       if (!total) {
         this.destroyChart(canvasId);
@@ -3320,6 +3491,75 @@ createApp({
 
     mkOrigemPies() {
       this.renderOrigemDonutGroup('g');
+    },
+
+    origemFilaDonutColor(lbl) {
+      const map = {
+        Waitlist: CHART_COL.fila,
+        Widget: CHART_PALETTE.filaWidget,
+        Google: CHART_PALETTE.filaGoogle,
+      };
+      return map[lbl] || CHART_COL.meta;
+    },
+
+    origemFilaDonutItems(counts) {
+      const labels = this.ORIGEM_FILA.labels || [];
+      return labels
+        .map((lbl) => ({
+          lbl,
+          count: counts[lbl] || 0,
+          color: this.origemFilaDonutColor(lbl),
+        }))
+        .sort((a, b) => b.count - a.count);
+    },
+
+    mkOrigemFilaDonut(canvasId, centerId, legendId, counts) {
+      const items = this.origemFilaDonutItems(counts || {});
+      const total = items.reduce((s, x) => s + x.count, 0);
+      this.renderOrigemDonutCenter(centerId, total, 'fila');
+      this.renderOrigemDonutLegend(legendId, items, total);
+      if (!total) {
+        this.destroyChart(canvasId);
+        return;
+      }
+      this.mk(canvasId, {
+        type: 'doughnut',
+        data: {
+          labels: items.map((x) => this.origemDisplayLabel(x.lbl)),
+          datasets: [{
+            data: items.map((x) => x.count),
+            backgroundColor: items.map((x) => x.color + 'DD'),
+            borderColor: 'transparent',
+            hoverBackgroundColor: items.map((x) => x.color),
+          }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '72%',
+          animation: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              ...this.darkTooltip(),
+              callbacks: {
+                label: (ctx) => {
+                  const v = ctx.parsed ?? 0;
+                  const pct = total ? Math.round((v / total) * 100) : 0;
+                  return ` ${ctx.label}: ${pct}% (${this.S(v)})`;
+                },
+              },
+            },
+          },
+        },
+      });
+    },
+
+    renderOrigemFilaDonutGroup(prefix) {
+      if (!document.getElementById(`ch-origem-${prefix}`)) return;
+      const of = this.ORIGEM_FILA || {};
+      this.mkOrigemFilaDonut(`ch-origem-${prefix}`, `origem-${prefix}-center`, `origem-${prefix}-legend`, of.counts || {});
+      this.mkOrigemFilaDonut(`ch-origem-${prefix}-prev`, `origem-${prefix}-prev-center`, `origem-${prefix}-prev-legend`, of.countsPrev || {});
     },
 
     destroyChart(id) {
@@ -3434,6 +3674,8 @@ createApp({
       const self = this;
       const skipLabelMatch = opts.skipLabelMatch || /meta/i;
       const skipZero = opts.skipZero !== false;
+      const formatFn = opts.formatFn || null;
+      const forceHorizontal = opts.horizontal === true;
       return {
         id: 'chartValueLabels',
         afterDatasetsDraw(chart) {
@@ -3441,6 +3683,8 @@ createApp({
           if (!chartArea) return;
           const theme = self.chartTheme();
           const chartType = chart.config.type;
+          const indexAxis = chart.options?.indexAxis || 'x';
+          const isHorizontal = forceHorizontal || indexAxis === 'y';
           chart.data.datasets.forEach((ds, di) => {
             if (skipLabelMatch.test(ds.label || '')) return;
             const meta = chart.getDatasetMeta(di);
@@ -3451,20 +3695,35 @@ createApp({
               const val = Number(ds.data?.[i]);
               if (!Number.isFinite(val)) return;
               if (skipZero && !val) return;
-              const text = self.S(val);
+              const text = formatFn ? formatFn(val, ds, i) : self.S(val);
               ctx.save();
-              ctx.textAlign = 'center';
               if (isLine) {
                 const { x, y } = elem.getProps(['x', 'y'], true);
+                ctx.textAlign = 'center';
                 ctx.textBaseline = isDashed ? 'top' : 'bottom';
                 ctx.font = `${isDashed ? '500' : '600'} ${isDashed ? 8 : 9}px Inter, system-ui, sans-serif`;
                 ctx.fillStyle = isDashed ? theme.labelMuted : theme.label;
                 ctx.fillText(text, x, y + (isDashed ? 8 : -5));
+              } else if (isHorizontal) {
+                const props = elem.getProps(['x', 'y', 'base', 'width', 'height'], true);
+                const w = Math.abs((props.base ?? 0) - (props.x ?? 0));
+                const x = props.x + (props.x >= (props.base ?? 0) ? w / 2 : -w / 2);
+                const y = props.y;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.font = '600 9px Inter, system-ui, sans-serif';
+                ctx.fillStyle = w >= 28 ? 'rgba(255,255,255,.95)' : theme.label;
+                if (w >= 28) {
+                  ctx.shadowColor = 'rgba(0,0,0,.35)';
+                  ctx.shadowBlur = 3;
+                }
+                ctx.fillText(text, x, y);
               } else {
                 const props = elem.getProps(['x', 'y', 'base', 'width', 'height'], true);
                 const h = Math.abs((props.base ?? 0) - (props.y ?? 0));
                 const x = props.x;
                 const y = h >= 16 ? props.y + (props.base - props.y) / 2 : props.y - 5;
+                ctx.textAlign = 'center';
                 ctx.textBaseline = h >= 16 ? 'middle' : 'bottom';
                 ctx.font = '600 9px Inter, system-ui, sans-serif';
                 ctx.fillStyle = h >= 16 ? 'rgba(255,255,255,.95)' : theme.label;
@@ -3614,7 +3873,7 @@ createApp({
       });
     },
 
-    mkClienteTipoTotal(id, cur, prev) {
+    mkClienteTipoTotal(id, cur, prev, jornada = 'reserva') {
       const c = cur || { primeira: [], recorrente: [], primeiraPes: [], recorrentePes: [] };
       const p = prev || { primeira: [], recorrente: [], primeiraPes: [], recorrentePes: [] };
       const c1 = this.A(c.primeira);
@@ -3626,15 +3885,23 @@ createApp({
       const p1p = this.A(p.primeiraPes);
       const p2p = this.A(p.recorrentePes);
       const self = this;
+      const periodoDs = {
+        label: jornada === 'fila' ? 'Fila período' : 'Reservas período',
+        data: [c1, c2],
+        backgroundColor: [CHART_COL.primeiraVisita + 'CC', CHART_COL.recorrente + 'CC'],
+        borderRadius: 5,
+        borderSkipped: false,
+        hoverBackgroundColor: [CHART_COL.primeiraVisita, CHART_COL.recorrente],
+      };
       this.mk(id, {
         type: 'bar',
         plugins: [this.clienteTipoBarLabelsPlugin('grouped')],
         data: {
           labels: ['1ª visita', 'Recorrentes'],
           datasets: [
-            this.barAtual('Reservas período', [c1, c2]),
-            this.barAnterior('Reservas anterior', [p1, p2]),
-            { ...this.dsPesAtual('Pessoas período', [c1p, c2p]), type: 'line', order: 0 },
+            periodoDs,
+            this.barAnterior(jornada === 'fila' ? 'Fila anterior' : 'Reservas anterior', [p1, p2]),
+            { ...this.dsPesAtual('Pessoas período', [c1p, c2p], false, jornada), type: 'line', order: 0 },
           ],
         },
         options: {
@@ -3935,9 +4202,9 @@ createApp({
           data: {
             labels: LBL,
             datasets: [
-              this.dsAtual('Reservas período', d.fila, true),
-              this.dsAnterior('Reservas anterior', filPrev),
-              this.dsPesAtual('Pessoas período', d.filaPessoas),
+              this.dsAtual('Fila período', d.fila, true, 'fila'),
+              this.dsAnterior('Fila anterior', filPrev),
+              this.dsPesAtual('Pessoas período', d.filaPessoas, false, 'fila'),
               this.dsPesAnterior('Pessoas anterior', filPesPrev),
             ],
           },
@@ -3963,7 +4230,7 @@ createApp({
             datasets: [
               this.dsPassanteAtual('Reservas período', d.walkin || [], true),
               this.dsPassanteAnterior('Reservas anterior', wiPrev),
-              this.dsPesAtual('Pessoas período', d.walkinPessoas || []),
+              this.dsPesAtual('Pessoas período', d.walkinPessoas || [], false, 'passante'),
               this.dsPesAnterior('Pessoas anterior', wiPesPrev),
             ],
           },
@@ -4000,14 +4267,14 @@ createApp({
       const d = this.W;
       const LBL = this.chartLabels();
       this.forEl(canvasIds, (id) => this.mkClienteTipoDaily(id, LBL, d.clienteRes, d.clienteRes_p));
-      this.forEl(totalIds, (id) => this.mkClienteTipoTotal(id, d.clienteRes, d.clienteRes_p));
+      this.forEl(totalIds, (id) => this.mkClienteTipoTotal(id, d.clienteRes, d.clienteRes_p, 'reserva'));
     },
 
     renderClienteFila(canvasIds, totalIds) {
       const d = this.W;
       const LBL = this.chartLabels();
       this.forEl(canvasIds, (id) => this.mkClienteTipoDaily(id, LBL, d.clienteFila, d.clienteFila_p));
-      this.forEl(totalIds, (id) => this.mkClienteTipoTotal(id, d.clienteFila, d.clienteFila_p));
+      this.forEl(totalIds, (id) => this.mkClienteTipoTotal(id, d.clienteFila, d.clienteFila_p, 'fila'));
     },
 
     renderOrigemDonutGroup(prefix) {
@@ -4098,7 +4365,7 @@ createApp({
     },
 
     vgHeroFluxoCard(grupos, pessoas) {
-      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:#6366F1"></div><div class="vg-hero-body"><div class="vg-hero-title">Fluxo total</div><div class="vg-hero-dual"><div><span class="vg-hero-num">${this.S(grupos)}</span><span class="vg-hero-lbl">mesas / grupos</span></div><div><span class="vg-hero-num">${this.S(pessoas)}</span><span class="vg-hero-lbl">pessoas</span></div></div></div>${this.vgDescHtml(VG_HERO_DESC.fluxoTotal)}</div>`;
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:${CHART_COL.primeiraVisita}"></div><div class="vg-hero-body"><div class="vg-hero-title">Fluxo total</div><div class="vg-hero-dual"><div><span class="vg-hero-num">${this.S(grupos)}</span><span class="vg-hero-lbl">mesas / grupos</span></div><div><span class="vg-hero-num">${this.S(pessoas)}</span><span class="vg-hero-lbl">pessoas</span></div></div></div>${this.vgDescHtml(VG_HERO_DESC.fluxoTotal)}</div>`;
     },
 
     vgHeroRatioCard(title, color, aberto, total, pctAberto, pctSentado, desc) {
@@ -4117,8 +4384,8 @@ createApp({
       const v = this.calcVisaoGeralData();
       const html =
         this.vgHeroFluxoCard(v.totalGrupos, v.totalPes) +
-        this.vgHeroRatioCard('Reservas', CHART_COL.filtrado, v.res.abertoPes, v.res.fluxoPes, v.res.pctAberto, v.res.pctSentado, VG_HERO_DESC.reservas) +
-        this.vgHeroRatioCard('Fila de espera', CHART_COL.comparado, v.fila.abertoPes, v.fila.fluxoPes, v.fila.pctAberto, v.fila.pctSentado, VG_HERO_DESC.fila) +
+        this.vgHeroRatioCard('Reservas', CHART_COL.reserva, v.res.abertoPes, v.res.fluxoPes, v.res.pctAberto, v.res.pctSentado, VG_HERO_DESC.reservas) +
+        this.vgHeroRatioCard('Fila de espera', CHART_COL.fila, v.fila.abertoPes, v.fila.fluxoPes, v.fila.pctAberto, v.fila.pctSentado, VG_HERO_DESC.fila) +
         this.vgHeroNoshowCard(v.res.noshowRes, v.res.noshowPes, v.res.pctNoshowTotal) +
         this.vgHeroPassanteCard(v.tW, v.tWP);
       this.setHtml('vg-hero-kpis', html);
@@ -4171,13 +4438,13 @@ createApp({
       const v = this.calcVisaoGeralData();
       const ft = v.ft;
       const gruposItems = [
-        { lbl: 'Reservas', count: ft.reservas || 0, color: CHART_COL.filtrado },
-        { lbl: 'Fila de espera', count: ft.fila || 0, color: CHART_COL.comparado },
+        { lbl: 'Reservas', count: ft.reservas || 0, color: CHART_COL.reserva },
+        { lbl: 'Fila de espera', count: ft.fila || 0, color: CHART_COL.fila },
         { lbl: 'Passantes', count: ft.passantes || 0, color: CHART_COL.passante },
       ];
       const pessoasItems = [
-        { lbl: 'Reservas', count: ft.reservasPessoas || 0, color: CHART_COL.filtrado },
-        { lbl: 'Fila de espera', count: ft.filaPessoas || 0, color: CHART_COL.comparado },
+        { lbl: 'Reservas', count: ft.reservasPessoas || 0, color: CHART_COL.reserva },
+        { lbl: 'Fila de espera', count: ft.filaPessoas || 0, color: CHART_COL.fila },
         { lbl: 'Passantes', count: ft.passantesPessoas || 0, color: CHART_COL.passante },
       ];
       this.mkVgDonut('ch-vg-fluxo-grupos', 'vg-fluxo-grupos-leg', 'vg-fluxo-grupos-sub', gruposItems);
@@ -4200,7 +4467,7 @@ createApp({
       }
       const items = [
         { lbl: 'Recorrentes', count: recorrente, color: CHART_COL.recorrente },
-        { lbl: '1ª visita', count: primeira, color: CHART_COL.primeira },
+        { lbl: '1ª visita', count: primeira, color: CHART_COL.primeiraVisita },
       ];
       this.vgDonutLegend('vg-perfil-leg', items, total);
       if (!total) {
@@ -4273,8 +4540,8 @@ createApp({
       const res = v.res;
       const fila = v.fila;
       const html =
-        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.filtrado}">Reservas</div><div class="vg-resumo-main" style="color:${CHART_COL.filtrado}">${this.S(res.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(res.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', res.abertoPes, res.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', res.sentadoPes, res.pctSentado)}<li><i class="vg-resumo-dot" style="background:var(--chart-noshow)"></i><strong>${this.S(res.noshowRes)}</strong> não compareceu (${this.pct(res.pctNoshowTotal)} do total de reservas)</li></ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.reservas)}</div><button type="button" class="vg-tab-link" data-tab="reservas">Ver detalhes na aba Reservas →</button></div>` +
-        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.comparado}">Fila de espera</div><div class="vg-resumo-main" style="color:${CHART_COL.comparado}">${this.S(fila.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(fila.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', fila.abertoPes, fila.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', fila.sentadoPes, fila.pctSentado)}</ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.fila)}</div><button type="button" class="vg-tab-link" data-tab="fila">Ver detalhes na aba Fila de Espera →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.reserva}">Reservas</div><div class="vg-resumo-main" style="color:${CHART_COL.reserva}">${this.S(res.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(res.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', res.abertoPes, res.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', res.sentadoPes, res.pctSentado)}<li><i class="vg-resumo-dot" style="background:var(--chart-noshow)"></i><strong>${this.S(res.noshowRes)}</strong> não compareceu (${this.pct(res.pctNoshowTotal)} do total de reservas)</li></ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.reservas)}</div><button type="button" class="vg-tab-link" data-tab="reservas">Ver detalhes na aba Reservas →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.fila}">Fila de espera</div><div class="vg-resumo-main" style="color:${CHART_COL.fila}">${this.S(fila.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(fila.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', fila.abertoPes, fila.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', fila.sentadoPes, fila.pctSentado)}</ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.fila)}</div><button type="button" class="vg-tab-link" data-tab="fila">Ver detalhes na aba Fila de Espera →</button></div>` +
         `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.passante}">Passantes</div><div class="vg-resumo-main" style="color:${CHART_COL.passante}">${this.S(v.tWP)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(v.tW)} mesas / grupos</div><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.passante)}</div><button type="button" class="vg-tab-link" data-tab="reservas">Ver gráficos de passantes →</button></div>`;
       this.setHtml('vg-resumo-fonte', html);
       document.querySelectorAll('#vg-resumo-fonte .vg-tab-link').forEach((el) => {
@@ -4302,10 +4569,10 @@ createApp({
       const nf = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (this.statusFiltro === 'noshow' ? d.nf : d.nf);
       const sfPes = d.filaPessoasSentadas || Array(dc).fill(0);
       const nfPes = this.statusFiltro === 'seated' ? Array(dc).fill(0) : (d.nf_pes || Array(dc).fill(0));
-      this.mk('ch-fi-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Atendido (fila)', sf, 'sentado'), { ...this.dsAnterior('Atendido ant.', d.sf_p), type: 'line' }, this.barStatus('Não compareceu (fila)', nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', sfPes, true), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', nfPes), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mk('ch-fi-status', { showValueLabels: true, type: 'bar', data: { labels: LBL, datasets: [this.barStatus('Atendido (fila)', sf, 'sentado'), { ...this.dsAnterior('Atendido ant.', d.sf_p), type: 'line' }, this.barStatus('Não compareceu (fila)', nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', sfPes, true, 'fila'), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', nfPes), type: 'line' }] }, options: this.bO('Quantidade') });
       this.renderTempoFilaCharts([{ id: 'ch-fi-tempo', tagId: 't-tempo', showValueLabels: true }]);
       this.renderFilaHeatmap('ch-fi-hora');
-      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Atendido (fila)', d.fila_mes_sf, 'sentado'), this.barStatus('Não compareceu (fila)', d.fila_mes_nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', d.fila_mes_sf_pes || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', d.fila_mes_nf_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.mk('ch-fi-mes-status', { type: 'bar', data: { labels: MES, datasets: [this.barStatus('Atendido (fila)', d.fila_mes_sf, 'sentado'), this.barStatus('Não compareceu (fila)', d.fila_mes_nf, 'noshow'), { ...this.dsPesAtual('Pessoas atendidas', d.fila_mes_sf_pes || [], true, 'fila'), type: 'line' }, { ...this.dsPesAnterior('Pessoas não compareceram', d.fila_mes_nf_pes || []), type: 'line' }] }, options: { ...this.bO('Quantidade'), plugins: { ...this.bO().plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
       this.renderClienteFila(['ch-fi-cliente-dia'], ['ch-fi-cliente-tot']);
     },
 
@@ -4316,7 +4583,7 @@ createApp({
       const dc = this.dayCount();
       const meta15 = Array(dc).fill(15);
       const k = this.calcReservaKpis(d);
-      const convHtml = this.kpi('Conversão', k.tR ? parseFloat((k.tS / k.tR * 100).toFixed(1)) : 0, k.pR ? parseFloat((k.tS / k.pR * 100).toFixed(1)) : 0, '#A78BFA', k.tR ? `${this.pct(k.tS / k.tR * 100)} reservas sentadas` : '0%', KPI_EXTRA_DESC.conversao);
+      const convHtml = this.kpi('Conversão', k.tR ? parseFloat((k.tS / k.tR * 100).toFixed(1)) : 0, k.pR ? parseFloat((k.tS / k.pR * 100).toFixed(1)) : 0, CHART_COL.sentado, k.tR ? `${this.pct(k.tS / k.tR * 100)} reservas sentadas` : '0%', KPI_EXTRA_DESC.conversao);
       this.renderReservaKpiBlock('kpi-res', {
         withFuturo: true,
         futuroKpiId: 'kpi-res-futuro',
@@ -4352,14 +4619,14 @@ createApp({
       const mesMeta = Array(MES.length).fill(20);
       const om = d.res_mes_origem || { w: [], t: [], g: [], c: [] };
       this.mk('ch-mes-res', { showValueLabels: true, type: 'bar', data: { labels: MES, datasets: [this.barAtual('Reservas período', d.res_mes), { ...this.dsAnterior('Reservas anterior', d.res_mes_p), type: 'line' }, { ...this.dsPesAtual('Pessoas período', d.res_mes_pessoas || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas anterior', d.res_mes_pessoas_p || []), type: 'line' }] }, options: this.bO('Quantidade') });
-      this.mk('ch-mes-fila', { showValueLabels: true, type: 'bar', data: { labels: MES, datasets: [this.barAtual('Reservas período', d.fila_mes), { ...this.dsAnterior('Reservas anterior', d.fila_mes_p), type: 'line' }, { ...this.dsPesAtual('Pessoas período', d.fila_mes_pessoas || []), type: 'line' }, { ...this.dsPesAnterior('Pessoas anterior', d.fila_mes_pessoas_p || []), type: 'line' }] }, options: this.bO('Quantidade') });
+      this.mk('ch-mes-fila', { showValueLabels: true, type: 'bar', data: { labels: MES, datasets: [this.barAtual('Fila período', d.fila_mes, 'fila'), { ...this.dsAnterior('Fila anterior', d.fila_mes_p), type: 'line' }, { ...this.dsPesAtual('Pessoas período', d.fila_mes_pessoas || [], false, 'fila'), type: 'line' }, { ...this.dsPesAnterior('Pessoas anterior', d.fila_mes_pessoas_p || []), type: 'line' }] }, options: this.bO('Quantidade') });
       this.mk('ch-mes-tempo', {
         showValueLabels: true,
         type: 'line',
         data: {
           labels: MES,
           datasets: [
-            this.dsAtual('Filtrado', d.fila_mes_tempo || [], true),
+            this.dsAtual('Filtrado', d.fila_mes_tempo || [], true, 'fila'),
             this.dsAnterior('Comparado', d.fila_mes_tempo_p || []),
             this.dsMeta('Meta 20min', mesMeta),
           ],
@@ -4374,7 +4641,40 @@ createApp({
       this.detailTable('tbl-origem-res', det.reservas);
       this.detailTable('tbl-origem-fila', det.fila);
       this.renderOrigemDonutGroups(['ca']);
-      this.mk('ch-origem-fila', { type: 'bar', data: { labels: this.ORIGEM_FILA.labels.map((l) => this.origemDisplayLabel(l)), datasets: [this.barAtual('Período (%)', this.ORIGEM_FILA.a), this.barAnterior('Anterior (%)', this.ORIGEM_FILA.p)] }, options: { ...this.bO('%'), plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } } } });
+      this.renderOrigemFilaDonutGroup('ca-fila');
+      const origemBarOpts = {
+        ...this.bO('%'),
+        plugins: { ...this.bO('%').plugins, legend: { display: true, labels: { color: this.chartTheme().legend, font: { size: 11 }, boxWidth: 10 } } },
+      };
+      const pctFmt = { formatFn: (v) => `${fmtDec(v, 1)}%` };
+      const origemLabels = (this.ORIGEM.labels || []).map((l) => this.origemDisplayLabel(l));
+      const filaLabels = (this.ORIGEM_FILA.labels || []).map((l) => this.origemDisplayLabel(l));
+      this.mk('ch-origem-res-bar', {
+        showValueLabels: true,
+        valueLabelOpts: pctFmt,
+        type: 'bar',
+        data: {
+          labels: origemLabels,
+          datasets: [
+            this.barAtual('Período (%)', this.ORIGEM.a, 'reserva'),
+            this.barAnterior('Anterior (%)', this.ORIGEM.p),
+          ],
+        },
+        options: origemBarOpts,
+      });
+      this.mk('ch-origem-fila', {
+        showValueLabels: true,
+        valueLabelOpts: pctFmt,
+        type: 'bar',
+        data: {
+          labels: filaLabels,
+          datasets: [
+            this.barAtual('Período (%)', this.ORIGEM_FILA.a, 'fila'),
+            this.barAnterior('Anterior (%)', this.ORIGEM_FILA.p),
+          ],
+        },
+        options: origemBarOpts,
+      });
     },
 
     rRanking() {
@@ -4404,13 +4704,17 @@ createApp({
       const normal = c.groups?.find((g) => g.key === 'normal');
       const feriadoComemorativo = c.groups?.find((g) => g.key === 'feriado_comemorativo');
       const chuva = c.groups?.find((g) => g.key === 'chuva');
+      const calor = c.groups?.find((g) => g.key === 'calor');
+      const frio = c.groups?.find((g) => g.key === 'frio');
       const evento = c.groups?.find((g) => g.key === 'evento');
       document.getElementById('kpi-ctx').innerHTML =
-        this.kpiRp('Média diária', Math.round(b.avgReservas), Math.round(b.avgPessoas || 0), 0, 0, '#FF6B2B', 'reservas / pessoas no período', '', CTX_KPI_DESC.media) +
-        this.ctxKpiRp('Dias normais', Math.round(normal?.avgReservas || 0), Math.round(normal?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#4F8EF7', 'normal', days) +
-        this.ctxKpiRp('Dias comemorativos', Math.round(feriadoComemorativo?.avgReservas || 0), Math.round(feriadoComemorativo?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#A78BFA', 'feriado_comemorativo', days) +
-        this.ctxKpiRp('Dias de chuva', Math.round(chuva?.avgReservas || 0), Math.round(chuva?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#22D3A5', 'chuva', days) +
-        this.ctxKpiRp('Dias c/ evento', Math.round(evento?.avgReservas || 0), Math.round(evento?.avgPessoas || 0), b.avgReservas, b.avgPessoas, '#F5A623', 'evento', days);
+        this.kpiRp('Média diária', Math.round(b.avgReservas), Math.round(b.avgPessoas || 0), 0, 0, CHART_COL.reserva, 'reservas / pessoas no período', '', CTX_KPI_DESC.media) +
+        this.ctxKpiRp('Dias normais', Math.round(normal?.avgReservas || 0), Math.round(normal?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.normal, 'normal', days) +
+        this.ctxKpiRp('Dias comemorativos', Math.round(feriadoComemorativo?.avgReservas || 0), Math.round(feriadoComemorativo?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.comemorativo, 'feriado_comemorativo', days) +
+        this.ctxKpiRp('Dias de chuva', Math.round(chuva?.avgReservas || 0), Math.round(chuva?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.chuva, 'chuva', days) +
+        this.ctxKpiRp('Dias de calor', Math.round(calor?.avgReservas || 0), Math.round(calor?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.calor, 'calor', days) +
+        this.ctxKpiRp('Dias de frio', Math.round(frio?.avgReservas || 0), Math.round(frio?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.frio, 'frio', days) +
+        this.ctxKpiRp('Dias c/ evento', Math.round(evento?.avgReservas || 0), Math.round(evento?.avgPessoas || 0), b.avgReservas, b.avgPessoas, CHART_COL.evento, 'evento', days);
 
       const geo = c.geo || {};
 
@@ -4437,11 +4741,13 @@ createApp({
       const groupAvgs = (c.groups || []).map((g) => g.avgReservas);
       const groupPessoas = (c.groups || []).map((g) => g.avgPessoas || 0);
       const groupColors = (c.groups || []).map((g) => {
-        if (g.key === 'normal') return '#4F8EF7';
-        if (g.key === 'chuva') return '#FF4D6D';
-        if (g.key === 'evento') return '#F5A623';
-        if (g.key === 'feriado_comemorativo' || g.key === 'comemorativo') return '#A78BFA';
-        return '#22D3A5';
+        if (g.key === 'normal') return CHART_COL.normal;
+        if (g.key === 'chuva') return CHART_COL.chuva;
+        if (g.key === 'calor') return CHART_COL.calor;
+        if (g.key === 'frio') return CHART_COL.frio;
+        if (g.key === 'evento') return CHART_COL.evento;
+        if (g.key === 'feriado_comemorativo' || g.key === 'comemorativo') return CHART_COL.comemorativo;
+        return CHART_COL.fila;
       });
       const baselineLine = Array(groupAvgs.length).fill(b.avgReservas);
       this.mk('ch-ctx-groups', {
@@ -4449,7 +4755,14 @@ createApp({
         data: {
           labels: groupLabels,
           datasets: [
-            this.bds('Média reservas', groupAvgs, CHART_COL.filtrado),
+            {
+              label: 'Média reservas',
+              data: groupAvgs,
+              backgroundColor: groupColors.map((col) => col + 'CC'),
+              borderRadius: 5,
+              borderSkipped: false,
+              hoverBackgroundColor: groupColors,
+            },
             this.bds('Média pessoas', groupPessoas, CHART_COL.pessoasFiltrado),
             { ...this.dsMeta('Média geral (res.)', baselineLine), type: 'line', pointRadius: 0 },
           ],
@@ -4482,12 +4795,14 @@ createApp({
       const daysChart = c.days || [];
       const LBL = c.periodo?.labels || [];
       const baselineArr = Array(LBL.length).fill(b.avgReservas);
-      const pointRadius = daysChart.map((d) => (d.isSpecial || d.weather?.isRainy ? 7 : 2));
+      const pointRadius = daysChart.map((d) => (d.isSpecial || d.weather?.isRainy || d.weather?.isVeryHot || d.weather?.isVeryCold ? 7 : 2));
       const pointColors = daysChart.map((d) => {
         if (d.weather?.isRainy) return CHART_COL.chuva;
+        if (d.weather?.isVeryHot) return CHART_COL.calor;
+        if (d.weather?.isVeryCold) return CHART_COL.frio;
         if (d.tags.some((t) => t.type === 'evento')) return CHART_COL.evento;
         if (d.tags.some((t) => t.type === 'feriado' || t.type === 'comemorativo')) return CHART_COL.comemorativo;
-        return CHART_COL.filtrado;
+        return CHART_COL.reserva;
       });
       this.mk('ch-ctx-daily', {
         type: 'line',
@@ -4529,7 +4844,16 @@ createApp({
                       const msg = v.weather.isVeryRainy ? 'muito chuvoso' : 'chuva forte';
                       return `• ${v.venueName}: ${msg} · ${fmtDec(v.weather.precipMm, 1)} mm`;
                     }));
-                  } else if (d.weather?.label) {
+                  }
+                  const hotVenues = (d.venueWeather || []).filter((v) => v.weather?.isVeryHot);
+                  if (hotVenues.length) {
+                    lines.push(...hotVenues.map((v) => `• ${v.venueName}: calor intenso · ${fmtDec(v.weather.tempMaxC, 1)}°C`));
+                  }
+                  const coldVenues = (d.venueWeather || []).filter((v) => v.weather?.isVeryCold);
+                  if (coldVenues.length) {
+                    lines.push(...coldVenues.map((v) => `• ${v.venueName}: frio intenso · ${fmtDec(v.weather.tempMaxC, 1)}°C máx.`));
+                  }
+                  if (!rainyVenues.length && !hotVenues.length && !coldVenues.length && d.weather?.label) {
                     lines.push(`Clima: ${d.weather.label} · máx precip. ${fmtDec(d.weather.precipMm, 1)} mm`);
                   }
                   if (d.weather?.tempMaxC != null) {
@@ -4549,7 +4873,7 @@ createApp({
       const hlNode = document.getElementById('ctx-highlights');
       if (hlNode) {
         if (!hl.length) {
-          hlNode.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Nenhum feriado, evento ou dia de chuva forte no período selecionado.</div>';
+          hlNode.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Nenhum feriado, evento, dia de chuva forte, calor ou frio intenso no período selecionado.</div>';
         } else {
           hlNode.innerHTML = `<table class="dtable"><thead><tr><th>Data</th><th>Fatores</th><th>Reservas / Pessoas</th><th>vs média</th><th>Leitura</th></tr></thead><tbody>${hl.map((d) => {
             const tags = d.tags
@@ -4564,9 +4888,17 @@ createApp({
                 return `<span class="${cls}">${v.venueName}: ${msg} · ${fmtDec(v.weather.precipMm, 1)} mm</span>`;
               })
               .join('');
+            const hotTags = (d.venueWeather || [])
+              .filter((v) => v.weather?.isVeryHot)
+              .map((v) => `<span class="ctx-tag neg">${v.venueName}: calor intenso · ${fmtDec(v.weather.tempMaxC, 1)}°C</span>`)
+              .join('');
+            const coldTags = (d.venueWeather || [])
+              .filter((v) => v.weather?.isVeryCold)
+              .map((v) => `<span class="ctx-tag neg">${v.venueName}: frio intenso · ${fmtDec(v.weather.tempMaxC, 1)}°C máx.</span>`)
+              .join('');
             const delta = d.deltaReservasPct;
             const deltaCls = delta > 5 ? 'color:#22D3A5' : delta < -5 ? 'color:#FF4D6D' : 'color:var(--muted)';
-            return `<tr><td><strong>${d.label}</strong><div style="font-size:10px;color:var(--muted)">${d.weekday}</div></td><td>${tags}${rainTags}</td><td>${this.rp(d.reservas, d.pessoas || 0)}</td><td style="${deltaCls};font-weight:700">${this.deltaSigned(delta)}</td><td style="color:var(--muted);max-width:280px">${d.narrative}</td></tr>`;
+            return `<tr><td><strong>${d.label}</strong><div style="font-size:10px;color:var(--muted)">${d.weekday}</div></td><td>${tags}${rainTags}${hotTags}${coldTags}</td><td>${this.rp(d.reservas, d.pessoas || 0)}</td><td style="${deltaCls};font-weight:700">${this.deltaSigned(delta)}</td><td style="color:var(--muted);max-width:280px">${d.narrative}</td></tr>`;
           }).join('')}</tbody></table>`;
         }
       }
@@ -4574,7 +4906,7 @@ createApp({
       const srcNode = document.getElementById('ctx-sources');
       if (srcNode && c.sources) {
         const s = c.sources;
-        srcNode.innerHTML = `Fontes: clima <strong>${s.clima}</strong> · feriados <strong>${s.feriados}</strong> · eventos <strong>${s.eventos}</strong><br>Chuva forte = precipitação ≥ ${fmtDec(s.rainThresholdMm, 1)} mm/loja/dia · muito chuvoso = ≥ ${fmtDec(s.veryRainThresholdMm || 20, 1)} mm ou tempestade${s.weatherError ? ` · <span style="color:#FF4D6D">Clima indisponível: ${s.weatherError}</span>` : ''}`;
+        srcNode.innerHTML = `Fontes: clima <strong>${s.clima}</strong> · feriados <strong>${s.feriados}</strong> · eventos <strong>${s.eventos}</strong><br>Chuva forte = precipitação ≥ ${fmtDec(s.rainThresholdMm, 1)} mm/loja/dia · muito chuvoso = ≥ ${fmtDec(s.veryRainThresholdMm || 20, 1)} mm ou tempestade · calor intenso = temp. máx. ≥ ${fmtDec(s.hotTempThresholdC || 32, 1)}°C · frio intenso = temp. máx. ≤ ${fmtDec(s.coldTempThresholdC || 15, 1)}°C${s.weatherError ? ` · <span style="color:#FF4D6D">Clima indisponível: ${s.weatherError}</span>` : ''}`;
       }
     },
   },

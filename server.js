@@ -7,6 +7,7 @@ const { getDashboard } = require('./lib/dashboardService');
 const { getContextAnalysis } = require('./lib/contextService');
 const { searchVenues, getVenuesByIds } = require('./lib/venuesService');
 const { listUsersWithVenues } = require('./lib/adminService');
+const { getAdminOriginsReport } = require('./lib/adminOriginsService');
 const { resolveUserSessionById } = require('./lib/usersService');
 const {
   LEGACY_AUTH_ENABLED,
@@ -42,6 +43,7 @@ const PUBLIC_DIR = path.join(__dirname, 'public');
 const DASHBOARD_HTML = path.join(__dirname, 'dashboard.html');
 const LOGIN_HTML = path.join(PUBLIC_DIR, 'login.html');
 const ADMIN_HTML = path.join(PUBLIC_DIR, 'admin.html');
+const ADMIN_ORIGENS_HTML = path.join(PUBLIC_DIR, 'admin-origens.html');
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
@@ -222,6 +224,22 @@ app.get('/admin', requireAdminPage, (_req, res) => {
   res.sendFile(ADMIN_HTML);
 });
 
+app.get('/admin/origens', requireAdminPage, (_req, res) => {
+  res.sendFile(ADMIN_ORIGENS_HTML);
+});
+
+app.get('/api/admin/origens', requireAdmin, async (req, res) => {
+  try {
+    const { inicio, fim, venueQ = '' } = req.query;
+    const venueIds = assertVenueAccess(req, parseVenueIds(req.query));
+    const data = await getAdminOriginsReport(inicio, fim, { venueIds, venueQ });
+    res.json(data);
+  } catch (err) {
+    console.error('Erro /api/admin/origens:', err);
+    res.status(err.status || 400).json({ error: err.message });
+  }
+});
+
 app.get('/api/admin/users', requireAdmin, async (req, res) => {
   try {
     const { q = '', venueQ = '', page = 1, limit = 50 } = req.query;
@@ -265,5 +283,6 @@ app.listen(PORT, () => {
   console.log(`Tagme Report → http://localhost:${PORT}/`);
   console.log(`Login → http://localhost:${PORT}/login`);
   console.log(`Admin → http://localhost:${PORT}/admin`);
+  console.log(`Admin origens → http://localhost:${PORT}/admin/origens`);
   console.log(`SSO Keycloak → ${isKeycloakEnabled() ? 'ativado' : 'desativado'}`);
 });

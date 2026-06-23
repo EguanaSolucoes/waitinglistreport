@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin · Origens de parceiros</title>
+<script src="/admin-theme-init.js"></script>
+<link rel="stylesheet" href="/admin-theme.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="admin-topbar">
+  <div class="admin-topbar-inner">
+    <div class="admin-brand">
+      <div class="admin-brand-mark" aria-hidden="true">A</div>
+      <div class="admin-brand-text">
+        <div class="admin-title">Tagme Report · Admin</div>
+        <div class="admin-sub">Origens de parceiros em todas as lojas</div>
+        <span class="admin-badge">Painel administrativo</span>
+      </div>
+    </div>
+    <div class="admin-actions">
+      <button type="button" class="btn-theme" id="themeBtn" title="Alternar tema admin">☀ Claro</button>
+      <a class="admin-btn" href="/">Voltar ao painel</a>
+      <button type="button" class="admin-btn" id="btnLogout">Sair</button>
+    </div>
+  </div>
+  <nav class="admin-nav" aria-label="Seções do admin">
+    <a class="admin-nav-link" href="/admin">Usuários × Lojas</a>
+    <a class="admin-nav-link on" href="/admin/origens">Origens de parceiros</a>
+  </nav>
+</header>
+
+<div class="admin-wrap">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Origens de parceiros</div>
+      <div class="page-sub">Detalhamento de origens de reservas e fila — visão consolidada para administradores.</div>
+    </div>
+  </div>
+
+  <div id="err" class="err"></div>
+
+  <div class="slabel">
+    <div class="sl-text">Período e lojas</div>
+    <div class="sl-line"></div>
+    <div class="sl-tag">Filtros</div>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+      <div class="ch">
+        <div>
+          <div class="ct">Critérios de consulta</div>
+          <div class="cs">Sem lojas selecionadas, agrega todas as lojas ativas. Use a busca para restringir.</div>
+        </div>
+      </div>
+      <div class="filters filters-origens">
+        <div>
+          <label class="admin-label" for="inicio">Início</label>
+          <input class="admin-input" id="inicio" type="date"/>
+        </div>
+        <div>
+          <label class="admin-label" for="fim">Fim</label>
+          <input class="admin-input" id="fim" type="date"/>
+        </div>
+        <div class="venue-suggest">
+          <label class="admin-label" for="qVenue">Buscar loja</label>
+          <input class="admin-input" id="qVenue" type="text" placeholder="Nome da loja (mín. 2 caracteres)" autocomplete="off"/>
+          <div class="venue-suggest-list" id="venueSuggest"></div>
+        </div>
+        <div>
+          <button type="button" class="admin-btn admin-btn-primary" id="btnLoad" style="width:100%">Carregar</button>
+        </div>
+      </div>
+      <div class="venue-chips" id="venueChips"></div>
+      <p class="hint">Comparado automaticamente com o período anterior de mesma duração. Paleta alinhada ao painel principal: Widget, Manual, Google e Parceiros.</p>
+    </div>
+  </div>
+
+  <div id="report" class="hidden">
+    <div class="kpi-block-period" id="periodBar"></div>
+
+    <div class="kpi-mini" id="kpiRow"></div>
+
+    <div class="origem-palette" aria-hidden="true">
+      <span class="origem-palette-item"><i class="origem-leg-dot" style="background:#EC4899"></i>Widget</span>
+      <span class="origem-palette-item"><i class="origem-leg-dot" style="background:#F5A623"></i>Manual</span>
+      <span class="origem-palette-item"><i class="origem-leg-dot" style="background:#16A34A"></i>Google</span>
+      <span class="origem-palette-item"><i class="origem-leg-dot" style="background:#6366F1"></i>Parceiros</span>
+    </div>
+
+    <div class="slabel">
+      <div class="sl-text">Composição por origem</div>
+      <div class="sl-line"></div>
+      <div class="sl-tag">Reservas e fila</div>
+    </div>
+
+    <div class="g2">
+      <div class="card gf">
+        <div class="ch"><div><div class="ct">Origem das Reservas</div><div class="cs">Widget · manual · Google · parceiros</div></div></div>
+        <div class="origem-donut-stack">
+          <div class="origem-donut-block">
+            <div class="origem-donut-hd" id="resDonutHdFiltrado">Filtrado</div>
+            <div class="origem-donut-panel">
+              <div class="origem-donut-chart-wrap">
+                <canvas id="ch-res-atual"></canvas>
+                <div class="origem-donut-center" id="res-center-atual"></div>
+              </div>
+              <div class="origem-donut-legend" id="res-legend-atual"></div>
+            </div>
+          </div>
+          <div class="origem-donut-block">
+            <div class="origem-donut-hd" id="resDonutHdComparado">Comparado</div>
+            <div class="origem-donut-panel">
+              <div class="origem-donut-chart-wrap">
+                <canvas id="ch-res-prev"></canvas>
+                <div class="origem-donut-center" id="res-center-prev"></div>
+              </div>
+              <div class="origem-donut-legend" id="res-legend-prev"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card gf">
+        <div class="ch"><div><div class="ct">Origem da Fila de Espera</div><div class="cs">Fila nativa · widget online · Google</div></div></div>
+        <div class="origem-donut-stack">
+          <div class="origem-donut-block">
+            <div class="origem-donut-hd" id="filaDonutHdFiltrado">Filtrado</div>
+            <div class="origem-donut-panel">
+              <div class="origem-donut-chart-wrap">
+                <canvas id="ch-fila-atual"></canvas>
+                <div class="origem-donut-center" id="fila-center-atual"></div>
+              </div>
+              <div class="origem-donut-legend" id="fila-legend-atual"></div>
+            </div>
+          </div>
+          <div class="origem-donut-block">
+            <div class="origem-donut-hd" id="filaDonutHdComparado">Comparado</div>
+            <div class="origem-donut-panel">
+              <div class="origem-donut-chart-wrap">
+                <canvas id="ch-fila-prev"></canvas>
+                <div class="origem-donut-center" id="fila-center-prev"></div>
+              </div>
+              <div class="origem-donut-legend" id="fila-legend-prev"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slabel">
+      <div class="sl-text">Origens detalhadas</div>
+      <div class="sl-line"></div>
+      <div class="sl-tag">Top parceiros e programas</div>
+    </div>
+
+    <div class="g2">
+      <div class="card">
+        <div class="ch"><div><div class="ct">Reservas · detalhamento</div><div class="cs">Top origens no período</div></div></div>
+        <div id="tbl-origem-res"></div>
+      </div>
+      <div class="card">
+        <div class="ch"><div><div class="ct">Fila de espera · detalhamento</div><div class="cs">Top origens no período</div></div></div>
+        <div id="tbl-origem-fila"></div>
+      </div>
+    </div>
+
+    <div class="slabel">
+      <div class="sl-text">Comparativo por origem</div>
+      <div class="sl-line"></div>
+      <div class="sl-tag">Filtrado vs comparado</div>
+    </div>
+
+    <div class="g2">
+      <div class="card gf">
+        <div class="ch"><div><div class="ct">Reservas por origem</div><div class="cs">Participação percentual no período</div></div></div>
+        <div class="wleg">
+          <div class="wli"><div class="wls" style="background:var(--admin-reserva)"></div>Filtrado</div>
+          <div class="wli"><div class="wld"></div>Comparado</div>
+        </div>
+        <canvas id="ch-origem-res-bar"></canvas>
+      </div>
+      <div class="card gf">
+        <div class="ch"><div><div class="ct">Fila por origem</div><div class="cs">Participação percentual no período</div></div></div>
+        <div class="wleg">
+          <div class="wli"><div class="wls" style="background:var(--admin-fila)"></div>Filtrado</div>
+          <div class="wli"><div class="wld"></div>Comparado</div>
+        </div>
+        <canvas id="ch-origem-fila-bar"></canvas>
+      </div>
+    </div>
+
+    <div class="admin-info" id="scopeInfo"></div>
+  </div>
+</div>
+
+<script>
+const COL = {
+  widget: '#EC4899',
+  manual: '#F5A623',
+  google: '#16A34A',
+  parceiros: '#6366F1',
+  fila: '#22D3A5',
+  filaWidget: '#EC4899',
+  filaGoogle: '#16A34A',
+  comparado: 'rgba(123,132,152,.55)',
+  reserva: '#FF6B2B',
+};
+const RES_LABELS = ['Widget', 'Manual', 'Google', 'Parceiros'];
+const FILA_LABELS = ['Waitlist', 'Widget', 'Google'];
+const charts = {};
+const selectedVenues = new Map();
+let suggestTimer = null;
+let loading = false;
+
+const err = document.getElementById('err');
+const report = document.getElementById('report');
+const inicioEl = document.getElementById('inicio');
+const fimEl = document.getElementById('fim');
+const qVenue = document.getElementById('qVenue');
+const venueSuggest = document.getElementById('venueSuggest');
+const venueChips = document.getElementById('venueChips');
+const THEME_KEY = 'bi_tagme_admin_theme';
+
+function S(n) {
+  return Number(n || 0).toLocaleString('pt-BR');
+}
+
+function fmtYmd(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function defaultDates() {
+  const end = new Date();
+  const start = new Date();
+  start.setDate(end.getDate() - 29);
+  inicioEl.value = fmtYmd(start);
+  fimEl.value = fmtYmd(end);
+}
+defaultDates();
+
+function showError(msg) {
+  if (!msg) {
+    err.classList.remove('on');
+    err.textContent = '';
+    return;
+  }
+  err.textContent = msg;
+  err.classList.add('on');
+}
+
+function chartTextColor() {
+  const light = document.documentElement.getAttribute('data-theme') === 'admin-light';
+  return light ? '#4B5568' : '#9CA8BC';
+}
+
+function destroyChart(id) {
+  if (charts[id]) {
+    charts[id].destroy();
+    delete charts[id];
+  }
+}
+
+function mkChart(id, config) {
+  destroyChart(id);
+  const el = document.getElementById(id);
+  if (!el) return;
+  charts[id] = new Chart(el, config);
+}
+
+function origemColor(lbl) {
+  const map = {
+    Widget: COL.widget,
+    Manual: COL.manual,
+    Google: COL.google,
+    Parceiros: COL.parceiros,
+    Waitlist: COL.fila,
+  };
+  return map[lbl] || COL.parceiros;
+}
+
+function origemDonutItems(counts, labels) {
+  return labels
+    .map((lbl) => ({
+      lbl,
+      count: (counts?.[lbl] || 0) + (lbl === 'Manual' ? ((counts?.Telefone || 0) + (counts?.Phone || 0)) : 0),
+      color: origemColor(lbl),
+    }))
+    .sort((a, b) => b.count - a.count);
+}
+
+function renderDonutCenter(elId, total, unit) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = `<div class="origem-donut-total">${S(total)}</div><div class="origem-donut-lbl">${unit}</div>`;
+}
+
+function renderDonutLegend(elId, items, total) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (!total) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:12px">Sem dados no período.</div>';
+    return;
+  }
+  el.innerHTML = items.map(({ lbl, count, color }) => {
+    const pct = Math.round((count / total) * 100);
+    return `<div class="origem-leg-row"><span class="origem-leg-name"><i class="origem-leg-dot" style="background:${color}"></i>${lbl}</span><span class="origem-leg-pct">${pct}%</span><span class="origem-leg-cnt">${S(count)}</span></div>`;
+  }).join('');
+}
+
+function mkDonut(canvasId, centerId, legendId, counts, labels, unit) {
+  const items = origemDonutItems(counts, labels);
+  const total = items.reduce((s, x) => s + x.count, 0);
+  renderDonutCenter(centerId, total, unit);
+  renderDonutLegend(legendId, items, total);
+  if (!total) {
+    destroyChart(canvasId);
+    return;
+  }
+  mkChart(canvasId, {
+    type: 'doughnut',
+    data: {
+      labels: items.map((x) => x.lbl),
+      datasets: [{
+        data: items.map((x) => x.count),
+        backgroundColor: items.map((x) => x.color + 'DD'),
+        borderColor: items.map((x) => (x.lbl === 'Parceiros' ? 'rgba(255,255,255,.18)' : 'transparent')),
+        borderWidth: items.map((x) => (x.lbl === 'Parceiros' ? 1 : 0)),
+        hoverBackgroundColor: items.map((x) => x.color),
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      cutout: '72%',
+      animation: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(15,20,30,.92)',
+          titleColor: '#E8EDF5',
+          bodyColor: '#9CA8BC',
+          callbacks: {
+            label(ctx) {
+              const v = ctx.parsed ?? 0;
+              const pct = total ? Math.round((v / total) * 100) : 0;
+              return ` ${ctx.label}: ${pct}% (${S(v)})`;
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+function rp(count, pessoas) {
+  return `${S(count)} <span style="color:var(--muted);font-weight:500">/ ${S(pessoas)} pess.</span>`;
+}
+
+function detailTable(elId, rows) {
+  const node = document.getElementById(elId);
+  if (!node) return;
+  if (!rows?.length) {
+    node.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px">Sem dados no período.</div>';
+    return;
+  }
+  const max = Math.max(...rows.map((r) => r.count), 1);
+  node.innerHTML = `<table class="dtable"><thead><tr><th>Origem / Parceiro</th><th>Reservas / Pessoas</th><th>%</th></tr></thead><tbody>${rows.map((r) => `<tr><td>${escapeHtml(r.label)}<div class="dbar"><div class="dbar-f" style="width:${Math.round(r.count / max * 100)}%"></div></div></td><td>${rp(r.count, r.pessoas || 0)}</td><td>${r.pct}%</td></tr>`).join('')}</tbody></table>`;
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function barOpts(yLabel) {
+  const tc = chartTextColor();
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    animation: false,
+    scales: {
+      x: { ticks: { color: tc, font: { size: 11 } }, grid: { color: 'rgba(123,132,152,.12)' } },
+      y: {
+        ticks: { color: tc, font: { size: 11 }, callback: (v) => `${v}%` },
+        grid: { color: 'rgba(123,132,152,.12)' },
+        title: { display: !!yLabel, text: yLabel, color: tc, font: { size: 11 } },
+      },
+    },
+    plugins: {
+      legend: {
+        display: true,
+        labels: { color: tc, font: { size: 11 }, boxWidth: 10 },
+      },
+    },
+  };
+}
+
+function renderBarChart(id, labels, atual, anterior, colorAtual) {
+  mkChart(id, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Filtrado (%)',
+          data: atual,
+          backgroundColor: colorAtual + 'CC',
+          borderRadius: 4,
+        },
+        {
+          label: 'Comparado (%)',
+          data: anterior,
+          backgroundColor: COL.comparado,
+          borderRadius: 4,
+        },
+      ],
+    },
+    options: barOpts('%'),
+  });
+}
+
+function renderReport(data) {
+  const det = data.origemDetalhe || { reservas: [], fila: [] };
+  const periodo = data.periodo?.label || '';
+  const periodoAnt = data.periodoAnterior?.label || '';
+
+  document.getElementById('periodBar').innerHTML =
+    `<div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">${escapeHtml(periodo)}</span></div>` +
+    (periodoAnt ? `<div class="pp-row"><span class="pp-lbl">Comparado</span><span class="pp-val">${escapeHtml(periodoAnt)}</span></div>` : '');
+
+  document.getElementById('resDonutHdFiltrado').textContent = periodo ? `Filtrado · ${periodo}` : 'Filtrado';
+  document.getElementById('resDonutHdComparado').textContent = periodoAnt ? `Comparado · ${periodoAnt}` : 'Comparado';
+  document.getElementById('filaDonutHdFiltrado').textContent = periodo ? `Filtrado · ${periodo}` : 'Filtrado';
+  document.getElementById('filaDonutHdComparado').textContent = periodoAnt ? `Comparado · ${periodoAnt}` : 'Comparado';
+
+  const t = data.totais || {};
+  document.getElementById('kpiRow').innerHTML = `
+    <div class="kpi-mini-item"><div class="kpi-mini-lbl">Reservas</div><div class="kpi-mini-val" style="color:var(--admin-reserva)">${S(t.reservas)}</div></div>
+    <div class="kpi-mini-item"><div class="kpi-mini-lbl">Pessoas (res.)</div><div class="kpi-mini-val">${S(t.reservasPessoas)}</div></div>
+    <div class="kpi-mini-item"><div class="kpi-mini-lbl">Fila</div><div class="kpi-mini-val" style="color:var(--admin-fila)">${S(t.fila)}</div></div>
+    <div class="kpi-mini-item"><div class="kpi-mini-lbl">Pessoas (fila)</div><div class="kpi-mini-val">${S(t.filaPessoas)}</div></div>
+  `;
+
+  const origem = data.origem || {};
+  const origemFila = data.origemFila || {};
+
+  mkDonut('ch-res-atual', 'res-center-atual', 'res-legend-atual', origem.counts, RES_LABELS, 'reservas');
+  mkDonut('ch-res-prev', 'res-center-prev', 'res-legend-prev', origem.countsPrev, RES_LABELS, 'reservas');
+  mkDonut('ch-fila-atual', 'fila-center-atual', 'fila-legend-atual', origemFila.counts, FILA_LABELS, 'fila');
+  mkDonut('ch-fila-prev', 'fila-center-prev', 'fila-legend-prev', origemFila.countsPrev, FILA_LABELS, 'fila');
+
+  detailTable('tbl-origem-res', det.reservas);
+  detailTable('tbl-origem-fila', det.fila);
+
+  const resLabels = (origem.labels || RES_LABELS);
+  const filaLabels = (origemFila.labels || FILA_LABELS);
+  renderBarChart('ch-origem-res-bar', resLabels, origem.a || [], origem.p || [], COL.reserva);
+  renderBarChart('ch-origem-fila-bar', filaLabels, origemFila.a || [], origemFila.p || [], COL.fila);
+
+  const venueNome = data.meta?.venueNome || '';
+  const venueCount = data.venueCount || data.meta?.venueIds?.length || 0;
+  document.getElementById('scopeInfo').innerHTML =
+    `<strong>Escopo:</strong> ${escapeHtml(venueNome)} (${S(venueCount)} loja${venueCount === 1 ? '' : 's'}). ` +
+    'Dados agregados com as mesmas regras do painel principal (Origens detalhado).';
+
+  report.classList.remove('hidden');
+}
+
+function renderVenueChips() {
+  if (!selectedVenues.size) {
+    venueChips.innerHTML = '<span class="hint" style="margin:0;padding:0;border:none">Nenhuma loja selecionada — todas as lojas ativas serão consideradas.</span>';
+    return;
+  }
+  venueChips.innerHTML = [...selectedVenues.values()].map((v) =>
+    `<span class="venue-chip">${escapeHtml(v.nome)}<button type="button" data-id="${escapeHtml(v.id)}" title="Remover">×</button></span>`
+  ).join('');
+  venueChips.querySelectorAll('button').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedVenues.delete(btn.dataset.id);
+      renderVenueChips();
+    });
+  });
+}
+renderVenueChips();
+
+async function searchVenues(q) {
+  const res = await fetch(`/api/venues/search?q=${encodeURIComponent(q)}&limit=30`, { credentials: 'same-origin' });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Falha na busca de lojas');
+  return data.venues || [];
+}
+
+function showSuggest(items) {
+  if (!items.length) {
+    venueSuggest.classList.remove('on');
+    venueSuggest.innerHTML = '';
+    return;
+  }
+  venueSuggest.innerHTML = items.map((v) =>
+    `<button type="button" class="venue-suggest-item" data-id="${escapeHtml(v.id)}" data-nome="${escapeHtml(v.nome)}">${escapeHtml(v.nome)}</button>`
+  ).join('');
+  venueSuggest.classList.add('on');
+  venueSuggest.querySelectorAll('.venue-suggest-item').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      selectedVenues.set(btn.dataset.id, { id: btn.dataset.id, nome: btn.dataset.nome });
+      qVenue.value = '';
+      venueSuggest.classList.remove('on');
+      renderVenueChips();
+    });
+  });
+}
+
+qVenue.addEventListener('input', () => {
+  clearTimeout(suggestTimer);
+  const q = qVenue.value.trim();
+  if (q.length < 2) {
+    venueSuggest.classList.remove('on');
+    return;
+  }
+  suggestTimer = setTimeout(async () => {
+    try {
+      const items = await searchVenues(q);
+      showSuggest(items.filter((v) => !selectedVenues.has(v.id)));
+    } catch (_) {
+      venueSuggest.classList.remove('on');
+    }
+  }, 280);
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.venue-suggest')) venueSuggest.classList.remove('on');
+});
+
+async function loadReport() {
+  if (loading) return;
+  const inicio = inicioEl.value;
+  const fim = fimEl.value;
+  if (!inicio || !fim) {
+    showError('Informe início e fim do período.');
+    return;
+  }
+  if (inicio > fim) {
+    showError('A data de início não pode ser posterior ao fim.');
+    return;
+  }
+
+  loading = true;
+  document.getElementById('btnLoad').disabled = true;
+  showError('');
+  try {
+    const params = new URLSearchParams({ inicio, fim });
+    const ids = [...selectedVenues.keys()];
+    if (ids.length) params.set('venues', ids.join(','));
+    const res = await fetch(`/api/admin/origens?${params}`, { credentials: 'same-origin' });
+    const data = await res.json().catch(() => ({}));
+    if (res.status === 403) {
+      window.location.href = '/';
+      return;
+    }
+    if (!res.ok) throw new Error(data.error || 'Falha ao carregar origens');
+    renderReport(data);
+  } catch (ex) {
+    showError(ex.message || 'Erro ao carregar relatório');
+  } finally {
+    loading = false;
+    document.getElementById('btnLoad').disabled = false;
+  }
+}
+
+document.getElementById('btnLoad').addEventListener('click', loadReport);
+
+const themeBtn = document.getElementById('themeBtn');
+function updateThemeBtn() {
+  const light = document.documentElement.getAttribute('data-theme') === 'admin-light';
+  themeBtn.innerHTML = light ? '☽ Escuro' : '☀ Claro';
+}
+themeBtn.addEventListener('click', () => {
+  const light = document.documentElement.getAttribute('data-theme') === 'admin-light';
+  const next = light ? 'admin' : 'admin-light';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem(THEME_KEY, next); } catch (_) { /* ignore */ }
+  updateThemeBtn();
+});
+updateThemeBtn();
+
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+  window.location.href = '/login';
+});
+
+fetch('/api/me', { credentials: 'same-origin' })
+  .then((r) => {
+    if (!r.ok) throw new Error('auth');
+    return r.json();
+  })
+  .then((me) => {
+    if (!me.isAdmin) window.location.href = '/';
+  })
+  .catch(() => { window.location.href = '/login'; });
+</script>
+</body>
+</html>
