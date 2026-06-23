@@ -235,15 +235,20 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .kpi-block-chart > .chart-desc{margin-top:10px}
 
 /* VISÃO GERAL — layout executivo */
+#tab-geral .vg-hero{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px;align-items:stretch}
+#tab-geral .vg-fluxo-donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}
+#tab-geral .vg-charts-row{margin-bottom:20px}
+#tab-geral .vg-resumo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:14px;align-items:stretch}
+#tab-geral .vg-info{width:100%;max-width:none;margin-bottom:20px}
 .vg-hero{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}
 .vg-hero-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px 18px;position:relative;overflow:hidden;min-width:0;display:flex;flex-direction:column;min-height:100%}
 .vg-hero-body{flex:1}
 .vg-hero-top{position:absolute;top:0;left:0;right:0;height:3px}
 .vg-hero-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:12px}
 .vg-hero-dual{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.vg-hero-num{display:block;font-size:26px;font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text)}
+.vg-hero-num{display:block;font-size:clamp(20px,2.4vw,26px);font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text)}
 .vg-hero-lbl{display:block;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-top:4px}
-.vg-hero-main{font-size:24px;font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
+.vg-hero-main{font-size:clamp(18px,2.2vw,24px);font-weight:900;letter-spacing:-1px;line-height:1.15;margin-bottom:10px}
 .vg-hero-sep{opacity:.45;font-weight:600;margin:0 2px}
 .vg-hero-unit{font-size:11px;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:.4px}
 .vg-hero-sub{font-size:13px;font-weight:700;color:var(--muted);margin-top:6px}
@@ -265,7 +270,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .vg-donut-pct{font-weight:800;color:var(--text)}
 .vg-donut-cnt{color:var(--muted);font-size:11px;text-align:right}
 .vg-resumo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:20px}
-.vg-resumo-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.vg-resumo-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0;height:100%}
 .vg-resumo-hd{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.65px;padding-bottom:10px;border-bottom:2px solid var(--border)}
 .vg-resumo-main{font-size:22px;font-weight:900;letter-spacing:-.8px;line-height:1.2}
 .vg-resumo-list{list-style:none;display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted);flex:1}
@@ -274,7 +279,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .vg-resumo-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .vg-tab-link{align-self:flex-start;background:transparent;border:none;padding:0;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;text-align:left}
 .vg-tab-link:hover{text-decoration:underline}
-.vg-desc,.vg-resumo-card > .vg-desc{margin-top:auto;padding-top:10px;border-top:1px solid var(--border);font-size:10px;line-height:1.45;color:var(--muted)}
+.vg-desc,.vg-resumo-card > .vg-desc{margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:10px;line-height:1.5;color:var(--muted)}
+.vg-hero-card > .vg-desc{margin-top:12px}
 .vg-info{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:14px 18px;font-size:12px;line-height:1.55;color:var(--muted);margin-bottom:20px}
 .vg-info strong{color:var(--text)}
 .vg-perfil-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
@@ -533,7 +539,9 @@ canvas{max-height:230px!important}
   .kgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .kgrid-geral{grid-template-columns:repeat(2,minmax(0,1fr))}
   .vg-hero{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #tab-geral .vg-hero{grid-template-columns:repeat(2,minmax(0,1fr))}
   .vg-fluxo-donuts,.vg-resumo-grid{grid-template-columns:1fr}
+  #tab-geral .vg-fluxo-donuts,#tab-geral .vg-resumo-grid{grid-template-columns:1fr}
   .kpi{padding:14px 12px}
   .kpi-num{font-size:22px}
   .page-header{flex-direction:column;align-items:stretch;margin-bottom:16px}
@@ -846,8 +854,9 @@ canvas{max-height:230px!important}
         <div class="vg-donut-leg" id="vg-fluxo-pessoas-leg"></div>
       </div>
       <div class="vg-desc" id="vg-desc-fluxo-pessoas"></div>
+    </div>
   </div>
-  <div class="g2">
+  <div class="g2 vg-charts-row">
     <div class="card">
       <div class="ch"><div><div class="ct">Perfil de clientes</div><div class="cs">1ª visita vs recorrente · reservas e fila consolidados</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div></div></div></div>
       <div class="vg-donut-panel" style="padding:4px 0">
