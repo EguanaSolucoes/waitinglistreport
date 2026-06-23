@@ -236,7 +236,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 
 /* VISÃO GERAL — layout executivo */
 .vg-hero{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:20px}
-.vg-hero-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px 18px;position:relative;overflow:hidden;min-width:0}
+.vg-hero-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px 18px;position:relative;overflow:hidden;min-width:0;display:flex;flex-direction:column;min-height:100%}
+.vg-hero-body{flex:1}
 .vg-hero-top{position:absolute;top:0;left:0;right:0;height:3px}
 .vg-hero-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:12px}
 .vg-hero-dual{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -251,7 +252,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .vg-pill-ok{border-color:rgba(34,211,165,.35);color:var(--green);background:rgba(34,211,165,.08)}
 .vg-pill-warn{border-color:rgba(255,77,109,.35);color:var(--red);background:rgba(255,77,109,.08)}
 .vg-fluxo-donuts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:20px}
-.vg-donut-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.vg-donut-card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;display:flex;flex-direction:column}
 .vg-donut-hd{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
 .vg-donut-sub{font-size:11px;color:var(--muted);margin-bottom:12px}
 .vg-donut-panel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:nowrap}
@@ -273,6 +274,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 .vg-resumo-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .vg-tab-link{align-self:flex-start;background:transparent;border:none;padding:0;font-size:11px;font-weight:700;color:var(--accent);cursor:pointer;text-align:left}
 .vg-tab-link:hover{text-decoration:underline}
+.vg-desc,.vg-resumo-card > .vg-desc{margin-top:auto;padding-top:10px;border-top:1px solid var(--border);font-size:10px;line-height:1.45;color:var(--muted)}
 .vg-info{background:rgba(79,142,247,.08);border:1px solid rgba(79,142,247,.22);border-radius:var(--r);padding:14px 18px;font-size:12px;line-height:1.55;color:var(--muted);margin-bottom:20px}
 .vg-info strong{color:var(--text)}
 .vg-perfil-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
@@ -834,6 +836,7 @@ canvas{max-height:230px!important}
         <div class="vg-donut-chart"><canvas id="ch-vg-fluxo-grupos"></canvas></div>
         <div class="vg-donut-leg" id="vg-fluxo-grupos-leg"></div>
       </div>
+      <div class="vg-desc" id="vg-desc-fluxo-grupos"></div>
     </div>
     <div class="vg-donut-card">
       <div class="vg-donut-hd">Pessoas</div>
@@ -842,7 +845,7 @@ canvas{max-height:230px!important}
         <div class="vg-donut-chart"><canvas id="ch-vg-fluxo-pessoas"></canvas></div>
         <div class="vg-donut-leg" id="vg-fluxo-pessoas-leg"></div>
       </div>
-    </div>
+      <div class="vg-desc" id="vg-desc-fluxo-pessoas"></div>
   </div>
   <div class="g2">
     <div class="card">
@@ -851,11 +854,13 @@ canvas{max-height:230px!important}
         <div class="vg-donut-chart" style="position:relative"><canvas id="ch-vg-perfil"></canvas><div id="vg-perfil-center" class="vg-perfil-center"></div></div>
         <div class="vg-donut-leg" id="vg-perfil-leg"></div>
       </div>
+      <div class="chart-desc" data-card="vg-perfil"></div>
     </div>
     <div class="card">
       <div class="ch"><div><div class="ct">Tendência do período</div><div class="cs">Mesas / grupos · filtrado vs comparado</div><div class="card-period" v-if="periodoLabel"><div class="pp-row"><span class="pp-lbl">Filtrado</span><span class="pp-val">{{ periodoLabel }}</span></div><div class="pp-row" v-if="periodoAnteriorLabel"><span class="pp-lbl">Comparado</span><span class="pp-val">{{ periodoAnteriorLabel }}</span></div></div></div><span class="ctag" id="t-vg-tendencia">—</span></div>
       <div class="wleg"><div class="wli"><div class="wls" style="background:var(--chart-filtrado)"></div>Filtrado</div><div class="wli"><div class="wld" style="border-color:var(--chart-comparado);opacity:.85"></div>Comparado</div></div>
       <canvas id="ch-vg-tendencia"></canvas>
+      <div class="chart-desc" data-card="vg-tendencia"></div>
     </div>
   </div>
   <div class="slabel"><div class="sl-text">Resumo por fonte</div><div class="sl-line"></div><div class="sl-tag">Detalhamento rápido</div></div>
@@ -1421,6 +1426,19 @@ const KPI_EXTRA_DESC = {
   passante: 'Clientes que entraram sem reserva prévia (entrada direta) no período filtrado. Exclui registros excluídos no Tagme Manager.',
   conversao: 'Percentual de reservas que viraram atendimento: sentados ÷ total de reservas no período.',
   fluxoTotal: 'Volume efetivo movimentado: reservas e fila (sentado + em aberto) + passantes. Exclui não comparecimento e cancelamentos.',
+};
+/** Descrições dos cards da Visão Geral (hero, resumo e donuts). */
+const VG_HERO_DESC = {
+  fluxoTotal: KPI_EXTRA_DESC.fluxoTotal,
+  reservas: 'Pessoas em aberto no fluxo de reservas (atendidas + em aberto). Os percentuais indicam a composição entre em aberto e sentadas no período.',
+  fila: 'Pessoas em aberto no fluxo da fila (atendidas + aguardando). Os percentuais indicam a composição entre em aberto e sentadas no período.',
+  noshow: 'Reservas canceladas (situação cancelada), contabilizadas como não comparecimento. O percentual é sobre o total de reservas do período.',
+  passante: KPI_EXTRA_DESC.passante,
+};
+const VG_RESUMO_DESC = {
+  reservas: 'Resumo do fluxo de reservas: pessoas em aberto, sentadas e não comparecimento no período filtrado.',
+  fila: 'Resumo do fluxo da fila de espera: pessoas aguardando e atendidas no período filtrado.',
+  passante: KPI_EXTRA_DESC.passante,
 };
 const CTX_KPI_DESC = {
   media: 'Média diária de reservas e pessoas em todo o período filtrado (média de referência para comparação).',
@@ -3674,7 +3692,9 @@ createApp({
 
     applyChartDescriptions() {
       const origemCardsDone = new WeakSet();
+      const vgHandled = new Set(['ch-vg-perfil', 'ch-vg-tendencia', 'ch-vg-fluxo-grupos', 'ch-vg-fluxo-pessoas']);
       for (const [id, text] of Object.entries(CHART_DESC)) {
+        if (vgHandled.has(id)) continue;
         const el = document.getElementById(id);
         if (!el) continue;
         if (CHART_ORIGEM_PRIMARY.test(id)) {
@@ -4051,28 +4071,45 @@ createApp({
       };
     },
 
-    vgHeroFluxoCard(grupos, pessoas) {
-      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:#6366F1"></div><div class="vg-hero-title">Fluxo total</div><div class="vg-hero-dual"><div><span class="vg-hero-num">${this.S(grupos)}</span><span class="vg-hero-lbl">mesas / grupos</span></div><div><span class="vg-hero-num">${this.S(pessoas)}</span><span class="vg-hero-lbl">pessoas</span></div></div></div>`;
+    vgDescHtml(desc) {
+      return this.kpiDescHtml(desc).replace('kpi-desc', 'vg-desc');
     },
 
-    vgHeroRatioCard(title, color, aberto, total, pctAberto, pctSentado) {
-      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:${color}"></div><div class="vg-hero-title">${title}</div><div class="vg-hero-main" style="color:${color}">${this.S(aberto)} <span class="vg-hero-sep">/</span> ${this.S(total)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill" style="border-color:${color}55;color:${color}">${this.pct(pctAberto)} em aberto</span><span class="vg-pill vg-pill-ok">${this.pct(pctSentado)} sentadas</span></div></div>`;
+    applyVgCardDescriptions() {
+      const set = (id, text) => {
+        const el = document.getElementById(id);
+        if (el && text) el.textContent = text;
+      };
+      set('vg-desc-fluxo-grupos', CHART_DESC['ch-vg-fluxo-grupos']);
+      set('vg-desc-fluxo-pessoas', CHART_DESC['ch-vg-fluxo-pessoas']);
+      const perfilCard = document.getElementById('ch-vg-perfil')?.closest('.card');
+      const tendCard = document.getElementById('ch-vg-tendencia')?.closest('.card');
+      this.setChartDescOnCard(perfilCard, 'vg-perfil', CHART_DESC['ch-vg-perfil']);
+      this.setChartDescOnCard(tendCard, 'vg-tendencia', CHART_DESC['ch-vg-tendencia']);
+    },
+
+    vgHeroFluxoCard(grupos, pessoas) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:#6366F1"></div><div class="vg-hero-body"><div class="vg-hero-title">Fluxo total</div><div class="vg-hero-dual"><div><span class="vg-hero-num">${this.S(grupos)}</span><span class="vg-hero-lbl">mesas / grupos</span></div><div><span class="vg-hero-num">${this.S(pessoas)}</span><span class="vg-hero-lbl">pessoas</span></div></div></div>${this.vgDescHtml(VG_HERO_DESC.fluxoTotal)}</div>`;
+    },
+
+    vgHeroRatioCard(title, color, aberto, total, pctAberto, pctSentado, desc) {
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:${color}"></div><div class="vg-hero-body"><div class="vg-hero-title">${title}</div><div class="vg-hero-main" style="color:${color}">${this.S(aberto)} <span class="vg-hero-sep">/</span> ${this.S(total)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill" style="border-color:${color}55;color:${color}">${this.pct(pctAberto)} em aberto</span><span class="vg-pill vg-pill-ok">${this.pct(pctSentado)} sentadas</span></div></div>${this.vgDescHtml(desc)}</div>`;
     },
 
     vgHeroNoshowCard(noshowRes, noshowPes, pctTotal) {
-      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-noshow)"></div><div class="vg-hero-title">Não compareceu</div><div class="vg-hero-main" style="color:var(--chart-noshow)">${this.S(noshowRes)} <span class="vg-hero-sep">/</span> ${this.S(noshowPes)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill vg-pill-warn">${this.pct(pctTotal)} do total de reservas</span></div></div>`;
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-noshow)"></div><div class="vg-hero-body"><div class="vg-hero-title">Não compareceu</div><div class="vg-hero-main" style="color:var(--chart-noshow)">${this.S(noshowRes)} <span class="vg-hero-sep">/</span> ${this.S(noshowPes)} <span class="vg-hero-unit">pess.</span></div><div class="vg-hero-pills"><span class="vg-pill vg-pill-warn">${this.pct(pctTotal)} do total de reservas</span></div></div>${this.vgDescHtml(VG_HERO_DESC.noshow)}</div>`;
     },
 
     vgHeroPassanteCard(grupos, pessoas) {
-      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-passante)"></div><div class="vg-hero-title">Passantes</div><div class="vg-hero-main" style="color:var(--chart-passante)">${this.S(pessoas)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(grupos)} mesas / grupos</div></div>`;
+      return `<div class="vg-hero-card"><div class="vg-hero-top" style="background:var(--chart-passante)"></div><div class="vg-hero-body"><div class="vg-hero-title">Passantes</div><div class="vg-hero-main" style="color:var(--chart-passante)">${this.S(pessoas)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(grupos)} mesas / grupos</div></div>${this.vgDescHtml(VG_HERO_DESC.passante)}</div>`;
     },
 
     renderVgHeroKpis() {
       const v = this.calcVisaoGeralData();
       const html =
         this.vgHeroFluxoCard(v.totalGrupos, v.totalPes) +
-        this.vgHeroRatioCard('Reservas', CHART_COL.filtrado, v.res.abertoPes, v.res.fluxoPes, v.res.pctAberto, v.res.pctSentado) +
-        this.vgHeroRatioCard('Fila de espera', CHART_COL.comparado, v.fila.abertoPes, v.fila.fluxoPes, v.fila.pctAberto, v.fila.pctSentado) +
+        this.vgHeroRatioCard('Reservas', CHART_COL.filtrado, v.res.abertoPes, v.res.fluxoPes, v.res.pctAberto, v.res.pctSentado, VG_HERO_DESC.reservas) +
+        this.vgHeroRatioCard('Fila de espera', CHART_COL.comparado, v.fila.abertoPes, v.fila.fluxoPes, v.fila.pctAberto, v.fila.pctSentado, VG_HERO_DESC.fila) +
         this.vgHeroNoshowCard(v.res.noshowRes, v.res.noshowPes, v.res.pctNoshowTotal) +
         this.vgHeroPassanteCard(v.tW, v.tWP);
       this.setHtml('vg-hero-kpis', html);
@@ -4227,9 +4264,9 @@ createApp({
       const res = v.res;
       const fila = v.fila;
       const html =
-        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.filtrado}">Reservas</div><div class="vg-resumo-main" style="color:${CHART_COL.filtrado}">${this.S(res.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(res.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', res.abertoPes, res.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', res.sentadoPes, res.pctSentado)}<li><i class="vg-resumo-dot" style="background:var(--chart-noshow)"></i><strong>${this.S(res.noshowRes)}</strong> não compareceu (${this.pct(res.pctNoshowTotal)} do total de reservas)</li></ul><button type="button" class="vg-tab-link" data-tab="reservas">Ver detalhes na aba Reservas →</button></div>` +
-        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.comparado}">Fila de espera</div><div class="vg-resumo-main" style="color:${CHART_COL.comparado}">${this.S(fila.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(fila.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', fila.abertoPes, fila.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', fila.sentadoPes, fila.pctSentado)}</ul><button type="button" class="vg-tab-link" data-tab="fila">Ver detalhes na aba Fila de Espera →</button></div>` +
-        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.passante}">Passantes</div><div class="vg-resumo-main" style="color:${CHART_COL.passante}">${this.S(v.tWP)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(v.tW)} mesas / grupos</div><p style="font-size:12px;color:var(--muted);line-height:1.5;flex:1">Clientes que entraram sem reserva prévia (entrada direta). Exclui registros excluídos no Tagme Manager.</p><button type="button" class="vg-tab-link" data-tab="reservas">Ver gráficos de passantes →</button></div>`;
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.filtrado}">Reservas</div><div class="vg-resumo-main" style="color:${CHART_COL.filtrado}">${this.S(res.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(res.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', res.abertoPes, res.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', res.sentadoPes, res.pctSentado)}<li><i class="vg-resumo-dot" style="background:var(--chart-noshow)"></i><strong>${this.S(res.noshowRes)}</strong> não compareceu (${this.pct(res.pctNoshowTotal)} do total de reservas)</li></ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.reservas)}</div><button type="button" class="vg-tab-link" data-tab="reservas">Ver detalhes na aba Reservas →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.comparado}">Fila de espera</div><div class="vg-resumo-main" style="color:${CHART_COL.comparado}">${this.S(fila.abertoPes)} <span class="vg-hero-sep">/</span> ${this.S(fila.fluxoPes)} <span class="vg-hero-unit">pess.</span></div><ul class="vg-resumo-list">${this.vgResumoItem(KPI_COL.aberto, 'em aberto', fila.abertoPes, fila.pctAberto)}${this.vgResumoItem(KPI_COL.sentado, 'sentadas', fila.sentadoPes, fila.pctSentado)}</ul><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.fila)}</div><button type="button" class="vg-tab-link" data-tab="fila">Ver detalhes na aba Fila de Espera →</button></div>` +
+        `<div class="vg-resumo-card"><div class="vg-resumo-hd" style="border-color:${CHART_COL.passante}">Passantes</div><div class="vg-resumo-main" style="color:${CHART_COL.passante}">${this.S(v.tWP)} <span class="vg-hero-unit">pessoas</span></div><div class="vg-hero-sub">${this.S(v.tW)} mesas / grupos</div><div class="vg-desc">${this.escapeHtml(VG_RESUMO_DESC.passante)}</div><button type="button" class="vg-tab-link" data-tab="reservas">Ver gráficos de passantes →</button></div>`;
       this.setHtml('vg-resumo-fonte', html);
       document.querySelectorAll('#vg-resumo-fonte .vg-tab-link').forEach((el) => {
         el.onclick = () => this.go(el.dataset.tab);
@@ -4242,6 +4279,7 @@ createApp({
       this.renderVgPerfilDonut();
       this.renderVgTendencia();
       this.renderVgResumoFonte();
+      this.applyVgCardDescriptions();
     },
 
     rFila() {
