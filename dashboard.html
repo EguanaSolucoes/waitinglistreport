@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Tagme Report</title>
+<title>Report</title>
 <link rel="stylesheet" href="/theme.css"/>
 <script src="/theme-init.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@3.5.13/dist/vue.global.prod.js" crossorigin="anonymous"></script>
@@ -21,11 +21,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg0);color:var(--
 
 /* TOPBAR */
 .header-wrap{position:sticky;top:0;z-index:200;background:var(--topbar-bg);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 28px;min-height:60px;gap:16px;flex-wrap:wrap}
-.topbar-brand{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
-.brand-name{font-weight:800;font-size:15px;letter-spacing:-.3px}
-.brand-sub{font-size:11px;color:var(--muted)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:4px 28px;min-height:0;gap:12px;flex-wrap:wrap}
+.topbar-brand{display:flex;align-items:center;flex-shrink:0}
+.brand-logo{height:34px;width:auto;max-width:min(213px,34vw);object-fit:contain;display:block}
 .btn-filters-toggle{display:flex;align-items:center;gap:8px;background:transparent;border:none;border-radius:8px;padding:7px 8px;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;max-width:min(420px,42vw);min-width:0;margin-left:auto;flex-shrink:0}
 .btn-filters-toggle:hover{color:var(--accent)}
 .btn-filters-toggle .filter-summary{color:var(--muted);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -520,11 +518,10 @@ canvas{max-height:230px!important}
   .sidenav{position:fixed;top:0;left:0;bottom:0;z-index:350;width:min(280px,86vw);max-width:100%;padding:16px 0;transform:translateX(-105%);transition:transform .25s ease;box-shadow:var(--modal-shadow);border-right:1px solid var(--border)}
   .sidenav.open{transform:translateX(0)}
   .sidenav-head{display:flex}
-  .topbar{padding:8px 12px;gap:8px;min-height:52px;flex-wrap:wrap;align-items:center}
+  .topbar{padding:3px 12px;gap:8px;min-height:0;flex-wrap:wrap;align-items:center}
   .topbar-brand{flex:1;min-width:0}
   .btn-filters-toggle{order:3;max-width:min(200px,46vw);padding:8px 6px}
   .btn-filters-toggle .chev{display:none}
-  .brand-sub{display:none}
   .filter-panel.open .filter-panel-inner{overflow:hidden;max-height:calc(100dvh - 3.75rem)}
   .filter-panel.open .filter-panel-body{display:flex;flex-direction:column;gap:0;min-height:calc(100dvh - 3.75rem);max-height:calc(100dvh - 3.75rem);padding:0 0 15rem}
   .filter-panel-venues-zone{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 12px 0;overflow:hidden}
@@ -607,8 +604,7 @@ canvas{max-height:230px!important}
     </svg>
   </button>
   <div class="topbar-brand">
-    <div class="brand-dot"></div>
-    <div><div class="brand-name">Tagme Report</div><div class="brand-sub">Reservas & Fila de Espera</div></div>
+    <img src="/logo.png" alt="tagme report" class="brand-logo"/>
   </div>
   <button
     type="button"
